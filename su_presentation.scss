@@ -1,0 +1,180 @@
+/*-- scss:defaults --*/
+$su-charcoal: #2c2825;
+$su-charcoal-l20: lighten($su-charcoal, 20%);
+$su-charcoal-l40: lighten($su-charcoal, 40%);
+$su-charcoal-l60: lighten($su-charcoal, 60%);
+$su-charcoal-l80: lighten($su-charcoal, 80%);
+
+$su-yellow: #f9bd07;
+$su-yellow-l20: lighten($su-yellow, 20%);
+$su-yellow-l40: lighten($su-yellow, 40%);
+$su-yellow-l60: lighten($su-yellow, 60%);
+$su-yellow-l80: lighten($su-yellow, 80%);
+
+$su-blue: #5881c1;
+$su-white: #f5f4f3;
+$su-red: #ec6555;
+$su-slate: #686f73;
+
+$font-family-sans-serif: "Segoe UI";
+
+$headings-font-weight:  500 !default;
+
+
+// load in font awesome icons
+@import url("https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css");
+
+
+$body-bg: #FFFFFF;
+$body-color: $su-charcoal-l20;
+$highlight-color: $su-yellow;
+$link-color: $su-blue;
+$footer-fg: $su-yellow;
+
+
+/*-- scss:rules --*/
+
+.reveal h1{
+    text-align: left;
+  color: $su-yellow !important;
+   font-size: 3.5rem;
+     padding-top: 13em;
+  }    
+  
+  
+.reveal h2{
+    text-align: left;
+  color: $su-charcoal !important;
+   font-size: 3.5rem;
+     padding-top: 0.70em;
+     padding-bottom: 0.55em;
+  }  
+  
+.reveal h3{
+    margin: 0rem;
+  padding: 0rem;
+    text-align: left;
+  color: $su-charcoal !important;
+   font-size: 2rem;
+  }   
+
+.reveal h4{
+      margin-bottom: 0rem !important;
+     text-align: left;
+  color: $su-blue !important;
+   font-size: 1.4rem;
+  
+  }   
+  
+.reveal {
+      margin-bottom: 0rem !important;
+   font-size: 1.6rem;
+   color: $su-charcoal
+  
+  } 
+
+.reveal section img {
+  margin-top: 0px !important;
+  padding-top: 0px !important;
+  margin-bottom: 0px !important;
+  padding-bottom: 0px !important;
+
+}
+ 
+
+#title-slide {
+  text-align: left;
+  
+}
+
+#title-slide h1 {
+  padding-top: 10.5em !important;
+  font-size: 2.45em;
+  color: $su-charcoal !important;
+}
+
+#title-slide .subtitle {
+  color: $su-charcoal;
+}
+
+#title-slide .quarto-title-authors {
+  justify-content: left;
+  display: block;
+}
+
+#title-slide .quarto-title-author {
+  font-size: 1.6em;
+  color: $su-charcoal;
+  padding: 0;
+}
+
+#title-slide .quarto-title-author a {
+  color: $su-charcoal;
+}
+
+#title-slide p.institute {
+  font-size: 0.75em;
+  color: $su-charcoal;
+}
+
+#title-slide p.date {
+  font-size: 1.2em;
+  color: $su-charcoal;
+}
+
+
+
+
+.no-bullets ul {
+  list-style-type: none;
+  /* Remove bullets */
+  padding: 0;
+  /* Remove padding */
+  margin: 0;
+  /* Remove margins */
+}
+
+.small-table table {
+  font-size: 1.65rem;
+}
+
+.small {
+  text-align: left;
+  color: $su-charcoal;
+  font-size: 1.5rem;
+  }    
+  
+.smaller {
+  text-align: left;
+  color: $su-charcoal;
+  font-size: 1rem;
+    margin-top: 0px !important;
+  padding-top: 0px !important;
+  }    
+
+.yellow {
+  color: $su-yellow;
+}
+
+.light-yellow {
+  color: $su-yellow-l40;
+}
+
+.light-charcoal {
+  color: $su-charcoal-l20;
+}
+
+.very-light-charcoal {
+  color: $su-charcoal-l60;
+}
+
+.center {
+  text-align: center;
+}
+
+
+
+
+
+
+
