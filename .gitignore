@@ -8,6 +8,7 @@
 
 # Data files
 *.png
+peads_frac.csv
 
 # User-specific files
 .Ruserdata
