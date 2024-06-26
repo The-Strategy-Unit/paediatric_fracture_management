@@ -70,7 +70,9 @@ formatting_sus_data<- function(filename) {
                                      age_sex_groups== "female0_4"~"Female 0-4 yrs",
                                      age_sex_groups== "female5_10"~"Female 5-10 yrs",
                                   age_sex_groups== "female11_16"~"Female 11-16 yrs",
-      )) 
+      )) |>
+      mutate(mua_in_theatre=ifelse(der_primary_procedure_code=="NULL", 0, 1))
+    
 
  return(data)
 }
@@ -113,5 +115,15 @@ formatting_for_epidemiology_icb<- function(fractures, old_ccg_codes, population,
   
   return(data)
 }
+
+# Load ICB shapefile
+
+load_icb_shapfile<- function(file) {
+
+  data<-st_read(file)
+  
+  return(data)
+}
+
 
 

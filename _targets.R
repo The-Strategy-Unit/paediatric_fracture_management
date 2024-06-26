@@ -4,7 +4,7 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("dplyr", "janitor") 
+  packages = c("dplyr", "janitor", "sf", "flextable") 
 )
 
 # Run the R scripts in the R/ folder with your custom functions:
@@ -37,9 +37,74 @@ list(
                                     "Data/old_ccg_codes_to_new.csv",
                                     icb_pop,
                                     "Data/icb_codes.csv")
+  ),
+  tar_target(
+    icb_shapefile,
+    load_icb_shapfile("https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Integrated_Care_Boards_April_2023_EN_BFC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson")
+  ),
+  
+  # Maps
+  tar_target(
+    incidence_rate_map,
+    total_incidence_rate_map(icb_shapefile,
+                             epidemiology_icb)
+  ),
+  
+  tar_target(
+    elbow_incidence_rate_icb,
+    incidence_maps_by_fracture_type( epidemiology_icb,
+                                    "Elbow", 
+                                    "Elbow fracture incidence rate")
+  ),
+  tar_target(
+    clavicle_incidence_rate_icb,
+    incidence_maps_by_fracture_type( epidemiology_icb,
+                                     "Clavicle", 
+                                    "Clavicle fracture incidence rate")
+  ),
+  tar_target(
+    forearm_incidence_rate_icb,
+    incidence_maps_by_fracture_type( epidemiology_icb,
+                                     "Forearm", 
+                                    "Forearm fracture incidence rate")
+  ),
+  tar_target(
+    tibfib_incidence_rate_icb,
+    incidence_maps_by_fracture_type( epidemiology_icb,
+                                     "Tibia/Fibula", 
+                                    "Tibia/Fibula fracture incidence rate")
+  ),
+  tar_target(
+    toe_incidence_rate_icb,
+    incidence_maps_by_fracture_type( epidemiology_icb,
+                                     "Toe", 
+                                    "Toe fracture incidence rate")
+  ),
+  
+  
+  #Tables
+  
+  tar_target(
+    table_total_incidence_rate,
+    table_of_total_incidence_rate(epidemiology_agegroups)
+  ),
+  tar_target(
+    table_icb_incidence_rate,
+    table_of_icb_incidence_rate(epidemiology_icb)
+  ),
+  tar_target(
+    table_most_common_fractures,
+    table_of_most_common_fractures(paed_fractures)
   )
   
-
+  
+  
+  
+  
+  
+  
+  
+  
   
   
 )
