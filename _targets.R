@@ -23,7 +23,7 @@ list(
   ),
   tar_target(
     paed_fractures,
-    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/peads_fractures.csv")
+    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/peads_frac.csv")
   ),
   tar_target(
     epidemiology_agegroups,
@@ -41,6 +41,14 @@ list(
   tar_target(
     icb_shapefile,
     load_icb_shapfile("https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Integrated_Care_Boards_April_2023_EN_BFC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson")
+  ),
+  tar_target(
+    f_up_by_trust,
+    calculating_f_up_by_trust(paed_fractures)
+  ),
+  tar_target(
+    manipulations_by_trust,
+    calculating_manipulations_by_trust(paed_fractures)
   ),
   
   # Maps

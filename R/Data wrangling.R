@@ -23,8 +23,6 @@ summarise(across(where(is.numeric), sum, na.rm=T))|>
     group_by(sicb_code, icb_2023_name)|>
     summarise(pop_count=sum(pop_count))
   
-    
-  
   return(data)
 }
   
@@ -51,6 +49,8 @@ England_population_data<- function(filename) {
 # Initial formatting of SUS data
 
 formatting_sus_data<- function(filename) {
+
+  ethnicity_lookup<-read.csv("Data/ethnicity_lookup.csv")
   
     data <- read.csv(filename) |>
     clean_names()|>
@@ -71,7 +71,27 @@ formatting_sus_data<- function(filename) {
                                      age_sex_groups== "female5_10"~"Female 5-10 yrs",
                                   age_sex_groups== "female11_16"~"Female 11-16 yrs",
       )) |>
-      mutate(mua_in_theatre=ifelse(der_primary_procedure_code=="NULL", 0, 1))
+      mutate(mua_in_theatre=ifelse(der_primary_procedure_code=="NULL", 0, 1))|>
+      mutate(mua=case_when(manipulation_in_ed=="1" ~ "Manipulation in ED", 
+                           mua_in_theatre=="1"~ "Manipulation in theatre", 
+                           TRUE~"0"))|>
+      mutate(sex=case_when(sex=="1" ~ "Male",
+                           sex=="2"~ "Female",
+                           TRUE ~ "Missing/Unknown"))|>
+      mutate(age=case_when(der_age_at_cds_activity_date<=4 ~ "0-4 yrs",
+                           der_age_at_cds_activity_date>=5 & der_age_at_cds_activity_date<=10 ~ "5-10 yrs",
+                           der_age_at_cds_activity_date>=11 ~ "11-16 yrs"))|>
+      mutate(day=case_when(day_of_week=="Sunday" | day_of_week=="Saturday"  ~ "Weekend",
+                           day_of_week=="Monday" | day_of_week=="Tuesday"|day_of_week=="Wednesday" | day_of_week=="Thursday"|
+                           day_of_week=="Friday" ~ "Weekday"))|>
+      mutate(time=case_when(arrival_time>=08:00 & arrival_time<=18:00  ~ "8am to 6pm",
+                            arrival_time>18:00 & arrival_time<08:00  ~ "6pm to 8am"))|>
+      mutate(dept_type=case_when(ec_department_type==1 ~ "Major Emergency Care Dept",
+                           ec_department_type==2 ~ "Mono-specialty Emergency Care Dept",
+                           ec_department_type==3 ~ "Urgent Treatment Centre",
+                           ec_department_type==4 ~ "NHS walk in centres",
+                           ec_department_type==5 ~ "Same Day Emergency Care"))|>
+      left_join(ethnicity_lookup[,c("Code", "ethnicity_broad")], by=c("ethnic_category"="Code"))
     
 
  return(data)
@@ -125,5 +145,49 @@ load_icb_shapfile<- function(file) {
   return(data)
 }
 
+# Calculating the number of follow ups by trust
+calculating_f_up_by_trust<-function(data){
+  
+  provider_names<-read.csv("Data/provider_names.csv")
+  
+  f_up_by_trust<-data|>
+    filter(der_financial_year=="2022/23")|>
+    group_by(type, der_provider_code, outpat_attendance)|>
+    summarise(count=n())|>
+    group_by(der_provider_code)|>
+    summarise(ed_attendances=sum(count), outpat_attendance, count, type )|>
+    group_by(type, der_provider_code)|>
+    left_join(provider_names, by=c("der_provider_code"="code"))|>
+    filter(ed_attendances>120 & !is.na(name))|>
+    group_by(der_provider_code, type)|>
+    mutate(Percentage = round(count / sum(count)*100, 2), )|>
+    mutate(per_10000=(count/sum(count))*10000)|>
+    filter(outpat_attendance=="1" )
+  
+  
+}
 
+
+
+
+
+
+# Calculating the number of manipulations by trust
+calculating_manipulations_by_trust<-function(data){
+  
+  provider_names<-read.csv("Data/provider_names.csv")
+  
+  manipulation_by_trust<-data|>
+    filter(der_financial_year=="2022/23")|>
+    group_by(type, der_provider_code, mua)|>
+    summarise(count=n())|>
+    group_by(der_provider_code)|>
+    summarise(ed_attendances=sum(count), mua, count, type )|>
+    left_join(provider_names, by=c("der_provider_code"="code"))|>
+    filter(ed_attendances>120 & !is.na(name))|>
+    group_by(der_provider_code, type)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    mutate(per_10000=(count/sum(count))*10000)
+  
+}
 

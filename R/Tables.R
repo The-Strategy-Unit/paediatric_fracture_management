@@ -65,8 +65,8 @@ as.data.frame()|>
   align(j=1, part="header", align="left")|>
   bg(bg = "#f9bf07", part = "header") |>
   bold(i = 1, bold = TRUE, part="header")|>
-  fontsize(size = 12, part = "all")|>
-  padding(padding = 2, part = "all", padding.top=NULL) |>
+  fontsize(size = 11.5, part = "all")|>
+  padding(padding = 0, part = "all", padding.top=NULL) |>
   autofit()|>
   htmltools_value(ft.align = "left")    
 }

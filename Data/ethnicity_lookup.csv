@@ -1,0 +1,19 @@
+Code,Description,ethnicity,ethnicity_broad
+A,White - British,British,White
+B,White - Irish,Irish,White
+C,White - Any other ,Any other White background,White
+D,Mixed - White and Black Caribbean,White and Black Caribbean,Mixed
+E,Mixed - White and Black African,White and Black African,Mixed
+F,Mixed - White and Asian,White and Asian,Mixed
+G,Mixed - Any other ,Any other mixed background,Mixed
+H,Asian or Asian British - Indian,Indian,Asian or Asian British
+J,Asian or Asian British - Pakistani,Pakistani,Asian or Asian British
+K,Asian or Asian British - Bangladeshi,Bangladeshi,Asian or Asian British
+L,Asian or Asian British - Any other ,Any other Asian background,Asian or Asian British
+M,Black or Black British - Caribbean,Caribbean,Black or Black British
+N,Black or Black British - African,African,Black or Black British
+P,Black or Black British - Any other ,Any other Black background,Black or Black British
+R,Other Ethnic Groups - Chinese,Chinese,Other Ethnic Groups
+S,Other Ethnic Groups - Any other ,Any other ethnic group,Other Ethnic Groups
+Z,Not stated,Not stated,Not stated_broad
+99,Not known,Not known,Not known_broad
