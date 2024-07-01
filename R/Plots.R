@@ -78,42 +78,52 @@ fracture_type_layout<-function(data){
   
 }
 
-# Proportion by trust and type plots
-by_trust_proportion_plot<-function(data){
-  
-  data|>
-  ggplot(aes(x=reorder(der_provider_code, -Percentage), Percentage))+
-    geom_col()+
-    su_theme()+
-    labs(x ="", y = "Percentage")+
-    theme(legend.title=element_blank(),
-          legend.position=c(0.8,0.2),
-          legend.text=element_text(size=16),
-          axis.text=element_text(size=14),
-          axis.title=element_text(size=16),
-          strip.background = element_rect(fill = "NA", colour = "NA"),
-          strip.text = element_text(face = "bold", size=16))
-  
-  
-}
 
 # Proportion plots by trust and type
-plots_of_proportion_by_trust<-function(data, name, title){
+plots_of_proportion_by_trust<-function(data, fracture_site, title, scale){
   
-  data|>
-    filter(type==name)|>
+data|>
+    filter(type==fracture_site)|>
     ggplot(aes(x=reorder(der_provider_code, -Percentage), Percentage))+
     geom_col(fill="#686f73", colour="black")+
     su_theme()+
-    theme(axis.text=element_text(size=14),
-          axis.title=element_text(size=16),
+    theme(title=element_text(size=18, colour="black"),
+          plot.title.position = "plot",
+          axis.text=element_text(size=16, colour="black"),
+          axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank())+
     labs(x="Providers", title=title)+
-    scale_y_continuous(expand=c(0,0), limits=c(0,100))
-  
+    scale_y_continuous(expand=c(0,0), limits=c(0,scale))
 
 }
 
+# Proportion of fractures manipulated in theatre vs ed
+
+plots_of_theatre_vs_ed<-function(data, fracture_site, title){
+  
+  data|>
+    filter(type==fracture_site)|>
+    ggplot(aes((x =factor(der_provider_code,levels=der_provider_code[mua == "Manipulation in theatre"][order(-Percentage[mua == "Manipulation in theatre"])])), 
+               y = Percentage, 
+               group=mua,
+               fill = mua)) +
+    geom_bar(stat = "identity") +
+    su_theme()+
+    theme(title=element_text(size=18, colour="black"),
+          plot.title.position = "plot",
+          axis.text=element_text(size=16, colour="black"),
+          axis.title=element_text(size=18, colour="black"),
+          axis.text.x=element_blank(),
+          legend.title=element_blank(),
+          legend.position="top",
+          legend.text=element_text(size=16))+
+    labs(x="Providers", y="Proportion", title=title)+
+    scale_y_continuous(expand=c(0,0), limits=c(0,100))+
+    scale_fill_manual(values=c("#f9bf07" , "#686f73"))
+  
+  
+  
+}
 
 
 

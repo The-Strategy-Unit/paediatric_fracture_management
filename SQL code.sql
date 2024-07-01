@@ -1,3 +1,5 @@
+/****** Script for SelectTopNRows command from SSMS  ******/
+
 USE NHSE_Sandbox_StrategyUnit
 GO
 
@@ -32,7 +34,8 @@ SELECT
 	  ,CONVERT (time,Der_EC_Arrival_Date_Time, 114) as [ArrivalTime]
 	  ,DATENAME(dw, Der_EC_Arrival_Date_Time) as day_of_week
       ,a.[Der_Postcode_LSOA_2011_Code]
-	  ,(case when(a.Der_AEA_Treatment_All like '%10%' AND a.Der_AEA_Treatment_All like '%23%') then 1 else 0 end) as manipulation_in_ED
+	   ,(case when(a.Der_AEA_Treatment_All like '%10%' AND a.Der_AEA_Treatment_All like '%23%') then 1 else 0 end) as manipulation_in_ED_anaes
+	  ,(case when(a.Der_AEA_Treatment_All like '%10%') then 1 else 0 end) as manipulation_in_ED
 	   ,(case when a.Der_AEA_Investigation_All like '%01%' then 1 else 0 end) as xray
 	  ,(case when a.Discharge_Destination_SNOMED_CT like '306706006' then 1 else 0 end) as admitted
 	  ,(case when a.Discharge_Follow_Up_SNOMED_CT like '301791000000104' then 1 else 0 end) as fracture_clinic_f_up
@@ -87,7 +90,8 @@ LEFT JOIN [NHSE_SUSPlus_Live].[dbo].[tbl_Data_SEM_APCE] b
 	    b.Admission_Date between a.ArrivalDate AND a.followup_period AND  --- in 3 months post ED attendance
 		(b.Der_Primary_Procedure_Code= 'W262' OR 
 		 b.Der_Primary_Procedure_Code= 'W268' OR
-		 b.Der_Primary_Procedure_Code= 'W269')   --- Admission for closed reduction of fracture 
+		 b.Der_Primary_Procedure_Code= 'W269' OR
+		 b.Der_Primary_Procedure_Code= 'W663')   --- Admission for closed reduction of fracture 
 
 --- Mark records with associated inpatient admissions, and order of admissions where more than 1
 select  a.*
@@ -186,6 +190,14 @@ FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.pae
 where rownum2=1
 
 
+SELECT Der_Pseudo_NHS_Number, ArrivalDate, EC_Attendance_Number, ArrivalTime , COUNT(*) 
+FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final] 
+GROUP BY Der_Pseudo_NHS_Number, ArrivalDate, EC_Attendance_Number, ArrivalTime
+HAVING COUNT(*) > 1
+
+SELECT *
+FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final] 
+
 
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp1]
@@ -194,4 +206,3 @@ drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.d
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp4]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp5]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp6]
-

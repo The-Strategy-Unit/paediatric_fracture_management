@@ -74,12 +74,16 @@ as.data.frame()|>
 
 table_of_most_common_fractures<-function(data){
 
-data|>
+ data|>
   filter(der_financial_year=="2023/24")|>
   group_by(description, type)|>
   summarise(Number=n() )|>
-  arrange(desc(Number))|>
-  filter(Number>10)|>
+   ungroup()|>
+   summarise(Percentage=((Number/sum(Number))*100), Number, description, type)|>  
+   mutate(Percentage=round(Percentage,1))|>
+   arrange(desc(Number))|>
+   filter(Number>10)|>
+   select(description, type, Number, Percentage)|>
   flextable() |>
   set_header_labels(description="SNOMED description",
                     type="")|>
@@ -97,6 +101,57 @@ data|>
 
 }
 
+
+# Summary of min, median, max
+summary_values_by_trust<-function(data){
+  
+  data_to_summarise<-data
+  
+  measure <- c('Min', '1st quartile', 'Median', '3rd quartile', 'Max')
+  value <- c(min(data_to_summarise$Percentage),
+             quantile(data_to_summarise$Percentage, probs = c(0.25)),
+             median(data_to_summarise$Percentage),
+             quantile(data_to_summarise$Percentage, probs = c(0.75)),
+             max(data_to_summarise$Percentage) )
+  
+  
+  summary_table <- data.frame(measure, value)|>
+    mutate(value=paste0(round(value,1), " %"))
+  
+  summary_table|>
+    flextable()|>
+    delete_part(part = "header")|>
+    border_remove()|>
+    fontsize(size = 13, part = "all")|>
+    padding(padding = 1, part = "all", padding.top=NULL) |>
+    autofit()|>
+    htmltools_value(ft.align = "centre") 
+  
+
+}
+
+
+# Summary values by trust
+summary_values_by_trust_mua<-function(frac_type){
+  
+  data_to_summarise<-manipulations_by_trust|>
+    filter(mua=="Manipulation in theatre" & type==frac_type)
+  
+  summary_values_by_trust(data_to_summarise)
+  
+  
+}
+
+# Summary values by trust
+summary_values_by_trust_fup<-function(frac_type){
+  
+  data_to_summarise<-f_up_by_trust|>
+    filter(type==frac_type)
+  
+  summary_values_by_trust(data_to_summarise)
+  
+  
+}
 
 
 

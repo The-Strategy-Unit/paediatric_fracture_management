@@ -4,7 +4,7 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("dplyr", "janitor", "sf", "flextable") 
+  packages = c("dplyr", "janitor", "sf", "flextable", "lubridate") 
 )
 
 # Run the R scripts in the R/ folder with your custom functions:
@@ -23,7 +23,7 @@ list(
   ),
   tar_target(
     paed_fractures,
-    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/peads_frac.csv")
+    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/peads_fractures.csv")
   ),
   tar_target(
     epidemiology_agegroups,
@@ -43,13 +43,23 @@ list(
     load_icb_shapfile("https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Integrated_Care_Boards_April_2023_EN_BFC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson")
   ),
   tar_target(
+    trusts_with_120_attendances,
+    removing_low_no_trusts(paed_fractures)
+  ),
+  tar_target(
     f_up_by_trust,
-    calculating_f_up_by_trust(paed_fractures)
+    calculating_f_up_by_trust(paed_fractures, trusts_with_120_attendances)
   ),
   tar_target(
     manipulations_by_trust,
-    calculating_manipulations_by_trust(paed_fractures)
+    calculating_manipulations_by_trust(paed_fractures, trusts_with_120_attendances)
   ),
+  tar_target(
+    proportion_mua_in_theatre_vs_ED,
+    calculating_manipulations_theatre_vs_ed(paed_fractures, trusts_with_120_attendances)
+  ),
+  
+  
   
   # Maps
   tar_target(

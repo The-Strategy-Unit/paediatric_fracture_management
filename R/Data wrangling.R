@@ -51,6 +51,8 @@ England_population_data<- function(filename) {
 formatting_sus_data<- function(filename) {
 
   ethnicity_lookup<-read.csv("Data/ethnicity_lookup.csv")
+  imd_lookup<-read.csv("Data/imd2019lsoa.csv")|>
+    clean_names()
   
     data <- read.csv(filename) |>
     clean_names()|>
@@ -81,17 +83,29 @@ formatting_sus_data<- function(filename) {
       mutate(age=case_when(der_age_at_cds_activity_date<=4 ~ "0-4 yrs",
                            der_age_at_cds_activity_date>=5 & der_age_at_cds_activity_date<=10 ~ "5-10 yrs",
                            der_age_at_cds_activity_date>=11 ~ "11-16 yrs"))|>
+      mutate(age=factor(age, levels=c("0-4 yrs", "5-10 yrs","11-16 yrs" )))|>
       mutate(day=case_when(day_of_week=="Sunday" | day_of_week=="Saturday"  ~ "Weekend",
                            day_of_week=="Monday" | day_of_week=="Tuesday"|day_of_week=="Wednesday" | day_of_week=="Thursday"|
                            day_of_week=="Friday" ~ "Weekday"))|>
-      mutate(time=case_when(arrival_time>=08:00 & arrival_time<=18:00  ~ "8am to 6pm",
-                            arrival_time>18:00 & arrival_time<08:00  ~ "6pm to 8am"))|>
-      mutate(dept_type=case_when(ec_department_type==1 ~ "Major Emergency Care Dept",
-                           ec_department_type==2 ~ "Mono-specialty Emergency Care Dept",
-                           ec_department_type==3 ~ "Urgent Treatment Centre",
-                           ec_department_type==4 ~ "NHS walk in centres",
+      mutate(time=case_when(arrival_time>='07H 00M 0S' & arrival_time<='19H 00M 0S'  ~ " Daytime 7am to 7pm",
+                            arrival_time>'19H 00M 0S' | arrival_time<'07H 00M 0S' ~ "Nighttime 7pm to 7am"))|>
+      mutate(dept_type=case_when(ec_department_type==1 ~ "Major Emergency Dept",
+                           ec_department_type==2 ~ "Mono-specialty Emergency Dept",
+                           ec_department_type==3|ec_department_type==4 ~ "Urgent Treatment Centre/Walk in centre",
                            ec_department_type==5 ~ "Same Day Emergency Care"))|>
-      left_join(ethnicity_lookup[,c("Code", "ethnicity_broad")], by=c("ethnic_category"="Code"))
+      mutate(dept_type=factor(dept_type, levels=c("Major Emergency Dept", "Urgent Treatment Centre/Walk in centre",
+                                                  "Mono-specialty Emergency Dept","Same Day Emergency Care")))|>
+      left_join(ethnicity_lookup[,c("Code", "ethnicity_broad")], by=c("ethnic_category"="Code"))|>
+      mutate(ethnicity_broad=factor(ethnicity_broad, levels=c("Asian or Asian British", "Black or Black British","Mixed",
+                                                              "Other Ethnic Groups", "White","Missing/Unknown")))|>
+      left_join(imd_lookup[,c("lsoa_code_2011", "imd")], by=c("der_postcode_lsoa_2011_code"="lsoa_code_2011"))|>
+      mutate(imd_quintiles=case_when(imd=="1"|imd=="2"~ "1",
+                                     imd=="3"|imd=="4"~ "2",
+                                     imd=="5"|imd=="6"~ "3",
+                                     imd=="7"|imd=="8"~ "4",
+                                     imd=="9"|imd=="10"~ "5"))|>
+      mutate(imd_quintiles=ifelse(is.na(imd_quintiles), "Missing/Outside England", imd_quintiles))|>
+      mutate(imd_quintiles=factor(imd_quintiles, levels=c("1","2","3","4", "5", "Missing/Outside England")))
     
 
  return(data)
@@ -103,7 +117,7 @@ formatting_sus_data<- function(filename) {
 formatting_for_epidemiology_agegroups<- function(paed_fractures, england_pop) {
   
   data<-  paed_fractures|> 
-  filter(sex==1 | sex==2)|> #remove records without sex recorded
+  filter(sex=="Male" | sex=="Female")|> #remove records without sex recorded
   filter(der_financial_year!="2017/18")|> #remove as incomplete yr
   mutate(year=as.numeric(stringr::str_extract(der_financial_year, "^.{4}")))|>
   summarise(frac_no=n(), .by=c(type, year, der_financial_year, age_sex_groups,group_labels))|>
@@ -145,8 +159,21 @@ load_icb_shapfile<- function(file) {
   return(data)
 }
 
+# File with only those providers with more than 10 fracture attendances per month
+removing_low_no_trusts<-function(data){
+
+  trusts_with_120_attendances<-data|>
+  filter(der_financial_year=="2022/23")|>
+  group_by(der_provider_code)|>
+  summarise(ed_attendances=n())|>
+  filter(ed_attendances>=120)
+  
+  return(trusts_with_120_attendances)
+  
+}
+
 # Calculating the number of follow ups by trust
-calculating_f_up_by_trust<-function(data){
+calculating_f_up_by_trust<-function(data, trusts_included){
   
   provider_names<-read.csv("Data/provider_names.csv")
   
@@ -154,26 +181,18 @@ calculating_f_up_by_trust<-function(data){
     filter(der_financial_year=="2022/23")|>
     group_by(type, der_provider_code, outpat_attendance)|>
     summarise(count=n())|>
-    group_by(der_provider_code)|>
-    summarise(ed_attendances=sum(count), outpat_attendance, count, type )|>
     group_by(type, der_provider_code)|>
     left_join(provider_names, by=c("der_provider_code"="code"))|>
-    filter(ed_attendances>120 & !is.na(name))|>
+    filter((der_provider_code %in% trusts_included$der_provider_code) & !is.na(name))|>
     group_by(der_provider_code, type)|>
     mutate(Percentage = round(count / sum(count)*100, 2), )|>
-    mutate(per_10000=(count/sum(count))*10000)|>
     filter(outpat_attendance=="1" )
   
   
 }
 
-
-
-
-
-
 # Calculating the number of manipulations by trust
-calculating_manipulations_by_trust<-function(data){
+calculating_manipulations_by_trust<-function(data, trusts_included){
   
   provider_names<-read.csv("Data/provider_names.csv")
   
@@ -181,13 +200,22 @@ calculating_manipulations_by_trust<-function(data){
     filter(der_financial_year=="2022/23")|>
     group_by(type, der_provider_code, mua)|>
     summarise(count=n())|>
-    group_by(der_provider_code)|>
-    summarise(ed_attendances=sum(count), mua, count, type )|>
     left_join(provider_names, by=c("der_provider_code"="code"))|>
-    filter(ed_attendances>120 & !is.na(name))|>
+    filter((der_provider_code %in% trusts_included$der_provider_code) & !is.na(name))|>
     group_by(der_provider_code, type)|>
-    mutate(Percentage = round(count / sum(count)*100, 2))|>
-    mutate(per_10000=(count/sum(count))*10000)
+    mutate(Percentage = round(count / sum(count)*100, 2))
   
 }
 
+# Calculating the number of manipulations in theatre vs ED
+calculating_manipulations_theatre_vs_ed<-function(data, trusts_included){
+  
+  proportion_mua_in_theatre_vs_ED<-data|>
+    filter(mua!="0" & der_financial_year=="2022/23" & der_provider_code %in% trusts_included$der_provider_code)|>
+    group_by(type, mua, der_provider_code)|>
+    summarise(count=n())|>
+    group_by(type, der_provider_code)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))
+  
+  return(proportion_mua_in_theatre_vs_ED)
+}

@@ -15,5 +15,7 @@ N,Black or Black British - African,African,Black or Black British
 P,Black or Black British - Any other ,Any other Black background,Black or Black British
 R,Other Ethnic Groups - Chinese,Chinese,Other Ethnic Groups
 S,Other Ethnic Groups - Any other ,Any other ethnic group,Other Ethnic Groups
-Z,Not stated,Not stated,Not stated_broad
-99,Not known,Not known,Not known_broad
+Z,Not stated,Not stated,Missing/Unknown
+99,Not known,Not known,Missing/Unknown
+NULL,Not known,Not known,Missing/Unknown
+9,Not known,Not known,Missing/Unknown
