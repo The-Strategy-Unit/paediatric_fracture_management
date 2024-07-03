@@ -172,7 +172,7 @@ epidemiology_agegroups|>
 
 <br>
 
-#### Annual fracture incidence rates per 100,000 (2023/2024) 
+Annual fracture incidence rates per 100,000 (2023/2024) 
 ```{r}
 
 tar_read(table_total_incidence_rate)
@@ -309,7 +309,7 @@ tar_read(table_icb_incidence_rate)
 
 ::: {.column width="40%"}
 
-Total fracture incidence rate {style="text-align: center;"}
+
 ```{r, fig.height=8}
 #| crop: true
 
@@ -332,21 +332,12 @@ Total fracture incidence rate {style="text-align: center;"}
 
 tar_read(table_most_common_fractures)
 
- test<-paed_fractures|>
-  filter(der_financial_year=="2023/24")|>
-  group_by(description, type)|>
-  summarise(Number=n() )|>
-  ungroup()|>
-  summarise(Percentage=((Number/sum(Number))*100), Number, description, type)|>  
-   mutate(Percentage=round(Percentage,1))|>
-  arrange(desc(Number))|>
-  filter(Number>10)|>
-    select(description, type, Number, Percentage)
-
-
-
 
 ```
+:::{.smaller}
+Only showing those fracture types recorded 10 or more times
+
+:::
 ::: 
 
 ::: {.column width="40%"}
@@ -425,6 +416,36 @@ As a result of the COVID-19 pandemic the proportion of follow up appointments co
 
 ::: columns
 ::: {.column width="60%"}
+
+```{r, fig.height=6, fig.width=10}
+paed_fractures|>
+    group_by(type, manipulation_in_ed, der_activity_month)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month)|>
+    mutate(Percentage = round(count / sum(count)*100, 3))|>
+    filter(manipulation_in_ed==1)|>
+  fracture_type_layout()+
+       scale_y_continuous(limits=c(0,6))
+
+
+```
+:::
+
+::: {.column width="40%"}
+<br>
+
+The percentage of forearm fractures manipulated in the Emergency Department has increased over the last 6 yrs, with a large increase seen during the COVID-19 pandemic. There is also a noticeable seasonal trend with a greater percentage of fractures manipulated in the emergency department during the summer months.
+
+There also an increase in the percentage of tibia/fibula fractures manipulated in the emergency department, but little change in the percentage of other fracture types.  
+:::
+:::
+
+
+## Percentage of fractures manipulated in theatre {background-image="slide.png" background-size=contain}
+
+::: columns
+::: {.column width="60%"}
+
 ```{r, fig.height=6, fig.width=10}
 paed_fractures|>
     group_by(type, mua_in_theatre, der_activity_month)|>
@@ -435,53 +456,17 @@ paed_fractures|>
   fracture_type_layout()+
        scale_y_continuous(limits=c(0,12.5))
 
-
 ```
-:::
 
-::: {.column width="40%"}
-<br>
-
-The percentage of forearm, elbow and tibia/fibula fractures manipulated in the Emergency Department have all decreased over the last 6 yrs. 
-
-There the decrease in percentage of forearm fractures manipulated in the emergency department is particularly large and there is also a noticeable seasonal trend with more fractures manipulated in the emergency department during the summer months.
-:::
-:::
-
-
-## Percentage of fractures manipulated in theatre {background-image="slide.png" background-size=contain}
-::: columns
-::: {.column width="60%"}
-
-```{r, fig.height=6, fig.width=10}
-paed_fractures|>
-    group_by(type, manipulation_in_ed, der_activity_month)|>
-    summarise(count=n())|>
-    group_by(type, der_activity_month)|>
-    mutate(Percentage = round(count / sum(count)*100, 3))|>
-    filter(manipulation_in_ed==1)|>
-  fracture_type_layout()+
-       scale_y_continuous(limits=c(0,3))
-
-# Total percentage of fractures manipulated
-#paed_fractures|>
-#    group_by(type, mua, der_activity_month)|>
- #   summarise(count=n())|>
-#    group_by(type, der_activity_month)|>
- #   mutate(Percentage = round(count / sum(count)*100, 3))|>
- #   #  filter(mua!="0")|>
- # fracture_type_layout()+
- #      scale_y_continuous(limits=c(0,15))
-
-
-```
 
 :::
 
 ::: {.column width="40%"}
 <br>
 
-The percentage of forearm fractures manipulated in theatre has increased over the last 6 yrs. 
+The percentage of forearm fractures manipulated in theatre has decreased significantly over the last 6 yrs, with a greater percentage of fractures manipulated in theatre during the summer months. 
+
+There is also a decrease in the percentage of tibia/fibula fractures manipulated in theatre.
 :::
 
 :::
@@ -489,9 +474,9 @@ The percentage of forearm fractures manipulated in theatre has increased over th
 ## Proportion of fractures manipulated in ED vs theatre {background-image="slide.png" background-size=contain}
 
 ::: columns
-::: {.column width="39%"}
+
+::: {.column width="50%"}
 ```{r, fig.height=6, fig.width=7}
-  
 
 paed_fractures|>
   filter(type!="Clavicle" & type!="Toe")|>
@@ -514,17 +499,14 @@ paed_fractures|>
           strip.text = element_text(face = "bold", size=16))+
   scale_fill_manual(values=c("#f9bf07" , "#686f73"))
 ```
+Over the last 6 years the proportion of manipulations in theatre compared to the emergency department has decreased; currently over half of all manipulations are performed in the emergency department. 
+
 :::
 
-::: {.column width="19%"}
 
-<br>
 
-Despite an increase in the percentage of forearm fractures manipulated in theatre over the last 6 years the proportion of manipulations in theatre compared to the emergency department has decreased. This is due to a significant decrease in manipulations in the emergency department/total number of manipulations.  
-:::
+::: {.column width="50%"}
 
-#### Total number of manipulations (theatre & ED)
-::: {.column width="39%"}
 ```{r, fig.height=6, fig.width=7}
   
 
@@ -540,20 +522,22 @@ paed_fractures|>
      geom_line(aes(x=der_activity_month, y=Percentage), linewidth=1.2)+
     facet_wrap(~type, ncol=2, scale="free")+
     su_theme()+
-    labs(x ="", y = "Percentage")+
+    labs(x ="", y = "Percentage", title="Percentage of fractures manipulated (theatre & ED)")+
     theme(legend.title=element_blank(),
           legend.position=c(0.8,0.2),
           legend.text=element_text(size=16),
+          title=element_text(size=16, colour="black"),
           axis.text=element_text(size=14),
           axis.title=element_text(size=16),
           strip.background = element_rect(fill = "NA", colour = "NA"),
           strip.text = element_text(face = "bold", size=16))+
-      scale_y_continuous(limits=c(0,12.5))
+      scale_y_continuous(limits=c(0,15))
+
+
 ```
-
+:::
 :::
 
-:::
 
 ## Percentage of fractures referred for physiotherapy {background-image="slide.png" background-size=contain}
 ::: columns
@@ -838,5 +822,26 @@ girft_metric|>
 
 ```
 :::
+These proportions are slightly lower than seen in the GIRFT study. It is not clear exactly which fracture types and which manipulations were included within that study.
+
+We have excluded open fractures and only included manipulations without internal or external fixation, which may explain the discrepancy in the results.
 :::
+
+## Appendix 1
+
+#### Fracture codes
+
+
+
+#### Manipulation in emergency department
+A&E treatment code: 10- Reduction 
+
+#### Manipulation in theatre
+OPCS codes:
+
+W262 	Manipulation of fracture of bone NEC
+W268	Other specified
+W269 	Unspecified
+W663  Primary manipulative closed reduction of fracture dislocation of joint NEC	
+
 

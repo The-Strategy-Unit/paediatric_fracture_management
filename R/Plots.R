@@ -22,8 +22,9 @@ total_incidence_rate_map<-function(shapefile, data){
     theme(legend.text = element_text(size=15),
           legend.title = element_text(size=18),
           legend.position=c(0.89,0.8),
-          legend.key.height = unit(1.2, "cm")) +
-    labs(title=NULL) +
+          legend.key.height = unit(1.2, "cm"),
+          title=element_text(size=28)) +
+    labs(title="Total fracture incidence rate" ) +
     guides(fill=guide_coloursteps(title="Incidence\n /100,000"))
   
   
@@ -92,7 +93,7 @@ data|>
           axis.text=element_text(size=16, colour="black"),
           axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank())+
-    labs(x="Providers", title=title)+
+    labs(x="Providers", title=title, subtitle="")+
     scale_y_continuous(expand=c(0,0), limits=c(0,scale))
 
 }
@@ -117,7 +118,7 @@ plots_of_theatre_vs_ed<-function(data, fracture_site, title){
           legend.title=element_blank(),
           legend.position="top",
           legend.text=element_text(size=16))+
-    labs(x="Providers", y="Proportion", title=title)+
+    labs(x="Providers", y="Proportion", title=title, subtitle="")+
     scale_y_continuous(expand=c(0,0), limits=c(0,100))+
     scale_fill_manual(values=c("#f9bf07" , "#686f73"))
   

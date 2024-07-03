@@ -41,7 +41,7 @@ table_of_total_incidence_rate<-function(data){
 
 table_of_icb_incidence_rate<-function(data){
   
-  data<- data|>
+ data|>
 as.data.frame()|>
   select(icb_2023_name, type, incidence)|>
   mutate(incidence=round(incidence,1))|>
@@ -68,7 +68,8 @@ as.data.frame()|>
   fontsize(size = 11.5, part = "all")|>
   padding(padding = 0, part = "all", padding.top=NULL) |>
   autofit()|>
-  htmltools_value(ft.align = "left")    
+  htmltools_value(ft.align = "left")   
+  
 }
 ## Most common fracture types
 
@@ -123,9 +124,9 @@ summary_values_by_trust<-function(data){
     delete_part(part = "header")|>
     border_remove()|>
     fontsize(size = 13, part = "all")|>
-    padding(padding = 1, part = "all", padding.top=NULL) |>
+    padding(padding = 0, part = "all", padding.top=NULL, padding.left=20 ) |>
     autofit()|>
-    htmltools_value(ft.align = "centre") 
+    htmltools_value(ft.align = "left") 
   
 
 }
