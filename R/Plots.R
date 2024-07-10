@@ -80,11 +80,43 @@ fracture_type_layout<-function(data){
 }
 
 
+# Plotting differences between ed vs utc
+
+plotting_ed_vs_utc<- function(data, variable, title, scale){
+  
+  
+  ed_vs_utc|>
+    filter(der_financial_year=="2022/23" )|>
+    group_by(department, {{variable}}, type)|>
+    summarise(count=n())|>
+    group_by(department, type)|>
+    summarise(Percentage=round((count/sum(count))*100,1), {{variable}}, type)|>
+    filter({{variable}}=="1")|>
+    spread(key=department, value=Percentage)|>
+    mutate_if(is.numeric, ~replace_na(., 0))|>
+    gather(key=department, value=Percentage, -{{variable}}, -type)|>
+    ggplot(aes(x=type, y=Percentage, group=department, fill=department))+
+    geom_bar(stat="identity", position = "dodge")+
+    su_theme()+
+    labs(x ="", y = "Percentage", title=title)+
+    theme(legend.title=element_blank(),
+          legend.position="top",
+          legend.text=element_text(size=14),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16),
+          title=element_text(size=18))+
+    scale_fill_manual(values=c("#686f73", "#f9bf07"))+
+    scale_y_continuous(expand=c(0.01,0), limits=c(0,scale))+
+    geom_text(aes(label = Percentage), vjust = -0.2, colour = "black",
+              position = position_dodge(.9), size=4)
+}
+
+
 # Proportion plots by trust and type
 plots_of_proportion_by_trust<-function(data, fracture_site, title, scale){
   
 data|>
-    filter(type==fracture_site)|>
+    filter(type==fracture_site & !is.na(count))|>
     ggplot(aes(x=reorder(der_provider_code, -Percentage), Percentage))+
     geom_col(fill="#686f73", colour="black")+
     su_theme()+
@@ -103,7 +135,11 @@ data|>
 plots_of_theatre_vs_ed<-function(data, fracture_site, title){
   
   data|>
-    filter(type==fracture_site)|>
+    filter(type==fracture_site & !is.na(count))|>
+    select(-type, -count)|>
+    spread(key=mua, value=Percentage)|>
+    mutate_if(is.numeric, ~replace_na(., 0))|>
+    gather(key=mua, value=Percentage, -der_provider_code, -type)|>
     ggplot(aes((x =factor(der_provider_code,levels=der_provider_code[mua == "Manipulation in theatre"][order(-Percentage[mua == "Manipulation in theatre"])])), 
                y = Percentage, 
                group=mua,
@@ -121,7 +157,6 @@ plots_of_theatre_vs_ed<-function(data, fracture_site, title){
     labs(x="Providers", y="Proportion", title=title, subtitle="")+
     scale_y_continuous(expand=c(0,0), limits=c(0,100))+
     scale_fill_manual(values=c("#f9bf07" , "#686f73"))
-  
   
   
 }

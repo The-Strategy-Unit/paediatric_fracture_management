@@ -23,7 +23,7 @@ list(
   ),
   tar_target(
     paed_fractures,
-    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/peads_fractures.csv")
+    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/paeds_fractures.csv")
   ),
   tar_target(
     epidemiology_agegroups,
@@ -113,16 +113,26 @@ list(
   tar_target(
     table_most_common_fractures,
     table_of_most_common_fractures(paed_fractures)
+  ),
+  
+  # Regression analysis
+  
+  tar_target(
+    regression_format,
+    formatting_data_for_regression(paed_fractures)
+  ),
+  tar_target(
+    table_manipulation_regression_forearm,
+    manipulation_regression(regression_format, "Forearm")
+  ),
+  tar_target(
+    table_f_up_regression,
+    f_up_regression(regression_format)
   )
   
   
   
-  
-  
-  
-  
-  
-  
+
   
   
 )

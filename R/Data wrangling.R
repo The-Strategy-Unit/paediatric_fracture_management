@@ -179,6 +179,7 @@ calculating_f_up_by_trust<-function(data, trusts_included){
   
   f_up_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
+    filter(ec_department_type=="1")|>
     group_by(type, der_provider_code, outpat_attendance)|>
     summarise(count=n())|>
     group_by(type, der_provider_code)|>
@@ -196,21 +197,29 @@ calculating_manipulations_by_trust<-function(data, trusts_included){
   
   provider_names<-read.csv("Data/provider_names.csv")
   
-  manipulation_by_trust<-data|>
+  manipulations_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
-    group_by(type, der_provider_code, mua)|>
-    summarise(count=n())|>
+    filter(ec_department_type=="1")|>
+    summarise(count=n(), .by=c(type, der_provider_code, mua))|>
+    spread(key = mua, value = count)|>
+    mutate(`Manipulation in ED`=ifelse(is.na(`Manipulation in ED`) & !is.na(`Manipulation in theatre`), 0, `Manipulation in ED`))|>
+    mutate(`Manipulation in theatre`=ifelse(is.na(`Manipulation in theatre`) & !is.na(`Manipulation in ED`), 0, `Manipulation in theatre`))|>
+    gather(key = "mua", value = "count", -type, -der_provider_code)|>
     left_join(provider_names, by=c("der_provider_code"="code"))|>
     filter((der_provider_code %in% trusts_included$der_provider_code) & !is.na(name))|>
     group_by(der_provider_code, type)|>
-    mutate(Percentage = round(count / sum(count)*100, 2))
-  
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    group_by(type, der_provider_code, name)|>
+    summarise(total_mua=sum(mua=="Manipulation in ED"| mua=="Manipulation in theatre"), count, Percentage, mua)
+
+
 }
 
 # Calculating the number of manipulations in theatre vs ED
 calculating_manipulations_theatre_vs_ed<-function(data, trusts_included){
   
   proportion_mua_in_theatre_vs_ED<-data|>
+    filter(ec_department_type=="1")|>
     filter(mua!="0" & der_financial_year=="2022/23" & der_provider_code %in% trusts_included$der_provider_code)|>
     group_by(type, mua, der_provider_code)|>
     summarise(count=n())|>

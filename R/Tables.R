@@ -109,30 +109,28 @@ summary_values_by_trust<-function(data){
   data_to_summarise<-data
   
   measure <- c('Min', '1st quartile', 'Median', '3rd quartile', 'Max')
-  value <- c(min(data_to_summarise$Percentage),
-             quantile(data_to_summarise$Percentage, probs = c(0.25)),
-             median(data_to_summarise$Percentage),
-             quantile(data_to_summarise$Percentage, probs = c(0.75)),
-             max(data_to_summarise$Percentage) )
+  value <- c(min(data_to_summarise$Percentage, na.rm=TRUE),
+             quantile(data_to_summarise$Percentage, probs = c(0.25), na.rm=TRUE),
+             median(data_to_summarise$Percentage, na.rm=TRUE),
+             quantile(data_to_summarise$Percentage, probs = c(0.75), na.rm=TRUE),
+             max(data_to_summarise$Percentage, na.rm=TRUE) )
   
   
   summary_table <- data.frame(measure, value)|>
     mutate(value=paste0(round(value,1), " %"))
-  
+
   summary_table|>
     flextable()|>
-    delete_part(part = "header")|>
+    delete_part(part="header")|>
     border_remove()|>
     fontsize(size = 13, part = "all")|>
-    padding(padding = 0, part = "all", padding.top=NULL, padding.left=20 ) |>
+    padding(padding = 0, part = "all", padding.top=NULL, padding.left=45 ) |>
     autofit()|>
-    htmltools_value(ft.align = "left") 
-  
-
+    htmltools_value(ft.align = "left")  
+   
 }
 
-
-# Summary values by trust
+# Summary values by trust- manipulations
 summary_values_by_trust_mua<-function(frac_type){
   
   data_to_summarise<-manipulations_by_trust|>
@@ -140,17 +138,50 @@ summary_values_by_trust_mua<-function(frac_type){
   
   summary_values_by_trust(data_to_summarise)
   
+}
+
+# Summary values by trust- proportion in ed
+summary_values_by_trust_prop_in_ed<-function(frac_type){
+  
+  data_to_summarise<-manipulations_by_trust|>
+    filter(type==frac_type & mua!="0" )|>
+    group_by(der_provider_code)|>
+    summarise(Percentage=round((count/sum(count))*100,1), mua)|>
+    filter(mua=="Manipulation in theatre")
+
+  
+  measure <- c('Min', '1st quartile', 'Median', '3rd quartile', 'Max')
+  value <- c(min(data_to_summarise$Percentage, na.rm=TRUE),
+             quantile(data_to_summarise$Percentage, probs = c(0.25), na.rm=TRUE),
+             median(data_to_summarise$Percentage, na.rm=TRUE),
+             quantile(data_to_summarise$Percentage, probs = c(0.75), na.rm=TRUE),
+             max(data_to_summarise$Percentage, na.rm=TRUE) )
+  
+  
+  summary_table <- data.frame(measure, value)|>
+    mutate(value=paste0(round(value,1), " %"))
+  
+  summary_table|>
+    flextable()|>
+    set_header_labels(measure="",
+                      value="")|>
+    add_header_lines(values = c("Manipulation in theatre"))|>
+    border_remove()|>
+    bold(part="header")|>
+    fontsize(size = 13, part = "all")|>
+    padding(padding = 0, part = "all", padding.top=NULL, padding.left=50 ) |>
+    autofit()|>
+    htmltools_value(ft.align = "left")  
   
 }
 
-# Summary values by trust
+# Summary values by trust- follow up
 summary_values_by_trust_fup<-function(frac_type){
   
   data_to_summarise<-f_up_by_trust|>
     filter(type==frac_type)
   
   summary_values_by_trust(data_to_summarise)
-  
   
 }
 
