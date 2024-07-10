@@ -91,7 +91,8 @@ LEFT JOIN [NHSE_SUSPlus_Live].[dbo].[tbl_Data_SEM_APCE] b
 		(b.Der_Primary_Procedure_Code= 'W262' OR 
 		 b.Der_Primary_Procedure_Code= 'W268' OR
 		 b.Der_Primary_Procedure_Code= 'W269' OR
-		 b.Der_Primary_Procedure_Code= 'W663')   --- Admission for closed reduction of fracture 
+		 b.Der_Primary_Procedure_Code= 'W663' OR
+		 b.Der_Primary_Procedure_Code= 'W252')   --- Admission for closed reduction of fracture 
 
 --- Mark records with associated inpatient admissions, and order of admissions where more than 1
 select  a.*
