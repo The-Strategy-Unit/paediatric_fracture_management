@@ -179,7 +179,7 @@ calculating_f_up_by_trust<-function(data, trusts_included){
   
   f_up_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
-    filter(ec_department_type=="1")|>
+   # filter(ec_department_type=="1")|>
     group_by(type, der_provider_code, outpat_attendance)|>
     summarise(count=n())|>
     group_by(type, der_provider_code)|>
@@ -199,7 +199,7 @@ calculating_manipulations_by_trust<-function(data, trusts_included){
   
   manipulations_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
-    filter(ec_department_type=="1")|>
+    #filter(ec_department_type=="1")|>
     summarise(count=n(), .by=c(type, der_provider_code, mua))|>
     spread(key = mua, value = count)|>
     mutate(`Manipulation in ED`=ifelse(is.na(`Manipulation in ED`) & !is.na(`Manipulation in theatre`), 0, `Manipulation in ED`))|>

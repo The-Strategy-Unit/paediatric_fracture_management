@@ -27,7 +27,8 @@ formatting_data_for_regression<-function(data){
 manipulation_regression<-function(data, frac_type){
   
   regression_data<-formatting_data_for_regression(data)|>
-  filter(type==frac_type)
+  filter(type==frac_type)|>
+  filter(mua=="Manipulation in theatre"| mua=="Manipulation in ED")
   
   manipulation_model<- glm(mua_in_theatre ~ sex + age + ethnicity_broad + imd_quintiles+ dept_type + day
                                    + time + season +der_financial_year ,family=binomial(link='logit'),data=regression_data)
@@ -188,6 +189,7 @@ f_up_regression<-function(data){
     bold( i = 37, bold = TRUE)%>%
     bold( i = 44, bold = TRUE)%>%
     bg( bg = "gold", part = "header")  %>%
+    fontsize( size = 9, part = "body")|>
     padding(padding.top = 0, padding.bottom=0, part = "all") |>
     autofit()|>
     htmltools_value(ft.align = "left")    

@@ -98,7 +98,7 @@ plotting_ed_vs_utc<- function(data, variable, title, scale){
     ggplot(aes(x=type, y=Percentage, group=department, fill=department))+
     geom_bar(stat="identity", position = "dodge")+
     su_theme()+
-    labs(x ="", y = "Percentage", title=title)+
+    labs(x =NULL, y = "Percentage", title=title)+
     theme(legend.title=element_blank(),
           legend.position="top",
           legend.text=element_text(size=14),

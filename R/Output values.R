@@ -39,7 +39,7 @@ c<-a|>
   mutate(number_allowed=total*(b/100))|>
   mutate(number_reduced=count-number_allowed)|>
   ungroup()|>
-  summarise(number_reduced=round((sum(total)*(b/100)),0))
+  reframe(number_reduced=round(sum(number_reduced),0))
 
 return(c$number_reduced)
 
@@ -83,9 +83,9 @@ calculating_lowest_10percent<-function(frac_type){
   
   b<-a|>
     ungroup()|>
-    reframe(value=quantile(Percentage, probs = c(0.10)), type, der_provider_code,count, Percentage, total)|>
-    filter(Percentage<=value)|>
-    reframe(value=round(mean(Percentage),1))
+    reframe(value=round(quantile(Percentage, probs = c(0.10)),1))#|>
+   # filter(Percentage<=value)|>
+   # reframe(value=round(mean(Percentage),1))
   
   return(b$value)
 }
@@ -104,8 +104,7 @@ calculating_saving_f_up<-function(frac_type){
     mutate(number_allowed=total*(b/100))|>
     mutate(number_reduced=count-number_allowed)|>
     ungroup()|>
-    reframe(number_reduced=round((sum(total)*(b/100)),0))|>
-    mutate(number_reduced=format(number_reduced, big.mark=","))
+    reframe(number_reduced=round(sum(number_reduced),0))
   
   return(c$number_reduced)
   

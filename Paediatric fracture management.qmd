@@ -36,6 +36,10 @@ library(egg)
 library(table1)
 library(lubridate)
 library(forcats)
+library(scales)
+library(patchwork)
+library(tibble)
+library(ggpubr)
 
 
 paed_fractures<-tar_read(paed_fractures)
@@ -50,6 +54,8 @@ trusts_with_120_attendances<-tar_read(trusts_with_120_attendances)
 
 source("R/Plots.R")
 source("R/Tables.R")
+source("R/Output values.R")
+
 ```
 ## Background (continued) {background-image="slide.png" background-size=contain}
 
@@ -349,6 +355,8 @@ The majority of fractures are recorded within the emergency care dataset under j
 :::
 :::
 
+
+
 ## Percentage of fractures with a follow-up appointment {background-image="slide.png" background-size=contain}
 
 ::: columns
@@ -474,9 +482,9 @@ There is also a decrease in the percentage of tibia/fibula fractures manipulated
 ## Proportion of fractures manipulated in ED vs theatre {background-image="slide.png" background-size=contain}
 
 ::: columns
-
 ::: {.column width="50%"}
-```{r, fig.height=6, fig.width=7}
+```{r, fig.height=6, fig.width=9}
+#| crop: true
 
 paed_fractures|>
   filter(type!="Clavicle" & type!="Toe")|>
@@ -489,7 +497,7 @@ paed_fractures|>
     geom_area(position = 'fill')+
     facet_wrap(~type, ncol=2, scales="free")+
    su_theme()+
-    labs(x ="", y = "Proportion")+
+    labs(x =NULL, title=NULL, subtitle=NULL, y = "Proportion")+
     theme(legend.title=element_blank(),
           legend.position=c(0.72,0.2),
           legend.text=element_text(size=16),
@@ -499,15 +507,15 @@ paed_fractures|>
           strip.text = element_text(face = "bold", size=16))+
   scale_fill_manual(values=c("#f9bf07" , "#686f73"))
 ```
+:::{.small}
 Over the last 6 years the proportion of manipulations in theatre compared to the emergency department has decreased; currently over half of all manipulations are performed in the emergency department. 
+:::
 
 :::
 
-
-
 ::: {.column width="50%"}
 
-```{r, fig.height=6, fig.width=7}
+```{r, fig.height=6, fig.width=9}
   
 
 paed_fractures|>
@@ -535,6 +543,10 @@ paed_fractures|>
 
 
 ```
+:::{.small}
+There does appear to be a decrease in the total number of fractures being manipulated either in ED or theatre, especially for forearm fractures.
+:::
+
 :::
 :::
 
@@ -598,11 +610,156 @@ There appears to be a very small reduction in the percentage of upper limb and t
 
 :::
 
+
+## Use of emergency depts vs urgent treatment/walk-in centres {background-image="slide.png" background-size=contain} 
+::: columns
+::: {.column width="60%"}
+```{r, fig.height=6.5, fig.width=10}
+
+ed_vs_utc<-paed_fractures|>
+  filter(ec_department_type=="1"|ec_department_type=="3"|ec_department_type=="4")|>
+  mutate(department=case_when(ec_department_type=="1" ~ "Emergency dept",
+                                 ec_department_type=="3"|ec_department_type=="4" ~ "Urgent treatment/walk-in centre"))
+  
+  
+  ed_vs_utc|>
+  group_by(department, der_activity_month, type)|>
+    summarise(count=n())|>
+    group_by(der_activity_month, type)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+  ggplot()+
+  geom_line(aes(x=der_activity_month, y=Percentage, group=department, colour=department), linewidth=1.2)+
+    facet_wrap(~type, ncol=3, scales="free")+
+   su_theme()+
+  labs(x ="", y = "Percentage", title=NULL)+
+  theme(legend.title=element_blank(),
+          legend.position="top",
+        legend.text=element_text(size=16),
+        axis.text=element_text(size=14),
+        axis.title=element_text(size=16),
+       strip.background = element_rect(fill = "NA", colour = "NA"),
+        strip.text = element_text(face = "bold", size=14))+
+       scale_colour_manual(values=c("#686f73", "#f9bf07"))+
+       scale_y_continuous(expand=c(0.01,0), limits=c(0,100))
+
+
+```
+:::
+
+::: {.column width="40%"}
+<br>
+
+There is a trend towards a greater proportion of fracture being seen in urgent treatment/ walk-in centres rather than emergency departments. 
+
+It could be hypothesised that if a smaller proportion of fractures continue to be seen in the emergency department that the opportunities to increase manipulations of fractures in the emergency department could become more limited over time. 
+
+:::
+:::
+
+
+## Emergency depts vs urgent treatment/walk-in centres {background-image="slide.png" background-size=contain} 
+
+::: columns
+::: {.column width="33%"}
+
+```{r, fig.width=6, fig.height=4}
+
+plotting_ed_vs_utc(ed_vs_utc, outpat_attendance, "% given follow-up appt", 100)
+
+```
+
+:::{.small}
+The percentage of fractures followed up is broadly similar at urgent treatment centres  and emergency departments.  
+:::
+
+:::
+::: {.column width="33%"}
+```{r, fig.width=6, fig.height=4}
+
+plotting_ed_vs_utc(ed_vs_utc, manipulation_in_ed, "% manipulated in emergency dept", 5.2)
+
+
+```
+
+:::{.small}
+As would be expected those attending emergency departments rather than urgent treatment centres are more likely to have there fractures manipulated in the emergency department. 
+:::
+:::
+
+::: {.column width="33%"}
+```{r, fig.width=6, fig.height=4}
+
+plotting_ed_vs_utc(ed_vs_utc, mua_in_theatre, "% manipulated in theatre",5)
+
+```
+:::{.small}
+The percentage of fractures manipulated in theatre is higher for those attending emergency departments, suggesting those with more obviously/complex fractures are more likely to attend emergency departments, or be sent there from urgent treatment centres (in a small number of cases where a child attended 2 emergency care sites on the same day, we have only included the second attendance).
+:::
+
+:::
+
+:::
+
+
+
+```{r,eval=FALSE}
+
+manitest<-manipulations_by_trust|>
+  filter(type=="Forearm" & mua=="Manipulation in theatre")|>
+  rename(Percentage_mua=Percentage)
+
+edtest<-ed_vs_utc|>
+  group_by(der_provider_code, dept_type)|>
+  summarise(count=n())|>
+  group_by(der_provider_code)|>
+  summarise(Percentage_ed=(count/sum(count))*100, dept_type)|>
+  filter(dept_type=="Urgent Treatment Centre/Walk in centre")|>
+  left_join(manitest[,c("der_provider_code", "Percentage_mua")], by=c("der_provider_code") )|>
+  filter(!is.na(Percentage_mua))
+
+edtest|>
+  ggplot()+
+  geom_point(aes(x=Percentage_ed, y=Percentage_mua))+
+  lab(x="Percentage using UTCs", y="Percentage of manipulations in theatre")
+
+```
+
+
 ## Calculating proportions by trust {background-image="slide.png" background-size=contain}
 <br>
 
-Includes only trusts in our dataset that had a total of number of attendances for fractures of over 120 for the 2022/23; this excluded mainly independent providers, and a small number of trusts that likely have small numbers due to alternative paediatric provision locally, e.g. Royal Liverpool which is close to Alder Hey.
+Includes only trusts in our dataset that had a total of number of attendances for fractures of over 120 in 2022/23; this excluded mainly independent providers, and a small number of trusts that likely have small numbers due to alternative paediatric provision locally, e.g. Royal Liverpool which is close to Alder Hey.
 
+<br>
+
+Overall numbers and percentages for 2022/2023
+```{r}
+
+
+paed_fractures|>
+  filter(der_financial_year=="2022/23")|>
+  group_by(type)|>
+  summarise(count=n(), f_up=sum(outpat_attendance=="1"), Manipulation_in_theatre=sum(mua=="Manipulation in theatre"), Manipulation_in_ed=sum(mua=="Manipulation in ED" ))|>
+  mutate(f_up=paste0(format(f_up,big.mark=","), " (", round((f_up/count)*100,1), "%)"))|>
+  mutate(Manipulation_in_theatre=paste0(format(Manipulation_in_theatre,big.mark=","), " (",round((Manipulation_in_theatre/count)*100,1), "%)"))|>
+  mutate(Manipulation_in_ed=paste0(format(Manipulation_in_ed,big.mark=","), " (", round((Manipulation_in_ed/count)*100,1), "%)"))|> 
+  flextable() |>
+  set_header_labels(type="",
+                    count="No. of fractures",
+                   f_up="No. with follow-up",
+                    Manipulation_in_theatre="No. manipulated in theatre",
+                    Manipulation_in_ed="No. manipulated in ED")|>
+  align(part = "header", align = "right")|>
+  align(j=1, align = "left")|>
+  align(part = "body", align = "right")|>
+  bg(bg = "#f9bf07", part = "header") |>
+  bold(i = 1, bold = TRUE, part="header")|>
+  fontsize(size = 14, part = "all")|>
+  padding(padding = 3, part = "all", padding.top=NULL) |>
+  autofit()|>
+  htmltools_value(ft.align = "left")    
+
+```
 
 ## Upper limb fractures with follow-up by trust (2022/23) {background-image="slide.png" background-size=contain}
 
@@ -612,16 +769,18 @@ Includes only trusts in our dataset that had a total of number of attendances fo
 
 plots_of_proportion_by_trust(f_up_by_trust, "Forearm", "% of forearm fractures with follow-up", 100)
 
-```    
+```
+
 ```{r}
 
 summary_values_by_trust_fup("Forearm")
 
 ```   
-
-
-
+:::{.small}
+If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent( "Forearm")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Forearm"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Forearm")`%) follow-up appointments.
 :::
+:::
+
 
 ::: {.column width="33%"}
 ```{r, fig.height=4, fig.width=7}
@@ -637,7 +796,9 @@ plots_of_proportion_by_trust(f_up_by_trust, "Elbow", "% of elbow fractures with 
 summary_values_by_trust_fup("Elbow")
 
 ```   
-
+:::{.small}
+If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent( "Elbow")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Elbow"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Elbow")`%) follow-up appointments.
+:::
 :::
 
 ::: {.column width="33%"}
@@ -653,7 +814,9 @@ summary_values_by_trust_fup("Clavicle")
 
 
 ```   
-
+:::{.small}
+If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent( "Clavicle")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Clavicle"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Clavicle")`%) follow-up appointments.
+:::
 
 :::
 
@@ -675,6 +838,9 @@ summary_values_by_trust_fup("Tibia/Fibula")
 
 ```   
 
+:::{.small}
+If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent("Tibia/Fibula")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Tibia/Fibula"), big.mark=",")`** (`r calculating_percentage_change_f_up("Tibia/Fibula")`%) follow-up appointments.
+:::
 
 :::
 
@@ -692,6 +858,10 @@ summary_values_by_trust_fup("Toe")
 
 ```   
 
+:::{.small}
+If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent("Toe")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Toe"), big.mark=",")`** (`r calculating_percentage_change_f_up("Toe")`%) follow-up appointments.
+:::
+
 :::
 :::
 
@@ -703,14 +873,13 @@ summary_values_by_trust_fup("Toe")
 
 plots_of_proportion_by_trust(manipulations_by_trust|>filter(mua=="Manipulation in theatre"), "Forearm", "% of forearm fractures manipulated in theatre", 20)
 
-```    
-
-```{r}
-
-summary_values_by_trust_mua( "Forearm")
+summary_values_by_trust_mua("Forearm")
 
 ```   
 
+:::
+
+::: {.column width="10%"}
 :::
 
 ::: {.column width="40%"}
@@ -718,89 +887,133 @@ summary_values_by_trust_mua( "Forearm")
 
 plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Forearm", "Forearm fractures manipulated in theatre vs ED" )
 
-  
+
+
 ```
 
+
+```{r}
+ summary_values_by_trust_prop_in_ed("Forearm") 
+```
 :::
 ::: 
 
+:::columns
+::: {.column width="50%"}
+
+:::{small}
+There could be an **annual reduction in England of `r format(calculating_saving( "Forearm"), big.mark=",")`** (`r calculating_percentage_change("Forearm")` %) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Forearm")`%). 
+:::
+
+:::
+:::
 
 
 ## Elbow fractures manipulated in theatre by trust (2022/23) {background-image="slide.png" background-size=contain}
 
+NOTE: Very low numbers at many providers 
+
 ::: columns
 ::: {.column width="40%"}
 ```{r, fig.height=4, fig.width=7}
-
-plots_of_proportion_by_trust(manipulations_by_trust|>filter(mua=="Manipulation in theatre"), "Elbow", "% of elbow fractures  manipulated in theatre", 5)
+plots_of_proportion_by_trust(manipulations_by_trust|>filter(mua=="Manipulation in theatre"), "Elbow", "% of elbow fractures manipulated in theatre", 9)
 
 ```    
 
 
 ```{r}
-
 summary_values_by_trust_mua( "Elbow")
-
 ```      
 
+
+:::
+
+::: {.column width="10%"}
 :::
 
 ::: {.column width="40%"}
 ```{r, fig.height=4, fig.width=7}
-
-
 plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Elbow", "Elbow fractures manipulated in theatre vs ED" )
-
-  
 ```
 
+
+```{r}
+
+summary_values_by_trust_prop_in_ed("Elbow")
+
+```
 :::
 ::: 
+
+:::columns
+::: {.column width="50%"}
+:::{small}
+There could be an **annual reduction in England of `r calculating_saving( "Elbow")`** (`r calculating_percentage_change("Elbow")`%) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Elbow")`%). This size of reduction is unlikely to have a significant impact nationally in freeing up theatre time.
+:::
+
+:::
+:::
 
 
 ## Tibia/Fibula fractures manipulated in theatre by trust (2022/23) {background-image="slide.png" background-size=contain}
 
+NOTE: Very low numbers at many providers 
+
 ::: columns
 ::: {.column width="40%"}
 ```{r, fig.height=4, fig.width=7}
-
 plots_of_proportion_by_trust(manipulations_by_trust|>filter(mua=="Manipulation in theatre"), "Tibia/Fibula", "% of tibia/fibula fractures manipulated in theatre", 10)
-
 
 ```    
 
 
 ```{r}
-
 summary_values_by_trust_mua("Tibia/Fibula")
-
 ```    
 
+
+:::
+
+::: {.column width="10%"}
 :::
 
 ::: {.column width="40%"}
 ```{r, fig.height=4, fig.width=7}
-
 plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Tibia/Fibula", "Tibia/Fibula fractures manipulated in theatre vs ED" )
 
-  
+
 ```
  
+
+```{r}
+ summary_values_by_trust_prop_in_ed("Tibia/Fibula")
+ 
+
+```
+:::
 :::
 
+:::columns
+::: {.column width="50%"}
+:::{small}
+There could be an **annual reduction in England of `r calculating_saving( "Tibia/Fibula")`** (`r calculating_percentage_change( "Tibia/Fibula")`%) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Tibia/Fibula")`%). This size of reduction is unlikely to have a significant impact nationally in freeing up theatre time.
+:::
+:::
 :::
 
-## Recreating the GIRFT metric
+## Recreating the GIRFT metric {background-image="slide.png" background-size=contain}
+
 ::: columns
 ::: {.column width="60%"}
+
 ```{r}
 
 total_ed_attendances<-read.csv("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/total_ed_attendances.csv")|>
   clean_names()|>
-  filter(der_financial_year=="2018/19")
+  filter(der_financial_year=="2018/19" & ec_department_type=="1")
 
 girft_metric<-paed_fractures|>
-  filter(der_financial_year=="2018/19" & mua=="Manipulation in theatre", type=="Forearm")|>
+  filter(der_financial_year=="2018/19" & mua=="Manipulation in theatre", type=="Forearm" &ec_department_type=="1" )|>
   group_by(der_provider_code)|>
   summarise(manipulations_in_theatre=n())|>
   left_join(total_ed_attendances, by=c("der_provider_code"))|>
@@ -816,32 +1029,125 @@ girft_metric|>
           axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank())+
     labs(x="Providers", title="Wrist and Forearm fractures manipulated in theatre (2018/2019)")+
-    scale_y_continuous(expand=c(0,0), limits=c(0,50))
+    scale_y_continuous(expand=c(0,0), limits=c(0,60))
 
 
 
 ```
 :::
-These proportions are slightly lower than seen in the GIRFT study. It is not clear exactly which fracture types and which manipulations were included within that study.
 
-We have excluded open fractures and only included manipulations without internal or external fixation, which may explain the discrepancy in the results.
+::: {.column width="40%"}
+
+These proportions are slightly lower than seen in the GIRFT study, the discrepancy is likely because they included all forearm and wrist fractures, whereas we have excluded open fractures, which are assumed to all require manipulation in theatre. Also, GIRFT include re-manipulations in theatre whilst we have excluded these.
+
+GIRFT uses the total A&E attendances as the denominator, but we find that the incidence rates vary by area and hence the proportion of A&E attendances due to fractures may be different in different areas, so to determine variability by trust using the number of each fracture type as the denominator may be more appropriate. 
+
+:::
 :::
 
-## Appendix 1
-
-#### Fracture codes
 
 
+## Factors influencing whether a follow-up appointment is given 
+::: columns
+::: {.column width="45%"}
+```{r}
 
-#### Manipulation in emergency department
-A&E treatment code: 10- Reduction 
+tar_read(table_f_up_regression) 
 
-#### Manipulation in theatre
-OPCS codes:
+```
+:::
+
+::: {.column width="55%"}
+
+Children are more likely to be given a follow-up appointment if they are
+
+- male
+
+- 11-16 yrs old
+
+- from an Asian or Black background
+
+- from a more affluent area
+
+They are also more likely to have a follow-up appointment if they attended
+
+- an emergency department
+
+- on a weekend
+
+- at nighttime
+
+Those attending in more recent years were less likely to have a follow-up appointment, further indicating their has been a move towards fewer follow-up appointments. 
+
+:::
+
+:::
+
+## Factors influencing manipulation of forearm fractures in theatre
+::: columns
+::: {.column width="45%"}
+```{r}
+
+tar_read(table_manipulation_regression_forearm) 
+
+```
+:::
+
+::: {.column width="55%"}
+Includes only forearm fractures that are manipulated in either the emergency department or in theatre to determine what factors might be influencing the decision to manipulate a fracture in theatre rather than in the emergency department.
+
+Children are more likely to have a fracture manipulated in theatre if they are
+
+- female
+
+- under the age of 5
+
+- white
+
+- from a more deprived area
+
+They are also more likely to have a manipulation in theatre if they attended
+
+- an urgent treatment centre
+
+- on a weekend
+
+- at nighttime
+
+- in the summer 
+
+Those attending in more recent years were less likely to have their fracture manipulated in theatre, further indicating their has been a move towards manipulating more fractures in the emergency department. 
+
+:::
+
+:::
+
+## Appendix 1 {background-image="slide.png" background-size=contain}
+
+#### Fracture codes using Snomed Codes
+
+To Add
+
+#### Manipulation in emergency department using A&E Treatment Code
+:::{.small}
+10- Reduction 
+:::
+#### Manipulation in theatre using OPCS Codes
+:::{.small}
+The recording of one of the below codes during an inpatient episode in the 3 months post emergency department attendance was taken to indicate a manipulation in theatre
 
 W262 	Manipulation of fracture of bone NEC
-W268	Other specified
-W269 	Unspecified
-W663  Primary manipulative closed reduction of fracture dislocation of joint NEC	
 
+W268	Other specified
+
+W269 	Unspecified
+
+W663  Primary manipulative closed reduction of fracture dislocation of joint NEC
+
+W252  Closed reduction of fracture of bone and fixation using functional bracing system
+:::
+
+#### Follow up appointment using A&E Snomed referral codes and Outpatient Main specialty and Treatment function codes
+
+To Add
 
