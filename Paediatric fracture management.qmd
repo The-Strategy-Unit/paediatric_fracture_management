@@ -229,7 +229,7 @@ Tibia/Fibula fractures are most common in those aged 0-4 years
 
 Elbow fractures are most common in those aged 5-10 years
 
-In the 11-16 year old age group all fracture types are more common in males compared to females, with males aged 11-16 yrs ols having the highest incidence of clavicle, forearm and toe fractures.
+In the 11-16 year old age group all fracture types are more common in males compared to females, with males aged 11-16 yrs old having the highest incidence of clavicle, forearm and toe fractures.
 
 
 :::
@@ -295,7 +295,7 @@ tar_read(toe_incidence_rate_icb)
 
 <br>
 
-For all fracture types the incidence rates are high in the Cornwall and Isles of Scilly ICB area. There are also generally high rates across several fracture types in the Gloucester and Hereford and Worcestershire ICB areas.
+For all fracture types the incidence rates are high in the Cornwall and Isles of Scilly ICB area. There are also generally high rates of several fracture types in the Gloucester and Hereford and Worcestershire ICB areas.
 
 The fracture incidence rate is generally lowest is the South East of England, particularly in the London area.
 :::
@@ -442,9 +442,9 @@ paed_fractures|>
 ::: {.column width="40%"}
 <br>
 
-The percentage of forearm fractures manipulated in the Emergency Department has increased over the last 6 yrs, with a large increase seen during the COVID-19 pandemic. There is also a noticeable seasonal trend with a greater percentage of fractures manipulated in the emergency department during the summer months.
+The percentage of forearm fractures manipulated in the emergency department has increased over the last 6 yrs, with a large increase seen during the COVID-19 pandemic. There is also a noticeable seasonal trend with a greater percentage of fractures manipulated in the emergency department during the summer months.
 
-There also an increase in the percentage of tibia/fibula fractures manipulated in the emergency department, but little change in the percentage of other fracture types.  
+The percentage of tibia/fibula fractures manipulated in the emergency department has also increased, but there is little change in the other fracture types over time.  
 :::
 :::
 
@@ -474,7 +474,7 @@ paed_fractures|>
 
 The percentage of forearm fractures manipulated in theatre has decreased significantly over the last 6 yrs, with a greater percentage of fractures manipulated in theatre during the summer months. 
 
-There is also a decrease in the percentage of tibia/fibula fractures manipulated in theatre.
+The percentage of tibia/fibula fractures manipulated in theatre as also decreased.
 :::
 
 :::
@@ -605,7 +605,6 @@ paed_fractures|>
 
 The majority of fractures of all types are x-rayed in the emergency department, although the percentage of toe fractures x-rayed is slightly lower. 
 
-There appears to be a very small reduction in the percentage of upper limb and toe fractures x-rayed in more recent years. 
 :::
 
 :::
@@ -649,9 +648,9 @@ ed_vs_utc<-paed_fractures|>
 ::: {.column width="40%"}
 <br>
 
-There is a trend towards a greater proportion of fracture being seen in urgent treatment/ walk-in centres rather than emergency departments. 
+There is a trend towards a greater proportion of fractures being seen in urgent treatment/ walk-in centres rather than emergency departments. 
 
-It could be hypothesised that if a smaller proportion of fractures continue to be seen in the emergency department that the opportunities to increase manipulations of fractures in the emergency department could become more limited over time. 
+It could be hypothesised that if the proportion of fractures seen in the emergency department continues to decrease that the opportunities to increase manipulations of fractures in the emergency department could become more limited over time. 
 
 :::
 :::
@@ -669,7 +668,7 @@ plotting_ed_vs_utc(ed_vs_utc, outpat_attendance, "% given follow-up appt", 100)
 ```
 
 :::{.small}
-The percentage of fractures followed up is broadly similar at urgent treatment centres  and emergency departments.  
+The percentage of fractures where a follow-up appointment is given is broadly similar at urgent treatment centres and emergency departments.  
 :::
 
 :::
@@ -693,7 +692,7 @@ plotting_ed_vs_utc(ed_vs_utc, mua_in_theatre, "% manipulated in theatre",5)
 
 ```
 :::{.small}
-The percentage of fractures manipulated in theatre is higher for those attending emergency departments, suggesting those with more obviously/complex fractures are more likely to attend emergency departments, or be sent there from urgent treatment centres (in a small number of cases where a child attended 2 emergency care sites on the same day, we have only included the second attendance).
+The percentage of fractures manipulated in theatre is higher for those attending emergency departments, suggesting those with more obvious/complex fractures that are more likely to require manipulation are more likely to attend emergency departments, or be sent there from urgent treatment centres (in a small number of cases where a child attended 2 emergency care sites on the same day, we have only included the second attendance).
 :::
 
 :::
@@ -704,11 +703,12 @@ The percentage of fractures manipulated in theatre is higher for those attending
 
 ```{r,eval=FALSE}
 
-manitest<-manipulations_by_trust|>
+manitest<-proportion_mua_in_theatre_vs_ED|>
   filter(type=="Forearm" & mua=="Manipulation in theatre")|>
   rename(Percentage_mua=Percentage)
 
 edtest<-ed_vs_utc|>
+  filter(type=="Forearm" & (mua=="Manipulation in theatre"| mua=="Manipulation in ED"))|>
   group_by(der_provider_code, dept_type)|>
   summarise(count=n())|>
   group_by(der_provider_code)|>
@@ -720,7 +720,7 @@ edtest<-ed_vs_utc|>
 edtest|>
   ggplot()+
   geom_point(aes(x=Percentage_ed, y=Percentage_mua))+
-  lab(x="Percentage using UTCs", y="Percentage of manipulations in theatre")
+  labs(x="Percentage using UTCs", y="Percentage of manipulations in theatre")
 
 ```
 
@@ -777,7 +777,7 @@ summary_values_by_trust_fup("Forearm")
 
 ```   
 :::{.small}
-If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent( "Forearm")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Forearm"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Forearm")`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent( "Forearm")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Forearm"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Forearm")`%) follow-up appointments.
 :::
 :::
 
@@ -797,7 +797,7 @@ summary_values_by_trust_fup("Elbow")
 
 ```   
 :::{.small}
-If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent( "Elbow")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Elbow"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Elbow")`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent( "Elbow")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Elbow"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Elbow")`%) follow-up appointments.
 :::
 :::
 
@@ -815,7 +815,7 @@ summary_values_by_trust_fup("Clavicle")
 
 ```   
 :::{.small}
-If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent( "Clavicle")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Clavicle"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Clavicle")`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent( "Clavicle")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Clavicle"), big.mark=",")`** (`r calculating_percentage_change_f_up( "Clavicle")`%) follow-up appointments.
 :::
 
 :::
@@ -839,7 +839,7 @@ summary_values_by_trust_fup("Tibia/Fibula")
 ```   
 
 :::{.small}
-If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent("Tibia/Fibula")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Tibia/Fibula"), big.mark=",")`** (`r calculating_percentage_change_f_up("Tibia/Fibula")`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent("Tibia/Fibula")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Tibia/Fibula"), big.mark=",")`** (`r calculating_percentage_change_f_up("Tibia/Fibula")`%) follow-up appointments.
 :::
 
 :::
@@ -859,7 +859,7 @@ summary_values_by_trust_fup("Toe")
 ```   
 
 :::{.small}
-If all trusts reduced the percentage of follow-ups to the lowest decile of trusts (`r calculating_lowest_10percent("Toe")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Toe"), big.mark=",")`** (`r calculating_percentage_change_f_up("Toe")`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent("Toe")`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up("Toe"), big.mark=",")`** (`r calculating_percentage_change_f_up("Toe")`%) follow-up appointments.
 :::
 
 :::
@@ -902,7 +902,7 @@ plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Forearm", "Forearm fract
 ::: {.column width="50%"}
 
 :::{small}
-There could be an **annual reduction in England of `r format(calculating_saving( "Forearm"), big.mark=",")`** (`r calculating_percentage_change("Forearm")` %) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Forearm")`%). 
+There could be an **annual reduction in England of `r format(calculating_saving("Forearm"), big.mark=",")`** (`r calculating_percentage_change("Forearm")` %) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Forearm")`%). 
 :::
 
 :::
@@ -948,7 +948,7 @@ summary_values_by_trust_prop_in_ed("Elbow")
 :::columns
 ::: {.column width="50%"}
 :::{small}
-There could be an **annual reduction in England of `r calculating_saving( "Elbow")`** (`r calculating_percentage_change("Elbow")`%) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Elbow")`%). This size of reduction is unlikely to have a significant impact nationally in freeing up theatre time.
+There could be an **annual reduction in England of `r calculating_saving( "Elbow")`** (`r calculating_percentage_change("Elbow")`%) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Elbow")`%). This size of reduction is unlikely to have a significant impact in freeing up theatre time.
 :::
 
 :::
@@ -996,7 +996,7 @@ plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Tibia/Fibula", "Tibia/Fi
 :::columns
 ::: {.column width="50%"}
 :::{small}
-There could be an **annual reduction in England of `r calculating_saving( "Tibia/Fibula")`** (`r calculating_percentage_change( "Tibia/Fibula")`%) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Tibia/Fibula")`%). This size of reduction is unlikely to have a significant impact nationally in freeing up theatre time.
+There could be an **annual reduction in England of `r calculating_saving( "Tibia/Fibula")`** (`r calculating_percentage_change( "Tibia/Fibula")`%) manipulations in theatre, if all trusts reduced their percentage to the level of the lowest quartile (`r calculating_lowest_quartile("Tibia/Fibula")`%). This size of reduction is unlikely to have a significant impact in freeing up theatre time.
 :::
 :::
 :::
@@ -1038,9 +1038,9 @@ girft_metric|>
 
 ::: {.column width="40%"}
 
-These proportions are slightly lower than seen in the GIRFT study, the discrepancy is likely because they included all forearm and wrist fractures, whereas we have excluded open fractures, which are assumed to all require manipulation in theatre. Also, GIRFT include re-manipulations in theatre whilst we have excluded these.
+These proportions are slightly lower than seen in the GIRFT study, the discrepancy is likely because they included all forearm and wrist fractures, whereas we have excluded open fractures, which are assumed to all require treatment in theatre. Also, GIRFT include re-manipulations in theatre whilst we have excluded these.
 
-GIRFT uses the total A&E attendances as the denominator, but we find that the incidence rates vary by area and hence the proportion of A&E attendances due to fractures may be different in different areas, so to determine variability by trust using the number of each fracture type as the denominator may be more appropriate. 
+GIRFT uses the total A&E attendances as the denominator, but since we find that the incidence rates vary by area the proportion of A&E attendances due to fractures may be different in different areas, so to determine variability by trust using the number of each fracture type as the denominator may be more appropriate. 
 
 :::
 :::
