@@ -185,5 +185,23 @@ summary_values_by_trust_fup<-function(frac_type){
   
 }
 
-
+## SNOMED code tables
+snomed_code_tables<-function(data, frac_type, number1, number2){
+  
+  data|>
+    filter(type==frac_type)|>
+    select(code, description)|>
+    flextable()|>
+    delete_part(part="header")|>
+    border_remove()|>
+    align(j=1, align = "left", part="all")|>
+   # bg(bg = "#f9bf07", part = "header") |>
+   # bold(i = 1, bold = TRUE, part="header")|>
+    fontsize(size =number1, part = "all")|>
+    padding(padding = 0, part = "all") |>
+    line_spacing(space = number2, part = "body")|>
+    autofit()|>
+    htmltools_value(ft.align = "left")   
+  
+}
 
