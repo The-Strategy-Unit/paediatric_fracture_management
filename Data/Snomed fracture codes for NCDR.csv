@@ -1,0 +1,337 @@
+﻿code,description,type
+58150001, Fracture of clavicle,Clavicle
+33173003, Closed fracture of clavicle,Clavicle
+1658003, Closed fracture of acromial end of clavicle,Clavicle
+87376003, Closed fracture of shaft of clavicle,Clavicle
+48561006, Closed fracture of sternal end of clavicle,Clavicle
+88196000, Fracture of interligamentous part of clavicle (disorder) ,Clavicle
+1303380004, Fracture of left clavicle (disorder) ,Clavicle
+1303379002, Fracture of bone of bilateral clavicles (disorder) ,Clavicle
+1303381000, Fracture of right clavicle (disorder),Clavicle
+41972004, Fracture of shaft of clavicle (disorder) ,Clavicle
+56642004, Fracture of sternal end of clavicle (disorder) ,Clavicle
+733403004, Multiple fractures of clavicle (disorder),Clavicle
+208510002," Multiple fractures of clavicle, scapula and humerus (disorder) ",Clavicle
+431011000, Nonunion of fracture of clavicle (disorder) ,Clavicle
+704069002, Stress fracture of clavicle (disorder) ,Clavicle
+21351003, Fracture of phalanx of foot (disorder) ,Toe
+81576005, Closed fracture of phalanx of foot (disorder) ,Toe
+302036006, Closed fracture dislocation of interphalangeal joint of toe (disorder) ,Toe
+209361003, Closed fracture dislocation of interphalangeal joint of multiple toes (disorder) ,Toe
+209378007, Closed fracture subluxation of interphalangeal joint of multiple toes (disorder) ,Toe
+209359007, Closed fracture dislocation of interphalangeal joint of single toe (disorder) ,Toe
+208712008," Closed fracture distal phalanx, toe (disorder) ",Toe
+705067008, Closed fracture of distal phalanx of lesser toe (disorder) ,Toe
+698084004, Closed fracture of distal phalanx of great toe (disorder) ,Toe
+208711001," Closed fracture middle phalanx, toe (disorder) ",Toe
+705068003, Closed fracture of epiphyseal plate of lesser toe (disorder) ,Toe
+208713003, Closed fracture of multiple phalanges of toe (disorder) ,Toe
+208710000," Closed fracture proximal phalanx, toe (disorder) ",Toe
+311821002, Closed fracture of great toe (disorder) ,Toe
+705079008, Closed fracture of epiphyseal plate of phalanx of great toe (disorder) ,Toe
+704211004, Closed fracture of proximal phalanx of great toe (disorder) ,Toe
+704057005, Stress fracture of phalanx of foot (disorder) ,Toe
+11314801000119100, Stress fracture of phalanx of left foot (disorder) ,Toe
+11314761000119100, Stress fracture of phalanx of right foot (disorder) ,Toe
+208719004, Fracture of great toe (disorder) ,Toe
+263093003, Fracture dislocation of toe joint (disorder) ,Toe
+263117000, Fracture subluxation of interphalangeal joint of toe (disorder) ,Toe
+209375005, Closed fracture subluxation of interphalangeal joint of single toe (disorder) ,Toe
+123973009, Monteggia's fracture (disorder),Elbow
+1303382007, Fracture of left olecranon (disorder) ,Elbow
+1303383002, Fracture of right olecranon (disorder) ,Elbow
+1303392004, Fracture of bone of left elbow joint region (disorder) ,Elbow
+1303393009, Fracture of bone of right elbow joint region (disorder) ,Elbow
+16866431000119100, Closed fracture of capitellum of right humerus (disorder),Elbow
+16867081000119100, Closed fracture of capitellum of left humerus (disorder) ,Elbow
+19259001, Closed fracture of upper end of radius AND ulna (disorder) ,Elbow
+208267005," Closed fracture distal humerus, lateral condyle (disorder) ",Elbow
+208270009," Closed fracture of distal humerus, trochlea (disorder) ",Elbow
+208271008," Closed fracture distal humerus, lateral epicondyle (disorder) ",Elbow
+208272001," Closed fracture distal humerus, capitellum (disorder) ",Elbow
+208273006," Closed fracture distal humerus, bicondylar (T-Y fracture) (disorder) ",Elbow
+208274000, Multiple closed fractures of distal humerus (disorder) ,Elbow
+208294009," Closed fracture olecranon, extra-articular (disorder) ",Elbow
+208295005," Closed fracture of proximal ulna, comminuted (disorder) ",Elbow
+208296006," Closed fracture proximal radius, comminuted (disorder) ",Elbow
+208298007," Closed fracture olecranon, intra-articular (disorder) ",Elbow
+209252000, Closed fracture dislocation elbow joint (disorder) ,Elbow
+209253005, Closed fracture dislocation superior radioulnar joint (disorder) ,Elbow
+209258001, Closed fracture subluxation of elbow joint (disorder) ,Elbow
+209259009, Closed fracture subluxation superior radioulnar joint (disorder) ,Elbow
+21419000, Closed fracture of medial condyle of humerus (disorder) ,Elbow
+2295008, Closed fracture of upper end of forearm (disorder) ,Elbow
+263078002, Fracture dislocation of elbow joint (disorder) ,Elbow
+263100007, Fracture subluxation of elbow joint (disorder) ,Elbow
+263101006, Fracture subluxation of superior radioulnar joint (disorder) ,Elbow
+263192005, Fracture of distal end of humerus (disorder) ,Elbow
+263193000, Supracondylar fracture of humerus (disorder) ,Elbow
+263195007, Fracture of proximal end of radius (disorder) ,Elbow
+263196008, Fracture of radial head (disorder) ,Elbow
+263197004, Fracture of radial neck (disorder) ,Elbow
+263203001, Fracture of proximal end of ulna (disorder) ,Elbow
+263206009, Fracture of proximal end of radius and ulna (disorder) ,Elbow
+269080004, Closed fracture of the distal humerus (disorder) ,Elbow
+281525005, Fracture of the lateral humeral epicondyle (disorder) ,Elbow
+281526006, Fracture of the medial humeral epicondyle (disorder) ,Elbow
+29045004, Closed Monteggia's fracture (disorder) ,Elbow
+302222008, Elbow fracture - closed (disorder) ,Elbow
+309464009, Elbow fracture (disorder) ,Elbow
+33041006, Closed fracture of proximal end of ulna (disorder) ,Elbow
+440366004, Closed fracture of the medial epicondyle of humerus (disorder) ,Elbow
+441496000, Transcondylar fracture of distal humerus (disorder) ,Elbow
+442448003, Fracture of head of radius with dislocation of distal radioulnar joint and interosseous membrane disruption (disorder) ,Elbow
+58580000, Closed supracondylar fracture of humerus (disorder) ,Elbow
+5895007, Closed multiple fractures of upper end of radius (disorder) ,Elbow
+64902007, Closed fracture of olecranon process of ulna (disorder) ,Elbow
+68819003, Closed fracture of coronoid process of ulna (disorder) ,Elbow
+68854005, Closed fracture of head of radius (disorder) ,Elbow
+700147004, Avulsion fracture of medial epicondyle of humerus (disorder) ,Elbow
+704208000, Closed fracture of proximal epiphysis of radius (disorder) ,Elbow
+704410001, Closed transcondylar fracture of distal humerus (disorder) ,Elbow
+705076001, Closed fracture of epiphyseal plate of distal humerus (disorder) ,Elbow
+71139009, Closed fracture of proximal end of radius (disorder) ,Elbow
+72497001, Closed fracture of neck of radius (disorder) ,Elbow
+733408008, Fracture of lateral condyle of humerus (disorder) ,Elbow
+733409000, Fracture of medial condyle of humerus (disorder) ,Elbow
+7341005, Closed multiple fractures of upper end of ulna (disorder) ,Elbow
+80767005, Closed fracture of condyle of humerus (disorder) ,Elbow
+208388003, Fracture at wrist and/or hand level (disorder) ,Wrist
+209264008, Closed fracture dislocation of wrist (disorder) ,Wrist
+209269003, Closed fracture dislocation lunate (volar) (disorder) ,Wrist
+209267001, Closed fracture dislocation midcarpal (disorder) ,Wrist
+209270002, Closed fracture dislocation perilunate (dorsal) (disorder) ,Wrist
+209265009, Closed fracture dislocation distal radioulnar joint (disorder) ,Wrist
+209284007, Closed fracture subluxation of distal radioulnar joint (disorder) ,Wrist
+209268006, Closed fracture dislocation of carpometacarpal joint (disorder) ,Wrist
+209287000, Closed fracture subluxation of carpometacarpal joint (disorder) ,Wrist
+67730008, Closed Bennett's fracture (disorder) ,Wrist
+209266005, Closed fracture dislocation radiocarpal joint (disorder) ,Wrist
+307713000, Closed Barton's fracture (disorder) ,Wrist
+208324004, Closed dorsal Barton's fracture (disorder) ,Wrist
+208323005, Closed volar Barton's fracture (disorder) ,Wrist
+705103007, Closed fracture of navicular bone of wrist with dislocation of perilunate joint (disorder) ,Wrist
+209290006, Closed fracture subluxation perilunate transscaphoid (disorder) ,Wrist
+209283001, Closed fracture subluxation of the wrist (disorder) ,Wrist
+209288005, Closed fracture subluxation lunate (volar) (disorder) ,Wrist
+209289002, Closed fracture subluxation perilunate (dorsal) (disorder) ,Wrist
+263102004, Fracture subluxation of wrist (disorder) ,Wrist
+61653009, Bennett's fracture (disorder) ,Wrist
+263103009, Fracture subluxation of distal radioulnar joint (disorder) ,Wrist
+263108000, Fracture subluxation of lunate (disorder) ,Wrist
+263106001, Fracture subluxation of midcarpal joint (disorder) ,Wrist
+209286009, Closed fracture subluxation midcarpal (disorder) ,Wrist
+263109008, Fracture subluxation of perilunate joint (disorder) ,Wrist
+209276008, Open fracture dislocation radiocarpal joint (disorder) ,Wrist
+209285008, Closed fracture subluxation radiocarpal joint (disorder) ,Wrist
+1290784005, Stress fracture of bone of wrist region (disorder) ,Wrist
+1303397005, Fracture of bone of wrist region (disorder) ,Wrist
+1285722006, Fracture of distal end of left ulna (disorder) ,Wrist
+14430001000004100, Fracture of distal end of right ulna (disorder) ,Wrist
+27094009, Skillern's fracture (disorder) ,Wrist
+281530009, Fracture of ulnar styloid (disorder) ,Wrist
+41036008, Closed fracture of styloid process of ulna (disorder) ,Wrist
+263208005, Fracture of distal end of radius and ulna (disorder) ,Wrist
+33192001, Closed fracture of lower end of radius AND ulna (disorder) ,Wrist
+50397009, Closed fracture of distal end of ulna (disorder) ,Wrist
+208318005," Closed fracture of ulna, lower epiphysis (disorder) ",Wrist
+6163002, Closed fracture of head of ulna (disorder) ,Wrist
+263199001, Fracture of distal end of radius (disorder) ,Wrist
+58722007, Moore's fracture (disorder) ,Wrist
+448355005, Greenstick fracture of distal radius (disorder) ,Wrist
+737262009, Fracture of lower end of radius with volar tilt (disorder) ,Wrist
+737261002, Fracture of lower end of radius with dorsal tilt (disorder) ,Wrist
+123972004, Reversed Colles' fracture (disorder) ,Wrist
+123618009, Closed reverse Colles' fracture (disorder) ,Wrist
+281527002, Fracture of radial styloid (disorder) ,Wrist
+208325003, Closed fracture radial styloid (disorder) ,Wrist
+426467005, Hutchinson's fracture (disorder) ,Wrist
+18310001000004100, Fracture of distal end of right radius (disorder) ,Wrist
+16542901000119100, Closed fracture of metaphysis of distal end of right radius (disorder) ,Wrist
+1285724007, Fracture of distal end of left radius (disorder) ,Wrist
+16542861000119100, Closed fracture of metaphysis of distal end of left radius (disorder) ,Wrist
+123971006, Colles' fracture (disorder) ,Wrist
+269083002, Closed Colles' fracture (disorder) ,Wrist
+17222009, Closed fracture of distal end of radius (disorder) ,Wrist
+448838000, Closed extraarticular fracture of distal radius (disorder) ,Wrist
+208326002," Closed fracture distal radius, intra-articular, die-punch (disorder) ",Wrist
+704212006, Closed fracture of distal epiphysis of radius (disorder) ,Wrist
+1279881008, Closed fracture of metaphysis of distal end of radius (disorder) ,Wrist
+35442005, Closed fracture of lower end of forearm (disorder) ,Wrist
+307172007, Fracture dislocation distal radioulnar joint (disorder) ,Wrist
+263080008, Fracture dislocation of radiocarpal joint (disorder) ,Wrist
+1264544004, Fracture of bone adjacent to prosthesis of wrist joint (disorder) ,Wrist
+12217801000119100, Fracture of bone adjacent to prosthesis of left wrist joint (disorder) ,Wrist
+12202711000119100, Fracture of bone adjacent to prosthesis of right wrist joint (disorder) ,Wrist
+1303394003, Fracture of bone of left wrist region (disorder) ,Wrist
+10937281000119100, Closed fracture of lunate bone of left wrist (disorder) ,Wrist
+10936241000119100, Closed fracture of trapezoidal bone of left wrist (disorder) ,Wrist
+1303396001, Fracture of bone of bilateral wrist regions (disorder) ,Wrist
+1303395002, Fracture of bone of right wrist region (disorder) ,Wrist
+10937241000119100, Closed fracture of lunate bone of right wrist (disorder) ,Wrist
+10936201000119100, Closed fracture of trapezoidal bone of right wrist (disorder) ,Wrist
+82065001, Fracture of carpal bone (disorder) ,Wrist
+9468002, Closed fracture of carpal bone (disorder) ,Wrist
+90114000, Closed fracture of capitate bone of wrist (disorder) ,Wrist
+37174005, Closed fracture of hamate bone of wrist (disorder) ,Wrist
+208369005," Closed fracture hamate, hook (disorder) ",Wrist
+37633006, Closed fracture of lunate bone of wrist (disorder) ,Wrist
+208375001, Closed fracture of multiple carpal bones (disorder) ,Wrist
+42818005, Closed fracture of navicular bone of wrist (disorder) ,Wrist
+209271003, Closed fracture dislocation perilunate transscaphoid (disorder) ,Wrist
+208370006," Closed fracture scaphoid, proximal pole (disorder) ",Wrist
+208374002," Closed fracture scaphoid, tuberosity (disorder) ",Wrist
+208373008," Closed fracture scaphoid, waist, comminuted (disorder) ",Wrist
+208372003," Closed fracture scaphoid, waist, oblique (disorder) ",Wrist
+208371005," Closed fracture scaphoid, waist, transverse (disorder) ",Wrist
+43767005, Closed fracture of pisiform bone of wrist (disorder) ,Wrist
+57114005, Closed fracture of trapezium bone of wrist (disorder) ,Wrist
+357009, Closed fracture of trapezoidal bone of wrist (disorder) ,Wrist
+30632004, Closed fracture of triquetral bone of wrist (disorder) ,Wrist
+263081007, Fracture dislocation of midcarpal joint (disorder) ,Wrist
+263083005, Fracture dislocation of perilunate joint (disorder) ,Wrist
+11833951000119100, Closed traumatic dislocation of perilunate joint of left wrist (disorder) ,Wrist
+11833911000119100, Closed traumatic dislocation of perilunate joint of right wrist (disorder) ,Wrist
+208820003, Closed traumatic dislocation perilunate (dorsal) (disorder) ,Wrist
+208844001, Closed traumatic subluxation perilunate (dorsal) (disorder) ,Wrist
+281515000, Transscaphoid-capitate-hamate-triquetral-perilunate fracture dislocation (disorder) ,Wrist
+281514001, Transscaphoid-capitate-perilunate fracture dislocation (disorder) ,Wrist
+281516004, Transstyloid-perilunate fracture dislocation (disorder) ,Wrist
+281517008, Transstyloid-scaphoid-perilunate fracture dislocation (disorder) ,Wrist
+281513007, Transscaphoid-perilunate fracture dislocation (disorder) ,Wrist
+281518003, Volar transscaphoid-lunate fracture dislocation (disorder) ,Wrist
+73316002, Fracture of capitate bone of wrist (disorder) ,Wrist
+85922006, Fracture of hamate bone of wrist (disorder) ,Wrist
+2012002, Fracture of lunate bone of wrist (disorder) ,Wrist
+31975004, Fracture of navicular bone of wrist (disorder) ,Wrist
+46773004, Quervain's fracture (disorder) ,Wrist
+84030002, Fracture of pisiform bone of wrist (disorder) ,Wrist
+74465000, Fracture of trapezium of wrist (disorder) ,Wrist
+14916000, Fracture of trapezoidal bone of wrist (disorder) ,Wrist
+7585008, Fracture of triquetral bone of wrist (disorder) ,Wrist
+31978002,Fracture of tibia (disorder),Tibia/Fibula
+6698000, Closed trimalleolar fracture (disorder),Tibia/Fibula
+6990005, Fracture of shaft of tibia (disorder),Tibia/Fibula
+15385006, Closed fracture of medial malleolus (disorder),Tibia/Fibula
+20433007, Fracture of upper end of tibia (disorder),Tibia/Fibula
+23900009, Closed fracture of upper end of tibia (disorder),Tibia/Fibula
+25899002, Closed bimalleolar fracture (disorder),Tibia/Fibula
+28012007, Closed fracture of shaft of tibia (disorder),Tibia/Fibula
+47848000, Closed fracture of condyle of tibia (disorder),Tibia/Fibula
+71830006," Supination-adduction injury of ankle, stage 2 (disorder)",Tibia/Fibula
+87905008, Gosselin's fracture (disorder),Tibia/Fibula
+123975002, Trimalleolar fracture (disorder),Tibia/Fibula
+208610006," Closed fracture proximal tibia, medial condyle (plateau) (disorder)",Tibia/Fibula
+208611005," Closed fracture proximal tibia, lateral condyle (plateau) (disorder)",Tibia/Fibula
+208612003," Closed fracture proximal tibia, bicondylar (disorder)",Tibia/Fibula
+208613008, Closed fracture intercondylar spine of tibia (disorder),Tibia/Fibula
+208629000," Closed fracture of tibia and fibula, shaft (disorder)",Tibia/Fibula
+208634001, Closed fracture distal tibia (disorder),Tibia/Fibula
+208635000," Closed fracture distal tibia, extra-articular (disorder)",Tibia/Fibula
+208636004," Closed fracture distal tibia, intra-articular (disorder)",Tibia/Fibula
+208662008," Closed fracture ankle, bimalleolar, low fibular fracture (disorder)",Tibia/Fibula
+208663003," Closed fracture ankle, bimalleolar, high fibular fracture (disorder)",Tibia/Fibula
+208666006," Closed fracture ankle, trimalleolar, low fibular fracture (disorder)",Tibia/Fibula
+208667002," Closed fracture ankle, trimalleolar, high fibular fracture (disorder)",Tibia/Fibula
+263237009, Closed fracture of tibial tuberosity (disorder),Tibia/Fibula
+263240009, Pilon fracture (disorder),Tibia/Fibula
+263241008, Tillaux fracture (disorder),Tibia/Fibula
+263244000, Bimalleolar fracture of ankle (disorder),Tibia/Fibula
+271577005, Fracture of shaft of tibia and fibula (disorder),Tibia/Fibula
+278537006, Fracture of distal end of tibia (disorder),Tibia/Fibula
+281531008, Fracture of medial malleolus (disorder),Tibia/Fibula
+281532001, Fracture of posterior malleolus (disorder),Tibia/Fibula
+281843000, Fracture of tibial spine (disorder),Tibia/Fibula
+413877007, Closed fracture of tibia AND fibula (disorder),Tibia/Fibula
+414293001, Fracture of tibia AND fibula (disorder),Tibia/Fibula
+428256003, Fracture of condyle of tibia (disorder),Tibia/Fibula
+428257007, Fracture of tibial plateau (disorder),Tibia/Fibula
+428797006, Closed osteochondral fracture of proximal tibia (disorder),Tibia/Fibula
+428798001, Closed fracture of tibial plateau (disorder),Tibia/Fibula
+442205007, Stress fracture of tibia (disorder),Tibia/Fibula
+445410003, Closed fracture of distal tibia and distal fibula (disorder),Tibia/Fibula
+446298003, Closed pilon fracture (disorder),Tibia/Fibula
+447139008, Closed fracture of tibia (disorder),Tibia/Fibula
+703998005, Closed bicondylar fracture of tibial plateau (disorder),Tibia/Fibula
+705080006, Closed fracture of epiphyseal plate of distal tibia (disorder),Tibia/Fibula
+705092006, Closed fracture of epiphyseal plate of proximal tibia (disorder),Tibia/Fibula
+733295004, Avulsion of tibial tuberosity (disorder),Tibia/Fibula
+735669008, Fracture of metaphysis of proximal tibia (disorder),Tibia/Fibula
+735671008, Fracture of lateral condyle of tibia (disorder),Tibia/Fibula
+735672001, Fracture of medial condyle of tibia (disorder),Tibia/Fibula
+735846008, Avulsion of ligament with bony fragment of medial malleolus (disorder),Tibia/Fibula
+39541000087106, Fracture of medial condyle of left tibia (disorder),Tibia/Fibula
+39551000087109, Fracture of medial condyle of right tibia (disorder),Tibia/Fibula
+40031000087104, Fracture of left tibial plateau (disorder),Tibia/Fibula
+40041000087105, Fracture of right tibial plateau (disorder),Tibia/Fibula
+40051000087108, Fracture of lateral condyle of left tibia (disorder),Tibia/Fibula
+40061000087106, Fracture of lateral condyle of right tibia (disorder),Tibia/Fibula
+40071000087102, Fracture of left medial malleolus (disorder),Tibia/Fibula
+40081000087100, Fracture of right medial malleolus (disorder),Tibia/Fibula
+10924841000119100, Closed fracture of medial condyle of right tibia (disorder),Tibia/Fibula
+10924881000119100, Closed fracture of medial condyle of left tibia (disorder),Tibia/Fibula
+75591007,Fracture of fibula (disorder),Tibia/Fibula
+21867001, Fracture of upper end of fibula (disorder),Tibia/Fibula
+28359007, Closed fracture of head of fibula (disorder),Tibia/Fibula
+34268009, Closed fracture of lateral malleolus (disorder),Tibia/Fibula
+59639009, Closed fracture of upper end of fibula (disorder),Tibia/Fibula
+67394003, Fracture of shaft of fibula (disorder),Tibia/Fibula
+77803008, Closed fracture of shaft of fibula (disorder),Tibia/Fibula
+208615001," Closed fracture fibula, neck (disorder)",Tibia/Fibula
+208657007," Closed fracture ankle, lateral malleolus, low (disorder)",Tibia/Fibula
+208658002," Closed fracture ankle, lateral malleolus, high (disorder)",Tibia/Fibula
+263242001, Fracture of distal end of fibula (disorder),Tibia/Fibula
+281533006, Fracture of head of fibula (disorder),Tibia/Fibula
+281534000, Fracture of neck of fibula (disorder),Tibia/Fibula
+281535004, Fracture of lateral malleolus (disorder),Tibia/Fibula
+308153009, Closed fracture of distal fibula (disorder),Tibia/Fibula
+315643003, Dupuytren's fracture dislocation ankle (disorder),Tibia/Fibula
+442538002, Stress fracture of fibula (disorder),Tibia/Fibula
+447395005, Closed fracture of fibula (disorder),Tibia/Fibula
+704209008, Closed fracture of epiphysis of proximal fibula (disorder),Tibia/Fibula
+705082003, Closed fracture of epiphyseal plate of distal fibula (disorder),Tibia/Fibula
+733296003, Avulsion of head of fibula (disorder),Tibia/Fibula
+735842005, Fracture of lateral malleolus below syndesmosis (disorder),Tibia/Fibula
+735844006, Avulsion of ligament with bony fragment of lateral malleolus (disorder),Tibia/Fibula
+735845007, Fracture of lateral malleolus at syndesmosis (disorder),Tibia/Fibula
+735847004, Fracture of distal fibula above syndesmosis (disorder),Tibia/Fibula
+736517000, Avulsion fracture of anterior fibula (disorder),Tibia/Fibula
+19350001000004100, Stress fracture of tibia and fibula (disorder),Tibia/Fibula
+3228009, Closed fracture of shaft of radius (disorder),Forearm
+12676007, Fracture of radius (disorder),Forearm
+28078000, Closed fracture of shaft of bone of forearm (disorder),Forearm
+53627009, Closed fracture of radius AND ulna (disorder),Forearm
+53792000, Closed fracture of shaft of ulna (disorder),Forearm
+54556006, Fracture of ulna (disorder),Forearm
+54645004, Barton's fracture (disorder),Forearm
+54819005, Closed fracture of shaft of radius and ulna (disorder),Forearm
+65966004, Fracture of forearm (disorder),Forearm
+71555008, Closed fracture of ulna (disorder),Forearm
+75857000, Fracture of radius AND ulna (disorder),Forearm
+91419009, Closed fracture of forearm (disorder),Forearm
+111640008, Closed fracture of radius (disorder),Forearm
+208309008," Closed fracture radius and ulna, middle (disorder)",Forearm
+208322000, Closed Galeazzi fracture (disorder),Forearm
+208513000, Multiple fractures of forearm (disorder),Forearm
+263198009, Fracture of shaft of radius (disorder),Forearm
+263200003, Volar Barton's fracture (disorder),Forearm
+263201004, Dorsal Barton's fracture (disorder),Forearm
+263204007, Fracture of shaft of ulna (disorder),Forearm
+263205008, Fracture of distal end of ulna (disorder),Forearm
+263207000, Fracture of shaft of radius and/or ulna (disorder),Forearm
+268824003, Fracture of radius and/or ulna due to birth trauma (disorder),Forearm
+271576001, Galeazzi fracture dislocation (disorder),Forearm
+281528007, Fracture of olecranon (disorder),Forearm
+281529004, Fracture of coronoid process of ulna (disorder),Forearm
+287074009, Fracture malunion - forearm (disorder),Forearm
+390986009, Torus fracture of radius (disorder),Forearm
+429655000, Closed torus fracture of radius (disorder),Forearm
+704056001, Stress fracture of ulna (disorder),Forearm
+704059008, Stress fracture of radius (disorder),Forearm
+733235002, Fracture of shaft of ulna and radius (disorder),Forearm
+1285721004, Fracture of right ulna (disorder),Forearm
+1303390007, Fracture of bone of left forearm (disorder),Forearm
+1303391006, Fracture of bone of right forearm (disorder),Forearm
+446461000124103, Fracture of right radius (disorder),Forearm
+12960001000004100, Fracture of left radius (disorder),Forearm
+13270001000004100, Fracture of left ulna (disorder),Forearm
