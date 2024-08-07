@@ -63,12 +63,12 @@ calculating_percentage_change<-function(frac_type){
 }
 
 
-# Output values - FOLLOW UPS
+# Output values - FOLLOW UPS/Xray
 
 # Proportions manipulated
-proportions_f_up<-function(frac_type){
+proportions_f_up<-function(data, frac_type){
   
-  a<-f_up_by_trust|>
+  a<-data|>
     filter(type==frac_type)|>
     mutate(total=round((1/Percentage)*count*100,))
   
@@ -77,13 +77,13 @@ proportions_f_up<-function(frac_type){
 
 
 #Lowest quartile
-calculating_lowest_10percent<-function(frac_type){
+calculating_lowest_10percent<-function(data, frac_type, number){
   
-  a<-proportions_f_up(frac_type)
+  a<-proportions_f_up(data, frac_type)
   
   b<-a|>
     ungroup()|>
-    reframe(value=round(quantile(Percentage, probs = c(0.10)),1))#|>
+    reframe(value=round(quantile(Percentage, probs = c(number)),1))#|>
    # filter(Percentage<=value)|>
    # reframe(value=round(mean(Percentage),1))
   
@@ -91,13 +91,13 @@ calculating_lowest_10percent<-function(frac_type){
 }
 
 
-# calculating reduction in  follow ups if all trsuts reduce them to the mean of the lowest 10%
+# calculating reduction in  follow ups if all trusts reduce them to the mean of the lowest 10%
 
-calculating_saving_f_up<-function(frac_type){
+calculating_saving_f_up<-function(data, frac_type, number){
   
-  a<-proportions_f_up(frac_type)
+  a<-proportions_f_up(data, frac_type)
   
-  b<-calculating_lowest_10percent(frac_type)
+  b<-calculating_lowest_10percent(data, frac_type, number)
   
   c<-a|>
     filter(Percentage>b )|>
@@ -112,11 +112,11 @@ calculating_saving_f_up<-function(frac_type){
 
 
 # Percentage change 
-calculating_percentage_change_f_up<-function(frac_type){
+calculating_percentage_change_f_up<-function(data, frac_type, number){
   
-  number<-calculating_saving_f_up(frac_type)
+  number<-calculating_saving_f_up(data, frac_type, number)
   
-  d<-f_up_by_trust|>
+  d<-data|>
     filter(type==frac_type)|>
     ungroup()|>
     summarise(current_total=sum(count, na.rm=TRUE))

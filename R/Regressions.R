@@ -6,7 +6,7 @@ formatting_data_for_regression<-function(data){
   filter(imd_quintiles!="Missing/Outside England")|>
   filter(dept_type=="Major Emergency Dept" | dept_type=="Urgent Treatment Centre/Walk in centre")|>
   filter(sex!="Missing/Unknown")|>
-  mutate(imd_quintiles= relevel(imd_quintiles, ref = "3"))|>
+  mutate(imd_quintiles= relevel(factor(imd_quintiles, ordered = FALSE ), ref = "3"))|>
   mutate(ethnicity_broad= relevel(ethnicity_broad, ref = "White"))|>
   mutate(type= relevel(factor( type, ordered = FALSE ), ref = "Forearm"))|>  
   mutate(day_of_week= relevel(factor( day_of_week, ordered = FALSE ), ref = "Tuesday"))|>
@@ -21,6 +21,10 @@ formatting_data_for_regression<-function(data){
   return(regression_data)
 
 }
+
+
+
+
 
 # Manipulation of fractures in emergency department
 
@@ -37,7 +41,7 @@ manipulation_regression<-function(data, frac_type){
   
   pval <- summary(manipulation_model)$coefficients[,4]
   Allsummary <- cbind(Estimate = coef(manipulation_model), confint(manipulation_model))
-  #Allsummary<-exp(manipulation_model)
+  Allsummary<-exp(Allsummary)
   Allsummary<-cbind(Allsummary, pvalues = pval)
   Allsummary<-as.data.frame(Allsummary)|>
     mutate(across(where(is.numeric), round, digits=2))|>
@@ -51,15 +55,15 @@ manipulation_regression<-function(data, frac_type){
   Allsummary$Category<-factor(Allsummary$Category, levels=c('','Sex', 'Age', 'Ethnicity', 'IMD Quintiles', 'Department type' , 'Day of the week', 'Time of day', 'Time of year' , 'Year'))
   
   Allsummary<- Allsummary|>
-    dplyr::add_row(Group = "Female", Estimate=0, CI="", `P values`="Reference", Category="Sex", .before = 2)|>
-    dplyr::add_row(Group = "5-10 yrs", Estimate=0, CI="", `P values`="Reference", Category="Age", .before = 4)|>
-    dplyr::add_row(Group = "White", Estimate=0, CI="", `P values`="Reference", Category="Ethnicity", .before = 7)|>
-    dplyr::add_row(Group = "3", Estimate=0, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
-    dplyr::add_row(Group = "Major Emergency Department", Estimate=0, CI="", `P values`="Reference", Category="Department type", .before =18)|>
-    dplyr::add_row(Group = "Weekday", Estimate=0, CI="", `P values`="Reference", Category="Day of the week", .before =20)|>
-    dplyr::add_row(Group = "Daytime 7am-7pm", Estimate=0, CI="", `P values`="Reference", Category="Time of day", .before = 22)|>
-    dplyr::add_row(Group = "Autumn", Estimate=0, CI="", `P values`="Reference", Category="Time of year", .before = 24)|>
-    dplyr::add_row(Group = "2021/22", Estimate=0, CI="", `P values`="Reference", Category="Year", .before =28)|>
+    dplyr::add_row(Group = "Female", Estimate=1, CI="", `P values`="Reference", Category="Sex", .before = 2)|>
+    dplyr::add_row(Group = "5-10 yrs", Estimate=1, CI="", `P values`="Reference", Category="Age", .before = 4)|>
+    dplyr::add_row(Group = "White", Estimate=1, CI="", `P values`="Reference", Category="Ethnicity", .before = 7)|>
+    dplyr::add_row(Group = "3", Estimate=1, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
+    dplyr::add_row(Group = "Major Emergency Department", Estimate=1, CI="", `P values`="Reference", Category="Department type", .before =18)|>
+    dplyr::add_row(Group = "Weekday", Estimate=1, CI="", `P values`="Reference", Category="Day of the week", .before =20)|>
+    dplyr::add_row(Group = "Daytime 7am-7pm", Estimate=1, CI="", `P values`="Reference", Category="Time of day", .before = 22)|>
+    dplyr::add_row(Group = "Autumn", Estimate=1, CI="", `P values`="Reference", Category="Time of year", .before = 24)|>
+    dplyr::add_row(Group = "2021/22", Estimate=1, CI="", `P values`="Reference", Category="Year", .before =28)|>
     mutate(Group = str_remove_all(Group, "sex"))|>
     mutate(Group = str_remove_all(Group, "age"))|>
     mutate(Group = str_remove_all(Group, "ethnicity_broad"))|>
@@ -70,7 +74,7 @@ manipulation_regression<-function(data, frac_type){
     mutate(Group = str_remove_all(Group, "season"))|>
     mutate(Group = str_remove_all(Group, "der_financial_year"))
   
-  #Sickness rate table 
+  # table 
   regression_manipulation_table<-as_grouped_data(x=Allsummary, groups = c("Category"), columns=NULL) %>%
     as_flextable( hide_grouplabel = TRUE)%>%
     set_header_labels(
@@ -110,16 +114,17 @@ manipulation_regression<-function(data, frac_type){
 
 f_up_regression<-function(data){
   
-  regression_data<-formatting_data_for_regression(data)
+  regression_data<-formatting_data_for_regression(data)|>
+    mutate(outpat_attendance=as.numeric(outpat_attendance))
   
   manipulation_model<- glm(outpat_attendance ~ sex + age + ethnicity_broad + imd_quintiles+ dept_type + day
-                           + time + season +der_financial_year +type ,family=binomial(link='logit'),data=regression_data)
+                           + time + season +der_financial_year+type  ,family=binomial(link='logit'),data=regression_data)
   
   summary(manipulation_model)
   
   pval <- summary(manipulation_model)$coefficients[,4]
   Allsummary <- cbind(Estimate = coef(manipulation_model), confint(manipulation_model))
-  #Allsummary<-exp(manipulation_model)
+  Allsummary<-exp(Allsummary)
   Allsummary<-cbind(Allsummary, pvalues = pval)
   Allsummary<-as.data.frame(Allsummary)|>
     mutate(across(where(is.numeric), round, digits=2))|>
@@ -129,24 +134,24 @@ f_up_regression<-function(data){
     tibble::rownames_to_column("Group")|>
     dplyr::select(-pvalues, -'2.5 %', -'97.5 %')|>
     mutate(Category=ifelse(grepl('sex', Group), "Sex",ifelse(grepl('age', Group), "Age",ifelse(grepl('ethnicity', Group),
-                          "Ethnicity",ifelse(grepl('imd', Group), "IMD Quintiles",ifelse(grepl('dept', Group), "Department type",
-                        ifelse(grepl('day', Group), "Day of the week",ifelse(grepl('time', Group), "Time of day",
-                        ifelse(grepl('season', Group), "Time of year",ifelse(grepl('der_', Group), "Year",
-                                  ifelse(grepl('type', Group), "Fracture type","")))))))))))
+                                                                                               "Ethnicity",ifelse(grepl('imd', Group), "IMD Quintiles",ifelse(grepl('dept', Group), "Department type",
+                                                                                                                                                              ifelse(grepl('day', Group), "Day of the week",ifelse(grepl('time', Group), "Time of day",
+                                                                                                                                                                                                                   ifelse(grepl('season', Group), "Time of year",ifelse(grepl('der_', Group), "Year",
+                                                                                                                                                                                                                                                                        ifelse(grepl('type', Group), "Fracture type","")))))))))))
   
   Allsummary$Category<-factor(Allsummary$Category, levels=c('','Sex', 'Age', 'Ethnicity', 'IMD Quintiles', 'Department type' , 'Day of the week', 'Time of day', 'Time of year' , 'Year', 'Fracture type'))
   
   Allsummary<- Allsummary|>
-    dplyr::add_row(Group = "Female", Estimate=0, CI="", `P values`="Reference", Category="Sex", .before = 2)|>
-    dplyr::add_row(Group = "5-10 yrs", Estimate=0, CI="", `P values`="Reference", Category="Age", .before = 4)|>
-    dplyr::add_row(Group = "White", Estimate=0, CI="", `P values`="Reference", Category="Ethnicity", .before = 7)|>
-    dplyr::add_row(Group = "3", Estimate=0, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
-    dplyr::add_row(Group = "Major Emergency Department", Estimate=0, CI="", `P values`="Reference", Category="Department type", .before =18)|>
-    dplyr::add_row(Group = "Weekday", Estimate=0, CI="", `P values`="Reference", Category="Day of the week", .before =20)|>
-    dplyr::add_row(Group = "Daytime 7am-7pm", Estimate=0, CI="", `P values`="Reference", Category="Time of day", .before = 22)|>
-    dplyr::add_row(Group = "Autumn", Estimate=0, CI="", `P values`="Reference", Category="Time of year", .before = 24)|>
-    dplyr::add_row(Group = "2021/22", Estimate=0, CI="", `P values`="Reference", Category="Year", .before =28)|>
-    dplyr::add_row(Group = "Forearm", Estimate=0, CI="", `P values`="Reference", Category="Fracture type", .before =34)|>
+    dplyr::add_row(Group = "Female", Estimate=1, CI="", `P values`="Reference", Category="Sex", .before = 2)|>
+    dplyr::add_row(Group = "5-10 yrs", Estimate=1, CI="", `P values`="Reference", Category="Age", .before = 4)|>
+    dplyr::add_row(Group = "White", Estimate=1, CI="", `P values`="Reference", Category="Ethnicity", .before = 7)|>
+    dplyr::add_row(Group = "3", Estimate=1, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
+    dplyr::add_row(Group = "Major Emergency Department", Estimate=1, CI="", `P values`="Reference", Category="Department type", .before =18)|>
+    dplyr::add_row(Group = "Weekday", Estimate=1, CI="", `P values`="Reference", Category="Day of the week", .before =20)|>
+    dplyr::add_row(Group = "Daytime 7am-7pm", Estimate=1, CI="", `P values`="Reference", Category="Time of day", .before = 22)|>
+    dplyr::add_row(Group = "Autumn", Estimate=1, CI="", `P values`="Reference", Category="Time of year", .before = 24)|>
+    dplyr::add_row(Group = "2021/22", Estimate=1, CI="", `P values`="Reference", Category="Year", .before =28)|>
+    dplyr::add_row(Group = "Forearm", Estimate=1, CI="", `P values`="Reference", Category="Fracture type", .before =34)|>
     mutate(Group = str_remove_all(Group, "sex"))|>
     mutate(Group = str_remove_all(Group, "age"))|>
     mutate(Group = str_remove_all(Group, "ethnicity_broad"))|>
@@ -158,14 +163,14 @@ f_up_regression<-function(data){
     mutate(Group = str_remove_all(Group, "der_financial_year"))|>
     mutate(Group = str_remove_all(Group, "type"))
   
-  #Sickness rate table 
+  # table 
   regression_manipulation_table<-as_grouped_data(x=Allsummary, groups = c("Category"), columns=NULL) %>%
     as_flextable( hide_grouplabel = TRUE)%>%
     set_header_labels(
-                      Group= "",
-                      Estimate="Odds Ratio",
-                      CI="Confidence Intervals",
-                      `P values`= "P value" )   %>%
+      Group= "",
+      Estimate="Odds Ratio",
+      CI="Confidence Intervals",
+      `P values`= "P value" )   %>%
     align( part="all", align="right")|>
     align(j=1, part="all", align= "left")|>
     align(i = 3,  align = "left")%>%
@@ -195,4 +200,13 @@ f_up_regression<-function(data){
     htmltools_value(ft.align = "left")    
   
   
+  
 }
+#
+
+
+
+
+
+
+

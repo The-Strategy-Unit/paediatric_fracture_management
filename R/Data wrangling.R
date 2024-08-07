@@ -50,12 +50,28 @@ England_population_data<- function(filename) {
 
 formatting_sus_data<- function(filename) {
 
+  ed_hrg<-read.csv("Data/ed_hrg.csv")
+  op_hrg<-read.csv("Data/op_hrg.csv")|>
+    mutate(treatment_function_code=as.character(treatment_function_code))
   ethnicity_lookup<-read.csv("Data/ethnicity_lookup.csv")
   imd_lookup<-read.csv("Data/imd2019lsoa.csv")|>
     clean_names()
   
     data <- read.csv(filename) |>
     clean_names()|>
+      subset(!grepl('*carpal*', description))|> # Remove wrist bone fractures
+      subset(!grepl('*scaphoid*', description))|>
+      subset(!grepl('*perilunate*', description))|>
+      subset(!grepl('*lunate*', description))|>
+      subset(!grepl('*trapezium*', description))|>
+      subset(!grepl('*trapezoidal*', description))|>
+      subset(!grepl('*pisiform*', description))|>
+      subset(!grepl('*lunate*', description))|>
+      subset(!grepl('*hamate*', description))|>
+      subset(!grepl('*capitate*', description))|>
+      subset(!grepl('*triquetral*', description))|>
+      subset(!grepl('*navicular*', description))|>
+      subset(!grepl('*great toe*', description))|>
       mutate(type=ifelse(type=="Wrist", "Forearm", type))|>
   mutate(der_activity_month= paste0(der_activity_month, "01")) |>
   mutate(der_activity_month= as.Date(der_activity_month, format="%Y%m%d")) |> #Format date
@@ -105,8 +121,13 @@ formatting_sus_data<- function(filename) {
                                      imd=="7"|imd=="8"~ "4",
                                      imd=="9"|imd=="10"~ "5"))|>
       mutate(imd_quintiles=ifelse(is.na(imd_quintiles), "Missing/Outside England", imd_quintiles))|>
-      mutate(imd_quintiles=factor(imd_quintiles, levels=c("1","2","3","4", "5", "Missing/Outside England")))
-    
+      mutate(dept_grouping_for_HRG= case_when(ec_department_type=="1"|ec_department_type=="2" ~ 1,
+                                              ec_department_type=="3"|ec_department_type=="4"|ec_department_type=="5" ~ 3))|>
+      left_join(ed_hrg, by=c("sus_hrg_code"="hrg_code", "dept_grouping_for_HRG"="dept_type"))|>
+      mutate(outpat_attendance=ifelse(treatment_function_code %in% c("110", "214", "111", "115" ), "1", "0"))|>
+      left_join(op_hrg, by=c("treatment_function_code", "outpatient_core_hrg"="op_attendance_code"))|>
+      mutate(outpat_procedure_done=ifelse(outpatient_procedure!="NULL", "1", "0"))|>
+      mutate(outpat_procedure_done=ifelse(outpatient_procedure %in% c("X621", "X622","X623", "X628", "X629"), "0", outpat_procedure_done)) #Set assessment codes to no procedure
 
  return(data)
 }
@@ -131,20 +152,14 @@ formatting_for_epidemiology_agegroups<- function(paed_fractures, england_pop) {
 
 formatting_for_epidemiology_icb<- function(fractures, old_ccg_codes, population, icb_codes) {
   
-  old_ccg_codes <- read.csv(old_ccg_codes)
-  icb_codes <- read.csv(icb_codes)
+  provider_to_icb<-read.csv("Data/providers_to_icb_lookup.csv")
   
   data<-fractures|> 
     filter(der_financial_year=="2023/24")|>
-    summarise(frac_no=n(), .by=c(type, der_commissioner_code))|>
-    left_join(old_ccg_codes[,c("ccg","icb22cdh")], by=c("der_commissioner_code"="ccg"))|>
-    full_join(population, 
-              by=c("der_commissioner_code"="sicb_code"))|>
-    mutate(der_commissioner_code=ifelse(!is.na(icb_2023_name),icb22cdh, der_commissioner_code))|>
-    left_join(icb_codes[,c("ICB23CDH", "ICB23NM")], by=c("der_commissioner_code"="ICB23CDH"))|>
-    mutate(icb_2023_name=ifelse(is.na(icb_2023_name),ICB23NM, icb_2023_name))|>
-    group_by(icb_2023_name ,type)|>
-    summarise(frac_no=sum(frac_no), pop_count=sum(pop_count, na.rm=TRUE))|>
+    left_join(provider_to_icb, by=c("der_provider_code"))|>
+    summarise(frac_no=n(), .by=c(type, icb_name))|>
+    full_join(population|>group_by(icb_2023_name)|>summarise(pop_count=sum(pop_count)), 
+              by=c("icb_name"="icb_2023_name"))|>
     mutate(incidence=(frac_no/pop_count)*100000)
   
   return(data)
@@ -166,11 +181,34 @@ removing_low_no_trusts<-function(data){
   filter(der_financial_year=="2022/23")|>
   group_by(der_provider_code)|>
   summarise(ed_attendances=n())|>
+  filter(str_starts(der_provider_code, "R"))|>
   filter(ed_attendances>=120)
   
   return(trusts_with_120_attendances)
   
 }
+
+
+# Calculating the number of x-rays by trust
+calculating_xrays_by_trust<-function(data, trusts_included){
+  
+  provider_names<-read.csv("Data/provider_names.csv")
+  
+  xrays_by_trust<-data|>
+    filter(der_financial_year=="2022/23")|>
+    # filter(ec_department_type=="1")|>
+    group_by(type, der_provider_code, xray)|>
+    summarise(count=n())|>
+    group_by(type, der_provider_code)|>
+    left_join(provider_names, by=c("der_provider_code"="code"))|>
+    filter((der_provider_code %in% trusts_included$der_provider_code) & !is.na(name))|>
+    group_by(der_provider_code, type)|>
+    mutate(Percentage = round(count / sum(count)*100, 2), )|>
+    filter(xray=="1" )
+  
+  
+}
+
 
 # Calculating the number of follow ups by trust
 calculating_f_up_by_trust<-function(data, trusts_included){
@@ -179,16 +217,16 @@ calculating_f_up_by_trust<-function(data, trusts_included){
   
   f_up_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
-   # filter(ec_department_type=="1")|>
-    group_by(type, der_provider_code, outpat_attendance)|>
+    group_by(type, der_provider_code, outpat_attendance, outpat_procedure_done, der_contact_type )|>
     summarise(count=n())|>
-    group_by(type, der_provider_code)|>
     left_join(provider_names, by=c("der_provider_code"="code"))|>
     filter((der_provider_code %in% trusts_included$der_provider_code) & !is.na(name))|>
     group_by(der_provider_code, type)|>
     mutate(Percentage = round(count / sum(count)*100, 2), )|>
-    filter(outpat_attendance=="1" )
-  
+    filter(outpat_attendance=="1" & outpat_procedure_done=="0")|>
+    mutate(der_contact_type=case_when(der_contact_type=="F2F" ~ "Face-to-Face",
+                                      der_contact_type=="NF2F" ~ "Virtual",
+                                        der_contact_type=="N/A" ~ "N/A"))
   
 }
 
@@ -227,4 +265,30 @@ calculating_manipulations_theatre_vs_ed<-function(data, trusts_included){
     mutate(Percentage = round(count / sum(count)*100, 2))
   
   return(proportion_mua_in_theatre_vs_ED)
+}
+
+# Formating Code lists for the appendix
+
+
+formatting_code_list<-function(data){
+
+fracture_codes<-read.csv(data)|>
+  subset(!grepl('*carpal*', description))|>
+  subset(!grepl('*scaphoid*', description))|>
+  subset(!grepl('*perilunate*', description))|>
+  subset(!grepl('*lunate*', description))|>
+  subset(!grepl('*trapezium*', description))|>
+  subset(!grepl('*trapezoidal*', description))|>
+  subset(!grepl('*pisiform*', description))|>
+  subset(!grepl('*lunate*', description))|>
+  subset(!grepl('*hamate*', description))|>
+  subset(!grepl('*capitate*', description))|>
+  subset(!grepl('*triquetral*', description))|>
+  subset(!grepl('*navicular*', description))|>
+  subset(!grepl('*great toe*', description))|>
+  mutate(code=as.character(code))|>
+  mutate(type=ifelse(type=="Wrist"| type=="Forearm", "Wrist/Forearm", type))
+
+return(fracture_codes)
+
 }

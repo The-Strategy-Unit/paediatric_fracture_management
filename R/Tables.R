@@ -5,7 +5,7 @@ table_of_total_incidence_rate<-function(data){
   
   data<- data|>
   filter(der_financial_year=="2023/24")|>
-  mutate(incidence=round(incidence,1))|>
+  mutate(incidence=round(incidence,0))|>
   select(type, group_labels, incidence)|>
   spread(key=group_labels, value=incidence)|>
   left_join(
@@ -13,7 +13,7 @@ table_of_total_incidence_rate<-function(data){
         filter(der_financial_year=="2023/24")|>
         group_by(type)|>
         summarise(frac_no=sum(frac_no), pop_count=sum(pop_count))|>
-        mutate(Total=round((frac_no/pop_count)*100000,1)))[,c("type", "Total")], 
+        mutate(Total=round((frac_no/pop_count)*100000,0)))[,c("type", "Total")], 
     by=c("type")
   )|>
   flextable() |>
@@ -43,21 +43,21 @@ table_of_icb_incidence_rate<-function(data){
   
  data|>
 as.data.frame()|>
-  select(icb_2023_name, type, incidence)|>
-  mutate(incidence=round(incidence,1))|>
+  select(icb_name, type, incidence)|>
+  mutate(incidence=round(incidence,0))|>
   spread(key=type, value=incidence)|>
   left_join(
     ( data|>
         as.data.frame()|>  
-        group_by(icb_2023_name)|>
-        summarise(frac_no=sum(frac_no), pop_count=sum(pop_count))|>
-        mutate(Total=round((frac_no/pop_count)*100000,1)))[,c("icb_2023_name", "Total")], 
-    by=c("icb_2023_name")
+        group_by(icb_name)|>
+        summarise(frac_no=sum(frac_no), pop_count=mean(pop_count))|>
+        mutate(Total=round((frac_no/pop_count)*100000,0)))[,c("icb_name", "Total")], 
+    by=c("icb_name")
   )|>
-  filter(!is.na(icb_2023_name))|>
+  filter(!is.na(icb_name))|>
   arrange(desc(Total))|>
   flextable() |>
-  set_header_labels(icb_2023_name="ICB")|>
+  set_header_labels(icb_name="ICB")|>
   align(part = "header", align = "center")|>
   align(j=1, align = "left")|>
   align(part = "body", align = "center")|>
@@ -176,14 +176,26 @@ summary_values_by_trust_prop_in_ed<-function(frac_type){
 }
 
 # Summary values by trust- follow up
-summary_values_by_trust_fup<-function(frac_type){
+summary_values_by_trust_fup<-function(data, frac_type){
   
-  data_to_summarise<-f_up_by_trust|>
+  data_to_summarise<-data|>
+    filter(type==frac_type)|>
+    reframe(Percentage=sum(Percentage), by=c(der_provider_code), name,outpat_attendance, outpat_procedure_done)
+  
+  summary_values_by_trust(data_to_summarise)
+  
+}
+
+# Summary values by trust- xray
+summary_values_by_trust_xray<-function(data, frac_type){
+  
+  data_to_summarise<-data|>
     filter(type==frac_type)
   
   summary_values_by_trust(data_to_summarise)
   
 }
+
 
 ## SNOMED code tables
 snomed_code_tables<-function(data, frac_type, number1, number2){

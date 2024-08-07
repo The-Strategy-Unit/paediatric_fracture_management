@@ -23,7 +23,7 @@ list(
   ),
   tar_target(
     paed_fractures,
-    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/paeds_fractures.csv")
+    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/paediatric_fractures.csv")
   ),
   tar_target(
     epidemiology_agegroups,
@@ -47,6 +47,10 @@ list(
     removing_low_no_trusts(paed_fractures)
   ),
   tar_target(
+    xrays_by_trust,
+    calculating_xrays_by_trust(paed_fractures, trusts_with_120_attendances)
+  ),
+  tar_target(
     f_up_by_trust,
     calculating_f_up_by_trust(paed_fractures, trusts_with_120_attendances)
   ),
@@ -58,7 +62,10 @@ list(
     proportion_mua_in_theatre_vs_ED,
     calculating_manipulations_theatre_vs_ed(paed_fractures, trusts_with_120_attendances)
   ),
-  
+  tar_target(
+    fracture_codes,
+    formatting_code_list("Data/Snomed fracture codes for NCDR.csv")
+  ),
   
   
   # Maps

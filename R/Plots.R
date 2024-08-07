@@ -6,7 +6,7 @@ total_incidence_rate_map<-function(shapefile, data){
   
   
   epidemiology_icb<-data|>
-    left_join(shapefile, by=c("icb_2023_name"="ICB23NM"))|>
+    left_join(shapefile, by=c("icb_name"="ICB23NM"))|>
     st_as_sf()
   
   
@@ -15,7 +15,7 @@ total_incidence_rate_map<-function(shapefile, data){
   
   ggplot()+
     geom_sf(data=icb_shapefile, fill=NA, linewidth=0.8) +
-    geom_sf(data = (epidemiology_icb|>group_by(icb_2023_name)|>summarise(incidence=sum(incidence))),
+    geom_sf(data = (epidemiology_icb|>group_by(icb_name)|>summarise(incidence=sum(incidence))),
             aes(fill =incidence), colour = NA,alpha = 0.8) +
     scale_fill_stepsn(breaks=breaks2, colors=color2)+
     theme_void() +
@@ -39,7 +39,7 @@ incidence_maps_by_fracture_type<-function(data, fracture_type, title){
   icb_shapefile<-st_read("https://services1.arcgis.com/ESMARspQHYMw9BZ9/arcgis/rest/services/Integrated_Care_Boards_April_2023_EN_BFC/FeatureServer/0/query?outFields=*&where=1%3D1&f=geojson")
   
   data<-data|>
-    left_join(icb_shapefile, by=c("icb_2023_name"="ICB23NM"))|>
+    left_join(icb_shapefile, by=c("icb_name"="ICB23NM"))|>
     st_as_sf()
   
   color2<-c("#4575b4", "#91bfdb","#e0f3f8", "#ffffbf" , "#fee090"  ,"#fc8d59" ,"#d73027")
@@ -47,7 +47,7 @@ incidence_maps_by_fracture_type<-function(data, fracture_type, title){
 ggplot()+
   # base_map(bbox = my_bbox, basemap = 'voyager') +
   geom_sf(data=icb_shapefile, fill=NA, linewidth=0.8) +
-  geom_sf(data = (data|>filter(type==fracture_type)|>group_by(icb_2023_name)|>summarise(incidence=sum(incidence))),
+  geom_sf(data = (data|>filter(type==fracture_type)|>group_by(icb_name)|>summarise(incidence=sum(incidence))),
           aes(fill =incidence), colour = NA,alpha = 0.8) +
   scale_fill_stepsn(n.breaks =7, colors=color2)+
   theme_void() +
@@ -64,8 +64,9 @@ ggplot()+
 
 fracture_type_layout<-function(data){
   
-  data|>ggplot()+
-    geom_line(aes(x=der_activity_month, y=Percentage), linewidth=1.2)+
+  data|>ggplot(aes(x=der_activity_month, y=Percentage))+
+    geom_smooth(aes(group=der_financial_year),formula=y~1,method="lm",col="#f9bf07",se=FALSE, size=1)+
+    geom_line(linewidth=1.2)+
     facet_wrap(~type, ncol=3, scale="free")+
     su_theme()+
     labs(x ="", y = "Percentage")+
@@ -112,23 +113,55 @@ plotting_ed_vs_utc<- function(data, variable, title, scale){
 }
 
 
-# Proportion plots by trust and type
-plots_of_proportion_by_trust<-function(data, fracture_site, title, scale){
+# Proportion plots by trust and type FOLLOW UP
+plots_of_proportion_by_trust_fup<-function(data, fracture_site, title, scale){
   
 data|>
     filter(type==fracture_site & !is.na(count))|>
-    ggplot(aes(x=reorder(der_provider_code, -Percentage), Percentage))+
-    geom_col(fill="#686f73", colour="black")+
+    filter(der_contact_type!="N/A")|>
+    reframe(total_percent=sum(Percentage), by=c(der_provider_code), der_contact_type, name, Percentage, outpat_attendance, outpat_procedure_done)|>
+    mutate(der_contact_type=factor(der_contact_type, levels=c("Virtual", "Face-to-Face")))|>
+    ggplot(aes(x=reorder(der_provider_code, -total_percent), Percentage, group=der_contact_type, fill=der_contact_type))+
+    geom_bar(position = "stack", stat="identity")+
     su_theme()+
-    theme(title=element_text(size=18, colour="black"),
+    theme(legend.title=element_blank(),
+          legend.position =c(0.75,0.8),
+          legend.text=element_text(size=16),
+          title=element_text(size=18, colour="black"),
           plot.title.position = "plot",
           axis.text=element_text(size=16, colour="black"),
           axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank())+
     labs(x="Providers", title=title, subtitle="")+
-    scale_y_continuous(expand=c(0,0), limits=c(0,scale))
+    scale_y_continuous(expand=c(0,0), limits=c(0,scale))+
+    scale_fill_manual(values=c("#BCBAB8","#686f73" ))
 
 }
+
+
+# Proportion plots by trust and type MANIPULATIONS
+plots_of_proportion_by_trust<-function(data, fracture_site, title, scale){
+  
+  data|>
+    filter(type==fracture_site & !is.na(count))|>
+    ggplot(aes(x=reorder(der_provider_code, -Percentage), Percentage))+
+    geom_bar(position = "stack", stat="identity")+
+    su_theme()+
+    theme(legend.title=element_blank(),
+          legend.position = "top",
+          title=element_text(size=18, colour="black"),
+          plot.title.position = "plot",
+          axis.text=element_text(size=16, colour="black"),
+          axis.title=element_text(size=18, colour="black"),
+          axis.text.x=element_blank())+
+    labs(x="Providers", title=title, subtitle="")+
+    scale_y_continuous(expand=c(0,0), limits=c(0,scale))+
+    scale_fill_manual(values=c("#686f73" ))
+  
+}
+
+
+
 
 # Proportion of fractures manipulated in theatre vs ed
 
