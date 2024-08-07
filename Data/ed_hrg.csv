@@ -1,0 +1,25 @@
+﻿hrg_code,hrg_name,dept_type,ed_cost
+VB01Z,"Emergency Medicine, Any Investigation with Category 5 Treatment",1,410
+VB02Z,"Emergency Medicine, Category 3 Investigation with Category 4 Treatment",1,410
+VB03Z,"Emergency Medicine, Category 3 Investigation with Category 1-3 Treatment",1,288
+VB04Z,"Emergency Medicine, Category 2 Investigation with Category 4 Treatment",1,288
+VB05Z,"Emergency Medicine, Category 2 Investigation with Category 3 Treatment",1,221
+VB06Z,"Emergency Medicine, Category 1 Investigation with Category 3-4 Treatment",1,184
+VB07Z,"Emergency Medicine, Category 2 Investigation with Category 2 Treatment",1,184
+VB08Z,"Emergency Medicine, Category 2 Investigation with Category 1 Treatment",1,168
+VB09Z,"Emergency Medicine, Category 1 Investigation with Category 1-2 Treatment",1,126
+VB10Z,"Emergency Medicine, Dental Care",1,137
+VB11Z,"Emergency Medicine, No Investigation with No Significant Treatment",1,85
+VB99Z,"Emergency Medicine, Patient Dead On Arrival",1,85
+VB01Z,"Emergency Medicine, Any Investigation with Category 5 Treatment",3,85
+VB02Z,"Emergency Medicine, Category 3 Investigation with Category 4 Treatment",3,85
+VB03Z,"Emergency Medicine, Category 3 Investigation with Category 1-3 Treatment",3,85
+VB04Z,"Emergency Medicine, Category 2 Investigation with Category 4 Treatment",3,85
+VB05Z,"Emergency Medicine, Category 2 Investigation with Category 3 Treatment",3,85
+VB06Z,"Emergency Medicine, Category 1 Investigation with Category 3-4 Treatment",3,85
+VB07Z,"Emergency Medicine, Category 2 Investigation with Category 2 Treatment",3,85
+VB08Z,"Emergency Medicine, Category 2 Investigation with Category 1 Treatment",3,85
+VB09Z,"Emergency Medicine, Category 1 Investigation with Category 1-2 Treatment",3,85
+VB10Z,"Emergency Medicine, Dental Care",3,85
+VB11Z,"Emergency Medicine, No Investigation with No Significant Treatment",3,85
+VB99Z,"Emergency Medicine, Patient Dead On Arrival",3,85

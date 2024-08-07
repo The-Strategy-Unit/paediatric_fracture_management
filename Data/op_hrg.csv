@@ -1,0 +1,17 @@
+﻿treatment_function_code,treatment_function_description,op_attendance_code,op_attendance_description,op_cost
+110,Trauma and Orthopaedic Service,WF01A,"Follow Up Attendance - 
+Single Professional",69
+214,Paediatric Trauma and Orthopaedic Service,WF01A,"Follow Up Attendance - 
+Single Professional",97
+110,Trauma and Orthopaedic Service,WF01B,"First Attendance - 
+Single Professional",175
+214,Paediatric Trauma and Orthopaedic Service,WF01B,"First Attendance - 
+Single Professional",175
+110,Trauma and Orthopaedic Service,WF02A,"Follow Up Attendance - 
+Multi Professional",76
+214,Paediatric Trauma and Orthopaedic Service,WF02A,"Follow Up Attendance - 
+Multi Professional",118
+110,Trauma and Orthopaedic Service,WF02B,"First Attendance - 
+Multi Professional",183
+214,Paediatric Trauma and Orthopaedic Service,WF02B,"First Attendance - 
+Multi Professional",196

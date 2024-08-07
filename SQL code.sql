@@ -80,6 +80,8 @@ SELECT a.*
       ,b.[Ethnic_Group] 
       ,b.[Admission_Date]
       ,b.[HRG_Code] as inpatient_HRG
+	  ,b.[FCE_HRG] as inpatient_FCE_HRG
+	  ,b.[Spell_Core_HRG] as inpatient_spell_HRG
       ,b.[Der_Primary_Diagnosis_Code]
       ,b.[Der_Primary_Procedure_Code]
 
@@ -142,14 +144,12 @@ INTO [NHSE_Sandbox_StrategyUnit.dbo.paedfractemp5]
 FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp4] a
 left join (select * 
           from [NHSE_SUSPlus_Live].[dbo].[tbl_Data_SEM_OPA] 
- where (Main_Specialty_Code = '110' OR 
-	   Main_Specialty_Code = '171' OR 
-	   Treatment_Function_Code ='110' OR
+ where (Treatment_Function_Code ='110' OR
 	   Treatment_Function_Code ='111' OR
 	   Treatment_Function_Code ='115' OR
 	   Treatment_Function_Code ='214' OR 
 	   Treatment_Function_Code ='650' OR
-	    (Main_Specialty_Code = '420' AND  Treatment_Function_Code ='420' AND
+	    (Treatment_Function_Code ='420' AND
 		(OPA_Referral_Source='10' OR OPA_Referral_Source='04' )) )) b
 
 on a.Der_Pseudo_NHS_Number=b.Der_Pseudo_NHS_Number AND
@@ -160,13 +160,11 @@ on a.Der_Pseudo_NHS_Number=b.Der_Pseudo_NHS_Number AND
 --- Adding in count of number of outpatient attendances	
 
 	select  a.*
-	        ,(case when ((Main_Specialty_Code = '110' OR 
-						  Main_Specialty_Code = '171' OR 
-						  Treatment_Function_Code ='110' OR
+	        ,(case when (( Treatment_Function_Code ='110' OR
 						  Treatment_Function_Code ='111' OR
 						   Treatment_Function_Code ='115' OR
 					       Treatment_Function_Code ='214' OR 
-						   (Main_Specialty_Code = '420' AND  Treatment_Function_Code ='420' AND
+						   (Treatment_Function_Code ='420' AND
 						   (OPA_Referral_Source='10' OR OPA_Referral_Source='04' )) )) then 1 else 0 end) as outpat_attendance ---non-physio outpatient attendances
 	        ,b.outpat_attendance_number
 			,b.physio_appt_number
@@ -176,7 +174,7 @@ on a.Der_Pseudo_NHS_Number=b.Der_Pseudo_NHS_Number AND
 	       LEFT JOIN (SELECT 
 		                Der_Pseudo_NHS_Number
 						,ArrivalDate
-						,count(case Appointment_Date when NULL then 0 else 1 end)as outpat_attendance_number
+						,count(case when Appointment_Date IS NOT NULL then 1 end)as outpat_attendance_number
 						,count(case when physio_appt=1 then 1 end) as physio_appt_number
                      FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp5]
                     GROUP BY Der_Pseudo_NHS_Number, ArrivalDate) b
@@ -191,6 +189,7 @@ FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.pae
 where rownum2=1
 
 
+
 SELECT Der_Pseudo_NHS_Number, ArrivalDate, EC_Attendance_Number, ArrivalTime , COUNT(*) 
 FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final] 
 GROUP BY Der_Pseudo_NHS_Number, ArrivalDate, EC_Attendance_Number, ArrivalTime
@@ -200,6 +199,15 @@ SELECT *
 FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final] 
 
 
+
+----where Main_Specialty_Code='420'
+---Checking counts
+SELECT COUNT(DISTINCT CONCAT(Der_Pseudo_NHS_Number, ArrivalDate)) AS unique_count
+FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp1]
+
+SELECT COUNT(DISTINCT CONCAT(Der_Pseudo_NHS_Number, ArrivalDate)) AS unique_count
+FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final]
+
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp1]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp2]
@@ -207,3 +215,40 @@ drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.d
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp4]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp5]
 drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp6]
+---drop table [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final]
+
+
+
+---SELECT TOP (1000) 
+ ---     count([EC_Attendance_Number]) as [number],
+---	  [Discharge_Destination_SNOMED_CT]
+---  FROM [NHSE_SUSPlus_Live].[dbo].[tbl_Data_SUS_EC]
+ --- where [Der_Age_At_CDS_Activity_Date]<=16 AND
+  ---      [Der_Financial_Year] = '2022/23' AND
+---		Der_EC_Diagnosis_All!= 'NULL'
+---group by   [Discharge_Destination_SNOMED_CT]
+
+--select Der_Activity_Month
+---,count(Der_Pseudo_NHS_number) as count
+--- From [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp]
+--- group by Der_Activity_Month
+
+--- Emergency department activity 
+SELECT
+      [Der_Provider_Code]
+      ,[Der_Financial_Year]
+	  ,[EC_Department_Type]
+	  ,count(distinct[EC_Ident]) as count
+	  
+  INTO [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.total_ED_attendances] 	 
+  FROM [NHSE_SUSPlus_Live].[dbo].[tbl_Data_SUS_EC] 
+  
+  where [Der_Age_At_CDS_Activity_Date]<=16 AND
+        [Der_EC_Arrival_Date_Time] between '2018-04-01' AND '2024-03-31' 
+
+		group by Der_Financial_Year, Der_Provider_Code, EC_Department_Type
+
+		select *
+		from[NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.total_ED_attendances] 
+
+
