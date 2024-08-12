@@ -185,11 +185,13 @@ plots_of_theatre_vs_ed<-function(data, fracture_site, title){
           axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank(),
           legend.title=element_blank(),
-          legend.position="top",
-          legend.text=element_text(size=16))+
+          legend.position=c(0.65,-0.3),
+          legend.text=element_text(size=14),
+          plot.margin = unit(c(0, 0, 1, 0), 
+                             "inches"))+
     labs(x="Providers", y="Proportion", title=title, subtitle="")+
-    scale_y_continuous(expand=c(0,0), limits=c(0,100))+
-    scale_fill_manual(values=c("#f9bf07" , "#686f73"))
+    scale_y_continuous(expand=c(0,0), limits=c(0,101))+
+    scale_fill_manual(values=c("#f9bf07", "black" , "#686f73"))
   
   
 }

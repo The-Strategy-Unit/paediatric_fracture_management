@@ -5,6 +5,7 @@ proportions_manipulated<-function(frac_type){
   
   a<-manipulations_by_trust|>
     filter(type==frac_type)|>
+    mutate(mua=ifelse(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre" , "Manipulated in theatre", mua))|>
     group_by(der_provider_code)|>
     summarise(Percentage=round((count/sum(count))*100,1), total=sum(count), mua, count)
   
@@ -52,6 +53,7 @@ calculating_percentage_change<-function(frac_type){
   number<-calculating_saving(frac_type)
   
   d<-manipulations_by_trust|>
+    mutate(mua=ifelse(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre" , "Manipulated in theatre", mua))|>
     filter(type==frac_type & mua=="Manipulation in theatre")|>
     ungroup()|>
     summarise(current_total=sum(count, na.rm=TRUE))

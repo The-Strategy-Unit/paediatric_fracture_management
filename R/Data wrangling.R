@@ -53,6 +53,7 @@ formatting_sus_data<- function(filename) {
   ed_hrg<-read.csv("Data/ed_hrg.csv")
   op_hrg<-read.csv("Data/op_hrg.csv")|>
     mutate(treatment_function_code=as.character(treatment_function_code))
+  ip_hrg<-read.csv("Data/non_elec_inpat_costs_23_24.csv")
   ethnicity_lookup<-read.csv("Data/ethnicity_lookup.csv")
   imd_lookup<-read.csv("Data/imd2019lsoa.csv")|>
     clean_names()
@@ -90,8 +91,10 @@ formatting_sus_data<- function(filename) {
                                   age_sex_groups== "female11_16"~"Female 11-16 yrs",
       )) |>
       mutate(mua_in_theatre=ifelse(der_primary_procedure_code=="NULL", 0, 1))|>
-      mutate(mua=case_when(manipulation_in_ed=="1" ~ "Manipulation in ED", 
-                           mua_in_theatre=="1"~ "Manipulation in theatre", 
+      mutate(mua_in_theatre=ifelse(admission_date!="NULL", "1", "0"))|>
+      mutate(mua=case_when(manipulation_in_ed=="1" & mua_in_theatre=="0" ~ "Manipulation in ED", 
+                           mua_in_theatre=="1" & manipulation_in_ed=="0" ~ "Manipulation in theatre", 
+                           mua_in_theatre=="1" & manipulation_in_ed=="1" ~ "Manipulation in ED & theatre", 
                            TRUE~"0"))|>
       mutate(sex=case_when(sex=="1" ~ "Male",
                            sex=="2"~ "Female",
@@ -127,8 +130,9 @@ formatting_sus_data<- function(filename) {
       mutate(outpat_attendance=ifelse(treatment_function_code %in% c("110", "214", "111", "115" ), "1", "0"))|>
       left_join(op_hrg, by=c("treatment_function_code", "outpatient_core_hrg"="op_attendance_code"))|>
       mutate(outpat_procedure_done=ifelse(outpatient_procedure!="NULL", "1", "0"))|>
-      mutate(outpat_procedure_done=ifelse(outpatient_procedure %in% c("X621", "X622","X623", "X628", "X629"), "0", outpat_procedure_done)) #Set assessment codes to no procedure
-
+      mutate(outpat_procedure_done=ifelse(outpatient_procedure %in% c("X621", "X622","X623", "X628", "X629"), "0", outpat_procedure_done)) |>#Set assessment codes to no procedure
+      left_join(ip_hrg, by=c("inpatient_spell_hrg"="hrg_code"))
+      
  return(data)
 }
 
@@ -238,6 +242,7 @@ calculating_manipulations_by_trust<-function(data, trusts_included){
   manipulations_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
     #filter(ec_department_type=="1")|>
+    mutate(mua=ifelse(mua=="Manipulation in ED & theatre", "Manipulation in ED", mua))|>
     summarise(count=n(), .by=c(type, der_provider_code, mua))|>
     spread(key = mua, value = count)|>
     mutate(`Manipulation in ED`=ifelse(is.na(`Manipulation in ED`) & !is.na(`Manipulation in theatre`), 0, `Manipulation in ED`))|>

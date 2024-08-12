@@ -32,7 +32,8 @@ manipulation_regression<-function(data, frac_type){
   
   regression_data<-formatting_data_for_regression(data)|>
   filter(type==frac_type)|>
-  filter(mua=="Manipulation in theatre"| mua=="Manipulation in ED")
+  filter(mua=="Manipulation in theatre"| mua=="Manipulation in ED")|>
+    mutate(mua_in_theatre=as.numeric(mua_in_theatre))
   
   manipulation_model<- glm(mua_in_theatre ~ sex + age + ethnicity_broad + imd_quintiles+ dept_type + day
                                    + time + season +der_financial_year ,family=binomial(link='logit'),data=regression_data)
