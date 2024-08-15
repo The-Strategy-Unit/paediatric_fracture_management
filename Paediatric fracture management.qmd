@@ -43,6 +43,9 @@ library(tibble)
 library(ggpubr)
 library(plotly)
 
+windowsFonts(`Segoe UI` = windowsFont('Segoe UI'))
+
+
 paed_fractures<-tar_read(paed_fractures)
 england_pop<-tar_read(england_pop)
 icb_pop<-tar_read(icb_pop)
@@ -71,6 +74,7 @@ total_ed_attendances<-read.csv("Z:/Strategic Analytics/Projects 2024/Paediatric 
   summarise(count=sum(count))
 
 
+
 ```
 
 ## Background (continued) {background-image="slide.png" background-size="contain"}
@@ -90,7 +94,7 @@ British Society for Children's Orthopaedic Surgery (BSCOS) guidance suggests tha
 
 The FORCE study found in children with a torus fracture of the distal radius there was no difference in outcomes between those who were offered of a bandage and immediate discharge (as per UK National Institute for Health and Clinical Excellence recommendations) and those receiving current treatment of rigid immobilisation and follow-up^4^.
 
-One study in Scotland found that uncomplicated paediatric clavicle fractures can be managed without x-rays in the ED as they do not influence ultimate management or add valuable information to clinicians' assessment^5^.
+One study in Scotland found that uncomplicated paediatric clavicle fractures can be managed without x-rays in the ED as they do not influence fracture management or add valuable information to clinicians' assessment^5^.
 :::
 
 <br>
@@ -108,7 +112,7 @@ One study in Scotland found that uncomplicated paediatric clavicle fractures can
 #### Manipulation of paediatric fractures
 
 ::: small
-A GIRFT report on Paediatric Trauma and Orthopaedic Surgery found that over 250 weeks of operating time a year had been dedicated to manipulation of the forearm and wrist between 2016 and 2019^1^. A significant proportion of these displaced or angulated wrist fractures could have been manipulated and cast in the emergency department rather than being admitted and treated in the operating theatre. The GIRFT report found significant variation between trusts in the number of manipulating being performed in theatre; if this number was reduced to the level in trusts with well-developed ED manipulation protocols, there would be an 80% (equivalent this number could be reduced by 80% (to 57 weeks or less).
+A GIRFT report on Paediatric Trauma and Orthopaedic Surgery found that over 250 weeks of operating time a year had been dedicated to manipulation of the forearm and wrist between 2016 and 2019^1^. A significant proportion of these displaced or angulated wrist fractures could have been manipulated and cast in the emergency department rather than being admitted and treated in the operating theatre. The GIRFT report found significant variation between trusts in the number of manipulating being performed in theatre. If the number of fractures manipulated in theatre was reduced to the level in trusts with well-developed ED manipulation protocols, there would be an 80% reduction in manipulations in theatre, reducing theatre time for forearm/wrist fractures to 57 weeks or less.
 
 Due to pressures on hospitals from the COVID-19 pandemic the British Orthopaedic Association developed guidelines for the early management of distal forearm fractures in children. A study conducted at one trust found following the implementation of these guidelines resulted in 86% of distal forearm fractures in children were manipulated in the ED, an increase from 32% prior to the COVID pandemic^2^. This saved approximately 63 hours of theatre time in the six-month study period.
 
@@ -134,22 +138,23 @@ The GIRFT report highlighted reluctance to perform procedures in the emergency d
 
 2)  Understand the trends in management of these fracture types over time, e.g. have changes in guidance during COVID-19 changed the trends in management of fractures in Emergency departments.
 
-3)  Investigate the variation in management of these fracture types between Trusts, and the potential activity and cost savings if there was more widespread conservative management, such as reducing unnecessary follow-ups appointments and manipulation in the Emergency Department rather than in theatre.
+3)  Investigate the variation in management of these fracture types between trusts, and the potential activity and cost savings if there was more widespread conservative management, such as reducing unnecessary follow-ups appointments and manipulation in the Emergency Department rather than in theatre.
 
 ## Data sources and Study population {background-image="slide.png" background-size="contain"}
-:::{.small}
-The data was taken from the Emergency care dataset (ECDS) and linked with records in the Outpatient and Admitted Patient Care Episode (APCE) datasets, all accessed through the National Commissioning Data Repository (NCDR).
 
-The study population included all those aged 16 and under that attended an Emergency care centre and had a SNOMED code for closed fractures of toe, clavicle, elbow or wrist recorded (see Appendices A-C for full code lists) in England between April 2018 and March 2024. 
+::: small
+Data were taken from the Emergency care dataset (ECDS) and linked with records in the Outpatient and Admitted Patient Care Episode (APCE) datasets, all accessed through the National Commissioning Data Repository (NCDR).
 
-We have focused on closed fractures as this is where there is scope for more conservative management; we have excluded open, pathological, osteoporotic and birth trauma fractures, alongside fractures of the great toe which should all be followed up. 
+The study population included all those aged 16 and under that attended an emergency care centre and had a SNOMED code for closed fractures of toe, clavicle, elbow or wrist recorded (see Appendices A-C for full code lists) in England between April 2018 and March 2024.
+
+This study focuses on closed fractures as this is where there is scope for more conservative management; open, pathological, osteoporotic and birth trauma fractures have been excluded, alongside fractures of the great toe which should all be followed up.
 
 Incidence rates were calculated using the Office of National Statistics (ONS) mid-year population estimates of those aged 16 years and under^1^.
 
 The coding of fractures is not sufficiently detailed and reliable to determine specific fracture types, and thus what would be the appropriate treatment at an individual patient level. However, we could calculate the proportion of children with each fracture type that:
 
 -   received a follow-up appointment
--   had a fracture manipulated in theatre
+-   had a fracture manipulated in theatre (only includes closed manipulations and not re-manipulations)
 -   had a fracture manipulated in the emergency department
 -   had a referral/appointment for physiotherapy
 -   had an X-ray in the emergency department
@@ -157,11 +162,11 @@ The coding of fractures is not sufficiently detailed and reliable to determine s
 Full details of the coding used to identify these procedures/attendances is included in Appendix D.
 :::
 
-::: {.smaller}
-1) https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland
+::: smaller
+1)  https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland
 :::
 
-## Characteristics of the cohort
+## Characteristics of the cohort {background-image="slide.png" background-size="contain"}
 
 ```{r}
 
@@ -181,8 +186,10 @@ t1flex()|>
     align(part = "body", align = "right")|>
   align(j=1, part = "body", align = "left")|>
     fontsize(size = 11, part = "all")|>
-    padding(padding = 0.5, part = "all", padding.top=NULL) |>
-  bold(bold = TRUE, part="header")
+    padding(padding = 0.2, part = "all", padding.top=NULL) |>
+  bold(bold = TRUE, part="header")|>
+      line_spacing(space = 0.85, part = "body")|>
+    htmltools_value(ft.align = "left")  
 
 
 ```
@@ -289,10 +296,12 @@ Only showing those fracture types recorded 10 or more times
 <br>
 
 The majority of fractures are recorded within the emergency care dataset under just a few snomed codes.
+
+There are codes available that specify whether a radius fracture is proximal or distal, but these are not used, instead the general code 'Closed fracture of radius (disorder)' is used. We have classified this as a forearm fracture but some of these fractures might be proximal radius and more accurately classified at elbow fractures.
+
+Fractures of great toe was excluded as these should be followed up, however \<10 codes related to the fracture of the great toe were recorded over the whole 6 yr period in England, suggesting that many of great toe fractures may be coded as 'Closed fracture of phalanx of foot (disorder)' and thus included within our dataset.
 :::
 :::
-
-
 
 ## Incidence of upper limb fractures by ICB (2023/2024) {background-image="slide.png" background-size="contain"}
 
@@ -347,16 +356,18 @@ tar_read(toe_incidence_rate_icb)
 :::
 
 ::: {.column width="33%"}
-<br>
 
-For all fracture types the incidence rates are high in the Cornwall and Isles of Scilly ICB area. There are also generally high rates of several fracture types in the Gloucester and Hereford and Worcestershire ICB areas.
+Incidence rates are based on the number of attendances within the ICB area, regardless of whether those attending are resident in the area, relative to the resident population.
+
+For all fracture types the incidence rates are high in the Cornwall and Isles of Scilly ICB area.
+
+There are also generally high rates of several fracture types in the Gloucester ICB, Shropshire, Telford and Wrekin ICB and Hereford and Worcestershire ICB areas. In these areas it is possible the higher incidence rates may at least in part be due to those living in Wales accessing emergency care centres in these areas.
 
 The fracture incidence rate is generally lowest is the South East of England, particularly in the London area.
 :::
 :::
 
 ## Table of incidence rates per 100,000 by ICB (2023/2024)
-
 ::: columns
 ::: {.column width="60%"}
 ```{r}
@@ -375,7 +386,8 @@ tar_read(table_icb_incidence_rate)
 :::
 :::
 
-## Proportion of ED attendances with a fracture code (2022/2023)
+## Proportion of ED attendances with a fracture code (2022/2023) {background-image="slide.png" background-size="contain"}
+
 Number of fractures per 10,000 emergency care attendances in those age 16 or under for each provider.
 
 ::: columns
@@ -387,7 +399,8 @@ proportion_per_provider<-total_ed_attendances|>
               group_by(der_provider_code)|>
               summarise(frac_number=n())), by=c("der_provider_code"))|>
     filter(str_starts(der_provider_code, "R"))|>
-  mutate(Proportion=(frac_number/count)*10000)
+  mutate(Proportion=(frac_number/count)*10000)|>
+  filter(!is.na(Proportion))
   
 proportion_per_provider|>
     ggplot(aes(x=reorder(der_provider_code, -Proportion), Proportion))+
@@ -404,16 +417,19 @@ proportion_per_provider|>
 ```
 :::
 
-
 ::: {.column width="40%"}
+::: small
 There is considerable variability between providers in the number fractures seen per 10,000 emergency care attendances.
 
-These differences could be due
-- Alternative provision locally e.g. Very few children attend the Royal Liverpool hospital with fractures as it is located close to Alder Hey, a specialist paediatric centre.
-- Difference in fracture rate in different area e.g. higher rates in Cornwall and generally lower rate in the London area
-- Coding/reporting issues resulting in not all fractures being recorded in the emergency departments.
-:::
+These differences could be due to:
 
+-   Alternative provision locally e.g. very few children attend the Royal Liverpool hospital with fractures as it is located close to Alder Hey, a specialist paediatric centre. Or an independent urgent care provision available locally.
+
+-   Difference in fracture rates in different areas e.g. higher rates in Cornwall and generally lower rate in the London area, which may be related levels of physical activity/visitors from out of area.
+
+-   Coding/reporting issues resulting in not all fractures being recorded in the emergency departments.
+:::
+:::
 :::
 
 ```{r, eval=FALSE}
@@ -432,7 +448,8 @@ plot_ly( x = ~der_financial_year, y = ~frac_number, type = 'scatter', mode = 'li
 
 ```
 
-## Seasonal trends fracture incidence rate
+## Seasonal trends fracture incidence rate {background-image="slide.png" background-size="contain"}
+
 ::: columns
 ::: {.column width="60%"}
 ```{r, fig.height=6, fig.width=10}
@@ -460,17 +477,15 @@ paed_fractures|>
           strip.text = element_text(face = "bold", size=16))+
     scale_y_continuous(limits=c(0,NA))
 
-```  
+```
 
+::: small
 For all fracture types incidence rates increase in the summer months, likely due to increases in children participating in physical activities.
-
 :::
 :::
 
-## Seasonal trends in Cornwall vs England
-::: columns
-::: {.column width="60%"}
-```{r}
+::: {.column width="40%"}
+```{r, fig.height=6, fig.width=10}
 
 test<-paed_fractures|>
   mutate(month=lubridate::month(der_activity_month))|>
@@ -530,21 +545,24 @@ paed_fractures|>
 
 
 ```
+
+::: small
+The incidence rate in Cornwall is higher year round compared to England as a whole. However, in the summer months the fracture incidence rate in Cornwall increases more than in England as a whole; in Cornwall the summer incidence rate is on average 78% higher than in the winter, whereas for England as it is 66%. Therefore some of the higher incidence rate in Cornwall may be as a result of tourism in the summer months.
+:::
+:::
 :::
 
-::: {.column width="60%"}
-In the winter months (Oct-March) Cornwall has a higher incidence rate of fractures compared to England as a whole. However, in the summer months the fracture incidence rate in Cornwall is on average 78% higher than in the winter, whereas for England as a whole the fracture incidence rate in summer is on average 66% higher than in the winter.
+## Summary of analysis of incidence rates {background-image="slide.png" background-size="contain"}
 
-It would appear that some of the higher incidence rate in Cornwall is a result on tourism in the summer months.
+-   In children forearm fractures are the most common followed by elbow fractures.
 
-:::
+-   Fractures of tibia/fibula are most common in under 5, and elbow fractures are most common in 5-10 yr olds. For older children the fracture rate is higher in boys compared to girls, with boys aged 11-16 yrs having the highest rates of clavicle, forearm and toe fractures.
 
-:::
+-   There is significant seasonality with much higher fractures rates seen in the summer months, likely related to increased outdoor physical activity.
 
+-   Fracture incidence rates vary considerably by ICB region, with high incidence rates in Cornwall and lower rates in London areas. Incidence rates also vary considerable by trust. It is possible some of these differences could be due to issues with coding and reporting of fractures. However, some of the differences are likely related to availablity of alternative provision locally (specialist paediatric centre or independent urgent treatment centre nearby) or due to differences in fracture rates related to different levels of physical activity.
 
-## Summary of analysis of incidence rates
-
-
+-   Lack of detailed coding of fractures means some fractures may be misclassified, e.g. it is not possible to determine which radius fractures may be more accurately classified as elbow rather than wrist/forearm fractures, and great toe fractures are not specifically recorded.
 
 ## Percentage of fractures with a follow-up appointment {background-image="slide.png" background-size="contain"}
 
@@ -603,11 +621,16 @@ There is a trend towards a reduction in the proportion of emergency department a
 ::: {.column width="40%"}
 <br>
 
-As a result of the COVID-19 pandemic the proportion of follow up appointments conducted face to face has fallen significantly.
+As a result of the COVID-19 pandemic the proportion of follow up appointments conducted face-to-face has fallen significantly.
 :::
 :::
 
+::: smaller
+Only showing data for the first outpatient attendance
+:::
+
 ## Proportion of follow-up appointments with/without procedure {background-image="slide.png" background-size="contain"}
+
 ::: columns
 ::: {.column width="60%"}
 ```{r}
@@ -638,22 +661,25 @@ type_of_fup|>ggplot()+
   scale_colour_manual(values=c("#686f73", "#f9bf07"))+
    scale_y_continuous(limits=c(0,80))
 
-
+#Some of these differences may be related to the significant increase in the use of virtual follow-ups, although the decrease in procedures may be related to implementation of more conservative management, as the number of procedures for splints/casts/bandages and x-rays has fallen post-pandemic, see following slide.
 
 ```
 :::
 
-::: {.column width="40%"}  
-
+::: {.column width="40%"}
 <br>
 
-Over time the proportion of patients with a fracture that have a follow-up appointment with a procedure recorded has decreased, especially following COVID-19, which may be linked to an increase in virtual follow-up appointments.
+Over the last 6 yrs the proportion of patients with a fracture that have a follow-up appointment where a procedure is recorded has decreased, especially following COVID-19.
 
-The proportion of patients with a follow-up appointment with no procedures recorded has remained relatively stable over time. Although for Tibia/Fibula and Elbow fractures there was a slight increase in the proportion of these follow-ups at the start of the pandemic and this increase remained compared to the pre-pandemic period.  
+The proportion of patients with a follow-up appointment with no procedures recorded has remained relatively stable over time. Although for tibia/fibula and elbow fractures there was a slight increase in the proportion of these follow-ups at the start of the pandemic which has remained in the post-pandemic.
 :::
 :::
 
-## Type of outpatient procedures recorded.{background-image="slide.png" background-size="contain"}
+::: smaller
+Only showing data for the first outpatient attendance
+:::
+
+## Type of outpatient procedures recorded. {background-image="slide.png" background-size="contain"}
 
 ::: columns
 ::: {.column width="60%"}
@@ -695,23 +721,27 @@ outpatient_procedures<-paed_fractures|>
 
 ```
 :::
-::: {.column width="40%"}
 
+::: {.column width="40%"}
 <br>
 
-These are the most common types of procedures recorded during follow-up appointments. It is common for children to have more than one type of procedure recorded.
+It is common for children to have more than one type of procedure recorded
 
-The majority of procedures are related to casts/bandages/splints.
+The majority of procedures are related to casts/bandages/splints, and the numbers of these have decreased post-pandemic, as has the number of diagnostic imaging procedures during follow-up appointment. This likely indicates a move towards more conservative management of fractures especially with an increasing proportion of follow-ups being conducted virtually.
 
-Procedures of joint (OPCS code W92) includes: Distension of joint, Examination of joint including under image intensifier or anaesthetic, Chemical or Radiation synovectomy
+Procedures of joint (OPCS code W92) includes: distension of joint, examination of joint including under image intensifier or anaesthetic, chemical or radiation synovectomy.
 
-The number of manipulations recorded is extremely small.
+The number of manipulations recorded during outpatient appointments is extremely small.
+:::
 :::
 
+::: smaller
+Only showing data for the first outpatient attendance and the most common types of procedures
 :::
 
-## Number of follow-up appointments in the 3 months post-fracture
-Includes all outpatient attendances including physiotherapy appointments
+## Number of follow-up appointments (2022/23) {background-image="slide.png" background-size="contain"}
+
+Includes all outpatient attendances including physiotherapy appointments in the 3 months post-fracture
 
 ::: columns
 ::: {.column width="60%"}
@@ -725,24 +755,22 @@ paed_fractures|>
   mutate(Percentage=(count/total)*100)|>
   filter(outpat_attendance_number<=10)|>
   mutate(outpat_attendance_number=as.factor(outpat_attendance_number))|>
-   ggplot(aes(x=outpat_attendance_number, y=Percentage ))+
+   ggplot(aes(x=outpat_attendance_number, y=count ))+
   geom_bar(stat="identity", position="stack" )+
   facet_wrap(~type, ncol=3, scale="free")+
   su_theme()+
-    theme(axis.text=element_text(size=14, colour="black"),
+    theme(axis.text=element_text(size=12, colour="black"),
           axis.title=element_text(size=16, colour="black"),
           strip.background = element_rect(fill = "NA", colour = "NA"),
           strip.text = element_text(face = "bold", size=16))+
-    labs(x="Cost (£)", y="Number of attendances", title=NULL, subtitle=NULL)+ scale_fill_manual(values=c("#686f73","#f9bf07" ))+
-  scale_y_continuous(expand=c(0,0.01), limits=c(0,100))
+    labs(x="Number of follow-up appts", y="Number of fractures", title=NULL, subtitle=NULL)+ scale_fill_manual(values=c("#686f73","#f9bf07" ))+
+  scale_y_continuous(expand=c(0,0.01), limits=c(0,NA))
 
 ```
 :::
 
-
 ::: {.column width="40%"}
-
-
+:::
 :::
 
 ## Percentage of fractures manipulated in the ED {background-image="slide.png" background-size="contain"}
@@ -786,6 +814,15 @@ paed_fractures|>
   fracture_type_layout()+
        scale_y_continuous(limits=c(0,13))
 
+test<-paed_fractures|>
+    group_by(type, mua_in_theatre,  der_financial_year)|>
+     summarise(count=n())|>
+    group_by(type, der_financial_year)|>
+    mutate(Percentage = round(count / sum(count)*100, 3))|>
+    filter(mua_in_theatre==1)|>
+  filter(type=="Forearm")
+
+
 ```
 :::
 
@@ -824,11 +861,11 @@ paed_fractures|>
           axis.title=element_text(size=16),
           strip.background = element_rect(fill = "NA", colour = "NA"),
           strip.text = element_text(face = "bold", size=16))+
-  scale_fill_manual(values=c("#f9bf07" , "#686f73"))
+  scale_fill_manual(values=c("#f9bf07", "black" , "#686f73"))
 ```
 
 ::: small
-Over the last 6 years the proportion of manipulations in theatre compared to the emergency department has decreased; currently over half of all manipulations are performed in the emergency department.
+Over the last 6 years the proportion of manipulations in theatre compared to the emergency department has decreased mostly notably for forearm fractures where currently over half of all manipulations are performed in the emergency department.
 :::
 :::
 
@@ -864,7 +901,7 @@ paed_fractures|>
 ```
 
 ::: small
-There does appear to be a decrease in the total number of fractures being manipulated either in ED or theatre, especially for forearm fractures. 
+There does appear to be a decrease in the total number of fractures being manipulated either in ED or theatre, especially for forearm fractures.
 :::
 :::
 :::
@@ -892,9 +929,9 @@ paed_fractures|>
 ::: {.column width="40%"}
 <br>
 
-The percentage of emergency department attendances for fractures that result in a referral/outpatient attendance for physiotherapy are higher for those with Elbow and Tibia/Fibula fractures, but generally very low for the other fracture types. 
+The percentage of fractures with a referral/outpatient attendance for physiotherapy in the 3-months post-fractures are higher for those with elbow and tibia/fibula fractures, but generally very low for the other fracture types.
 
-The number of elbow fractures referred to physiotherapy has decreased over the last 6 years, while the number of tibia/fibula fractures referred has increased.
+The proportion of elbow fractures referred to physiotherapy has decreased over the last 6 years, while the proportion of tibia/fibula fractures referred has increased.
 :::
 :::
 
@@ -924,7 +961,6 @@ paed_fractures|>
 The majority of fractures of all types are x-rayed in the emergency department, although the percentage of toe fractures x-rayed is slightly lower.
 :::
 :::
-
 
 ## Use of emergency depts vs urgent treatment/walk-in centres {background-image="slide.png" background-size="contain"}
 
@@ -973,8 +1009,6 @@ It could be hypothesised that if the proportion of fractures seen in the emergen
 
 ## Manipulations in ED vs Urgent treatment centres (2022/23) {background-image="slide.png" background-size="contain"}
 
-
-
 ::: {.column width="33%"}
 ```{r, fig.width=6, fig.height=4}
 
@@ -1010,25 +1044,23 @@ manipulations_at_UTC<-ed_vs_utc|>
 ```
 
 ::: small
-The percentage of fractures manipulated in theatre is higher for those attending emergency departments, suggesting those with more obvious/complex fractures that are more likely to require manipulation are more likely to attend emergency departments, or be sent there from urgent treatment centres (in a small number of cases where a child attended 2 emergency care sites on the same day, we have only included the second attendance).
+However, the percentage of fractures manipulated in theatre is also higher for those attending emergency departments, suggesting those with more obvious/complex fractures that require manipulation are more likely to attend emergency departments, or be sent there from urgent treatment centres (in a small number of cases where a child attended 2 emergency care sites on the same day, we have only included the second attendance).
 :::
 :::
 
 ::: {.column width="33%"}
-
 <br>
 
 <br>
 
-In 2022/23, 73% of fractures were seen in the emergency department, and 27% in urgent treatment centres. 
+In 2022/23, 73% of fractures were seen in the emergency department, and 27% in urgent treatment centres.
 
 However, 90% of fractures requiring manipulations were seen in the emergency department and around 10% in urgent treatment centres, further indicating that those with fractures that require manipulation are more likely to attend an emergency department rather than an urgent treatment centre.
-
 :::
 
 :::
 
-## Follow-ups for those attending ED vs Urgent treatment centres (2022/23) {background-image="slide.png" background-size="contain"}
+## Follow-ups given in ED vs Urgent treatment centres (2022/23) {background-image="slide.png" background-size="contain"}
 
 ::: columns
 ::: {.column width="50%"}
@@ -1044,10 +1076,7 @@ The percentage of fractures where a follow-up appointment is given is broadly si
 :::
 :::
 
-
-
-
-## Factors influencing whether a follow-up appointment is given
+## Factors influencing whether a follow-up appointment is given 
 
 ::: columns
 ::: {.column width="45%"}
@@ -1059,13 +1088,15 @@ tar_read(table_f_up_regression)
 :::
 
 ::: {.column width="55%"}
+
+:::{.small2}
 Children are more likely to be given a follow-up appointment if they are
 
 -   male
 
 -   11-16 yrs old
 
--   from an Asian or Black background
+-   from an asian or black background
 
 -   are not living in an area in the most deprived quintile
 
@@ -1080,8 +1111,10 @@ They are also more likely to have a follow-up appointment if they attended
 Those attending in more recent years were less likely to have a follow-up appointment, further indicating there has been a move towards fewer follow-up appointments.
 :::
 :::
+:::
 
-## Factors influencing manipulation of forearm fractures in theatre
+## Factors influencing manipulation of forearm fractures in theatre {background-image="slide.png" background-size="contain"}
+
 
 ::: columns
 ::: {.column width="45%"}
@@ -1093,7 +1126,8 @@ tar_read(table_manipulation_regression_forearm)
 :::
 
 ::: {.column width="55%"}
-Includes only forearm fractures that are manipulated in either the emergency department or in theatre to determine what factors might be influencing the decision to manipulate a fracture in theatre rather than in the emergency department.
+:::{.small2}
+Includes only forearm fractures that are manipulated, either the emergency department or in theatre (excludes those where manipulation is recorded in both ED and theatre) to determine what factors might be influencing the decision to manipulate a fracture in theatre rather than in the emergency department.
 
 Children are more likely to have a fracture manipulated in theatre if they are
 
@@ -1118,28 +1152,25 @@ They are also more likely to have a manipulation in theatre if they attended
 Those attending in more recent years were less likely to have their fracture manipulated in theatre, further indicating there has been a move towards manipulating more fractures in the emergency department.
 :::
 :::
-
-## Summary of management of fractures
-
-Those presenting at night and at weekends were more likely to have follow up appointments and have their fracture manipulated in theatre. While it may be that those with more obviously/complex fractures that require manipulation or follow up may be more likely to present at these times, rather than perhaps waiting until the next day, it is likely also the result of less senior staff available at these times. 
-
-Those attending urgent treatment centres are more likely to have their fractures manipulated in theatre as this would likely not be possible at an urgent treatment centre. There is a trend for more fractures to be seen in urgent treatment centres, and while it appears that most of the fractures requiring manipulation are seen in ED rather than UTCs, a continued trend to seeing more fractures in UTCs may in the future impact the ability of trusts to further move away from manipulations in theatre.
-
-We find the overall manipulation rate for forearm fractures has reduced over the last 6 years, this likely reflects a change in the culture, with displaced fractures now less likely to be manipulated. Indeed, the CRAFFT study is currently looking at whether there is a difference in outcomes between surgical reduction versus non-surgical casting for displaced distal radius fractures in children^1^.
-
-::: {.smaller}
-1) https://crafft-study.digitrial.com/
 :::
 
+## Summary of management of fractures {background-image="slide.png" background-size="contain"}
 
+-   For upper limb fractures there has been a slight reduction in the number given a follow up appointment. For all fracture types there there has been a significant increase in the proportion of follow-up appointments conducted virtually since the pandemic.
+-   Those presenting at night and at weekends were more likely to have follow up appointments and have their fracture manipulated in theatre. While it may be that those with more obviously/complex fractures that require manipulation/follow-up are more likely to present at these times, rather than perhaps waiting until the next day, it is likely also the result of less senior staff available at these times.
+-   There has been a decrease post-pandemic in the number of outpatient procedures involving casts/splints/bandages and a decrease in diagnostic imaging in outpatients.
+-   Over the last 6 years the proportion of fractures manipulated in theatre has decreased and the proportion manipulated in the emergency department has increased. 
+-   Those attending urgent treatment centres are more likely to have their fractures manipulated in theatre as this would generally not be possible at an urgent treatment centre. There is a trend for more fractures to be seen in urgent treatment centres, and while it appears that most of the fractures requiring manipulation are seen in ED rather than UTCs, a continued trend to seeing more fractures in UTCs may in the future impact the ability of trusts to further move away from manipulations in theatre.
+-   The overall manipulation rate for forearm fractures has reduced over the last 6 years, which likely reflects a change in the culture, with displaced fractures now less likely to be manipulated. Indeed, the CRAFFT study is currently looking at whether there is a difference in outcomes between surgical reduction versus non-surgical casting for displaced distal radius fractures in children^1^.
+-   Overall, there is a trend towards more conservative management of paediatric fractures.
 
-
+::: smaller
+1)  https://crafft-study.digitrial.com/
+:::
 
 ## Calculating proportions by trust {background-image="slide.png" background-size="contain"}
 
-<br>
-
-Includes only NHS trusts that had a total of number of attendances for fractures of over 120 in 2022/23; this resulted in 8 trusts being excluded. Some trusts may have low numbers due to alternative provisions locally e.g. Royal Liverpool had small numbers which is unsurprising given its proximity to a specialist paediatric provision at Alder Hey. Independent providers were also excluded, that majority of these had small numbers of attendances for fractures, i.e. <120 per year.
+Includes only NHS trusts with 120+ attendances for fractures 2022/23; this resulted in 8 trusts being excluded. Some trusts may have low numbers due to alternative provisions locally e.g. Royal Liverpool had small numbers which is unsurprising given its proximity to a specialist paediatric provision at Alder Hey. Independent providers were also excluded, the majority of these had small numbers of attendances for fractures, i.e. <120 per year.
 
 <br>
 
@@ -1153,22 +1184,25 @@ paed_fractures|>
   group_by(type)|>
   summarise(count=n(), xray=sum(xray=="1"), f_up=sum(outpat_attendance=="1"),               f_up_no_proc=sum(outpat_attendance=="1" & outpat_procedure_done=="0"),
           f_up_proc=sum(outpat_attendance=="1" & outpat_procedure_done=="1") ,   Manipulation_in_theatre=sum(mua=="Manipulation in theatre"), 
-          Manipulation_in_ed=sum(mua=="Manipulation in ED" ))|>
+          Manipulation_in_ed=sum(mua=="Manipulation in ED" ),
+          Manipulation_in_ed_theatre=sum(mua=="Manipulation in ED & theatre"))|>
   mutate(xray=paste0(format(xray,big.mark=","), " (", round((xray/count)*100,1), "%)"))|>
   mutate(f_up=paste0(format(f_up,big.mark=","), " (", round((f_up/count)*100,1), "%)"))|>
    mutate(f_up_no_proc=paste0(format(f_up_no_proc,big.mark=","), " (", round((f_up_no_proc/count)*100,1), "%)"))|>
    mutate(f_up_proc=paste0(format(f_up_proc,big.mark=","), " (", round((f_up_proc/count)*100,1), "%)"))|>
   mutate(Manipulation_in_theatre=paste0(format(Manipulation_in_theatre,big.mark=","), " (",round((Manipulation_in_theatre/count)*100,1), "%)"))|>
   mutate(Manipulation_in_ed=paste0(format(Manipulation_in_ed,big.mark=","), " (", round((Manipulation_in_ed/count)*100,1), "%)"))|> 
+    mutate(Manipulation_in_ed_theatre=paste0(format(Manipulation_in_ed_theatre,big.mark=","), " (", round((Manipulation_in_ed_theatre/count)*100,1), "%)"))|> 
   flextable() |>
   set_header_labels(type="",
                     count="No. of fractures",
-                    xray="No. X-rayed in ED",
-                   f_up="No. with follow-up",
-                    f_up_no_proc="No. with follow-up & no procedure",
-                   f_up_proc="No. with follow-up with procedure",
-                    Manipulation_in_theatre="No. manipulated in theatre",
-                    Manipulation_in_ed="No. manipulated in ED")|>
+                    xray="X-ray in ED",
+                   f_up="Follow-up",
+                    f_up_no_proc="Follow-up without procedure",
+                   f_up_proc="Follow-up with procedure",
+                    Manipulation_in_theatre="Manipulated in theatre",
+                    Manipulation_in_ed="Manipulated in ED",
+                   Manipulation_in_ed_theatre="Manipulated in ED & theatre")|>
   align(part = "header", align = "right")|>
   align(j=1, align = "left")|>
   align(part = "body", align = "right")|>
@@ -1181,15 +1215,18 @@ paed_fractures|>
 
 ```
 
-When considering potential savings in terms of follow-up appointments, we have considered only those follow-up appointments that do not include procedures, as all those with procedures are considered necessary.
+When considering potential savings in terms of follow-up appointments, we have considered all follow-up appointments (with and without procedures).
 
-## X-rays for Clavicle and Toes fractures by trust
+## X-rays for Clavicle and Toes fractures by trust {background-image="slide.png" background-size="contain"}
+
+Evidence suggests that x-raying the majority of clavicles and toes in the emergency department is unnecessary, as it doesn't add useful information to a clinician's assessment or alter management. 
 
 ::: columns
 ::: {.column width="50%"}
-```{r, fig.height=4, fig.width=7}
+**Percentage of clavicle fractures x-rayed**
+```{r, fig.height=3, fig.width=7}
 
-plots_of_proportion_by_trust(xrays_by_trust, "Clavicle", "% of clavicle fractures X-rayed", 100)
+plots_of_proportion_by_trust(xrays_by_trust, "Clavicle", NULL, 100)
 
 ```
 
@@ -1200,15 +1237,15 @@ summary_values_by_trust_xray(xrays_by_trust,"Clavicle")
 ```
 
 ::: small
-If all trusts reduced the percentage of x-rays to the level of the lowest decile of trusts (`r calculating_lowest_10percent(xrays_by_trust, "Clavicle", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(xrays_by_trust, "Clavicle", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(xrays_by_trust, "Clavicle", 0.1)`%) x-rays in emergency departments/urgent treatment centres.
+If all trusts reduced the percentage of x-rays to the level of the lowest decile of trusts (`r calculating_lowest_10percent(xrays_by_trust, "Clavicle", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(xrays_by_trust, "Clavicle", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(xrays_by_trust, "Clavicle", 0.1)`%) x-rays in emergency care.
 :::
-
 :::
 
 ::: {.column width="50%"}
-```{r, fig.height=4, fig.width=7}
+**Percentage of toe fractures x-rayed**
+```{r, fig.height=3, fig.width=7}
 
-plots_of_proportion_by_trust(xrays_by_trust, "Toe", "% of toe fractures X-rayed", 100)
+plots_of_proportion_by_trust(xrays_by_trust, "Toe", NULL, 100)
 
 ```
 
@@ -1219,19 +1256,17 @@ summary_values_by_trust_xray(xrays_by_trust, "Toe")
 ```
 
 ::: small
-If all trusts reduced the percentage of x-rays to the level of the lowest decile of trusts (`r calculating_lowest_10percent(xrays_by_trust, "Toe", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(xrays_by_trust, "Toe", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(xrays_by_trust, "Toe", 0.1)`%) x-rays in emergency departments/urgent treatment centres.
-:::
-
-
+If all trusts reduced the percentage of x-rays to the level of the lowest decile of trusts (`r calculating_lowest_10percent(xrays_by_trust, "Toe", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(xrays_by_trust, "Toe", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(xrays_by_trust, "Toe", 0.1)`%) x-rays in emergency care.
 :::
 :::
+:::
 
-
-## Cost savings of reducing x-rays for clavicle and toe fractures
+## Cost of x-raying clavicle and toe fractures {background-image="slide.png" background-size="contain"}
 
 ::: columns
 ::: {.column width="50%"}
-Clavicle fracture
+**Clavicle fracture**
+
 ```{r, fig.height=4, fig.width=7}
 
 xray_cost<-paed_fractures|>
@@ -1278,7 +1313,8 @@ difference<-median_with_xray$cost-median_without_xray$cost
 :::
 
 ::: {.column width="50%"}
-Toe fractures
+**Toe fractures**
+
 ```{r, fig.height=4, fig.width=7}
 
 xray_cost<-paed_fractures|>
@@ -1331,80 +1367,7 @@ total_xray_no<-calculating_saving_f_up(xrays_by_trust, "Clavicle", 0.1)+calculat
 
 All attendances at urgent treatment centres are costed at £85 regardless on whether a fracture is x-rayed.
 
-For both Clavicle and Toe fractures without an X-ray the median cost of an emergency department attendance is £`r median_without_xray$cost` compared to a median cost of £`r median_with_xray$cost` when the fracture is x-rayed, suggesting a saving of £`r difference` for each clavicle or toe fracture not x-rayed in the emergency department.
-
-
-
-## Cost savings of increasing manipulations in theatre
-```{r, fig.height=4, fig.width=7}
-
-manipulation_cost_forearm<-paed_fractures|>
-  filter(type=="Forearm")|>
-  filter(der_financial_year=="2022/23")|>
-  group_by(mua, ed_cost)|>
-  summarise(count=n())|>
-  filter(!is.na(ed_cost) & mua!="0")|>
-  group_by(mua)|>
-  reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)|>
-   mutate(mua=ifelse(mua=="Manipulation in ED", "Manipulated in ED", "Not manipulated in ED"))
-
-manipulation_cost_forearm|>
-  ggplot()+
-  geom_col(aes(x=as.factor(ed_cost), y=count ), colour="#686f73" )+
-  facet_wrap(~mua, ncol=2)+
-  su_theme()+
-    theme(axis.text=element_text(size=14, colour="black"),
-          axis.title=element_text(size=16, colour="black"),
-          strip.background = element_rect(fill = "NA", colour = "NA"),
-          strip.text = element_text(face = "bold", size=16))+
-    labs(x="Cost (£)", y="Number of attendances", title="Forearm manipulations", subtitle=NULL)
-
-median_with_manipulation<-manipulation_cost_forearm|>filter(mua=="Manipulated in ED")|>mean(median_cost)
-
-median_without_manipulation<-manipulation_cost_forearm|>filter(mua=="Not manipulated in ED")|>mean(median_cost)
-
-difference<-median_with_manipulation-median_without_manipulation
-
-```
-
-Those not manipulated in the emergency department are those that are manipulated but in theatre.
-
-```{r, fig.height=4, fig.width=7}
-
-manipulation_cost_elbow<-paed_fractures|>
-  filter(type=="Elbow")|>
-  filter(der_financial_year=="2022/23")|>
-  group_by(mua, ed_cost)|>
-  summarise(count=n())|>
-  filter(!is.na(ed_cost) & mua!="0")|>
-  group_by(mua)|>
-  reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)|>
-   mutate(mua=ifelse(mua=="Manipulation in ED", "Manipulated in ED", "Not manipulated in ED"))
-
-manipulation_cost_elbow|>
-  ggplot()+
-  geom_col(aes(x=as.factor(ed_cost), y=count ), colour="#686f73" )+
-  facet_wrap(~mua, ncol=2)+
-  su_theme()+
-    theme(axis.text=element_text(size=14, colour="black"),
-          axis.title=element_text(size=16, colour="black"),
-          strip.background = element_rect(fill = "NA", colour = "NA"),
-          strip.text = element_text(face = "bold", size=16))+
-    labs(x="Cost (£)", y="Number of attendances", title="Elbow manipulations", subtitle=NULL)
-
-median_with_manipulation<-manipulation_cost_elbow|>filter(mua=="Manipulated in ED")|>mean(median_cost)
-
-median_without_manipulation<-manipulation_cost_elbow|>filter(mua=="Not manipulated in ED")|>mean(median_cost)
-
-difference<-median_with_manipulation-median_without_manipulation
-
-```
-
-For both Clavicle and Toe fractures without an X-ray the median cost of an emergency care attendance is £`r median_without_xray` compared to a median cost of £`r median_with_xray` when the fracture is X-rayed, giving a difference of `r difference`
-
-So an annual reduction in Clavicle and Toe X-rays of `r format(total_xray_no, big.mark=",")` would equate to a saving of £`r total_xray_no*difference`
-
-
+For both clavicle and toe fractures without an x-ray the median cost of an emergency department attendance is £`r median_without_xray$cost` compared to a median cost of £`r median_with_xray$cost` when the fracture is x-rayed, suggesting a saving of £`r difference` for each clavicle or toe fracture not x-rayed in the emergency department.
 
 ## Upper limb fractures with follow-up by trust (2022/23) {background-image="slide.png" background-size="contain"}
 
@@ -1421,10 +1384,14 @@ plots_of_proportion_by_trust_fup(f_up_by_trust, "Forearm", "% of forearm fractur
 
 summary_values_by_trust_fup(f_up_by_trust, "Forearm")
 
+total_f_up_by_trust<-f_up_by_trust|>
+                    ungroup()|>
+                  summarise(Percentage=sum(Percentage),count=sum(count), .by=c(der_provider_code, type))
+
 ```
 
 ::: small
-If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(f_up_by_trust, "Forearm", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(f_up_by_trust,"Forearm", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(f_up_by_trust, "Forearm", 0.1)`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(total_f_up_by_trust, "Forearm", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(total_f_up_by_trust,"Forearm", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(total_f_up_by_trust, "Forearm", 0.1)`%) follow-up appointments.
 :::
 :::
 
@@ -1432,7 +1399,7 @@ If all trusts reduced the percentage of follow-ups to the level of the lowest de
 ```{r, fig.height=4, fig.width=7}
 
 plots_of_proportion_by_trust_fup(f_up_by_trust, "Elbow", "% of elbow fractures with follow-up", 100)
-
+ 
 
 ```
 
@@ -1443,7 +1410,7 @@ summary_values_by_trust_fup(f_up_by_trust, "Elbow")
 ```
 
 ::: small
-If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(f_up_by_trust, "Elbow", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(f_up_by_trust,"Elbow", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(f_up_by_trust, "Elbow", 0.1)`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(total_f_up_by_trust, "Elbow", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(total_f_up_by_trust,"Elbow", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(total_f_up_by_trust, "Elbow", 0.1)`%) follow-up appointments.
 :::
 :::
 
@@ -1462,11 +1429,10 @@ summary_values_by_trust_fup(f_up_by_trust, "Clavicle")
 ```
 
 ::: small
-If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(f_up_by_trust, "Clavicle", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(f_up_by_trust,"Clavicle", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(f_up_by_trust, "Clavicle", 0.1)`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(total_f_up_by_trust, "Clavicle", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(total_f_up_by_trust,"Clavicle", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(total_f_up_by_trust, "Clavicle", 0.1)`%) follow-up appointments.
 :::
 :::
 :::
-
 
 ## Lower limb fractures with follow-up by trust (2022/23) {background-image="slide.png" background-size="contain"}
 
@@ -1485,7 +1451,7 @@ summary_values_by_trust_fup(f_up_by_trust, "Tibia/Fibula")
 ```
 
 ::: small
-If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(f_up_by_trust,"Tibia/Fibula", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(f_up_by_trust,"Tibia/Fibula", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(f_up_by_trust,"Tibia/Fibula", 0.1)`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(total_f_up_by_trust,"Tibia/Fibula", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(total_f_up_by_trust,"Tibia/Fibula", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(total_f_up_by_trust,"Tibia/Fibula", 0.1)`%) follow-up appointments.
 :::
 :::
 
@@ -1504,80 +1470,97 @@ summary_values_by_trust_fup(f_up_by_trust, "Toe")
 ```
 
 ::: small
-If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(f_up_by_trust,"Toe", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(f_up_by_trust,"Toe", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(f_up_by_trust,"Toe", 0.1)`%) follow-up appointments.
+If all trusts reduced the percentage of follow-ups to the level of the lowest decile of trusts (`r calculating_lowest_10percent(total_f_up_by_trust,"Toe", 0.1)`%) there would be an **annual reduction in England of `r format(calculating_saving_f_up(total_f_up_by_trust,"Toe", 0.1), big.mark=",")`** (`r calculating_percentage_change_f_up(total_f_up_by_trust,"Toe", 0.1)`%) follow-up appointments.
 :::
 :::
 
 ::: {.column width="33%"}
 ```{r}
-total_f_up_saving<-(calculating_saving_f_up(f_up_by_trust,"Forearm", 0.1)+ 
-                   calculating_saving_f_up(f_up_by_trust,"Elbow", 0.1)+
-                   calculating_saving_f_up(f_up_by_trust,"Clavicle", 0.1)+
-                   calculating_saving_f_up(f_up_by_trust,"Tibia/Fibula", 0.1)+
-                   calculating_saving_f_up(f_up_by_trust,"Toe", 0.1) ) 
+total_f_up_saving<-(calculating_saving_f_up(total_f_up_by_trust,"Forearm", 0.1)+ 
+                   calculating_saving_f_up(total_f_up_by_trust,"Elbow", 0.1)+
+                   calculating_saving_f_up(total_f_up_by_trust,"Clavicle", 0.1)+
+                   calculating_saving_f_up(total_f_up_by_trust,"Tibia/Fibula", 0.1)+
+                   calculating_saving_f_up(total_f_up_by_trust,"Toe", 0.1) ) 
 
  total_f_up_saving<-format(total_f_up_saving, big.mark=",")
 
-``` 
-<br>
-<br>
-<br>
-Combining the potential reduction in the number of follow-up appointments for all of the fracture types included in this study, there could be a **total annual reduction of `r total_f_up_saving` follow-up appointments in England**. 
+```
+
+<br> <br> <br> Combining the potential reduction in the number of follow-up appointments for all of the fracture types included in this study, there could be a **total annual reduction of `r total_f_up_saving` follow-up appointments in England**.
 
 This may be an underestimation as number of children may have more than one follow-up appointment that could be deemed unnecessary.
-
 :::
 :::
+## Cost of face-to-face follow-up appointments {background-image="slide.png" background-size="contain"}
+:::columns
+::: {.column width="88%"}
+```{r, fig.width=12, fig.height=6}
 
-## Follow-up costs
 
-```{r, eval=FALSE}
-
-test<-paed_fractures|>
+f_up_costs<-paed_fractures|>
     filter(der_financial_year=="2022/23")|>
-  filter(der_primary_procedure_code!="NULL")
-  
-  
-   filter(outpat_attendance=="1" & outpat_procedure_done=="0")|>
-  group_by(outpatient_core_hrg)|>
-  summarise(n=n())
-  
-  sum(test$n)
-  
-  group_by(type, outpatient_core_hrg, main_specialty_code, treatment_function_code)|>
-  summarise(n=n())
+     filter(outpat_attendance=="1")|>
+  group_by(type, outpatient_core_hrg, op_cost, outpat_procedure_done, der_contact_type)|>
+  summarise(count=n())|>
+  mutate(op_cost=ifelse(outpatient_core_hrg=="WF01B", 175, op_cost))|>
+  mutate(op_cost=ifelse(outpatient_core_hrg=="WF01D", 87.5, op_cost)) |># set virtual op appt cost as half of that for F2F
+  mutate(op_cost=ifelse(outpatient_core_hrg=="WF02D", 91.5, op_cost))|> # using
+    mutate(op_cost=ifelse(outpatient_core_hrg=="WF01C", 34.5, op_cost))|>
+  mutate(op_cost=round(op_cost,0))|>
+  filter(op_cost!=0)|>
+  mutate(outpat_procedure_done=ifelse(outpat_procedure_done==0, "Outpatient appt without procedure", "Outpatient procedure"))|>
+  mutate(outpat_procedure_done=factor(outpat_procedure_done, levels=c("Outpatient procedure", "Outpatient appt without procedure")))|>
+  filter(der_contact_type=="F2F")|>
+  filter(count>1)|>
+  group_by(type)|>
+  mutate(median=median(rep(op_cost, count)))
+
+f_up_costs|>
+   ggplot(aes(x=as.factor(op_cost), y=count, group=outpat_procedure_done, fill=outpat_procedure_done))+
+  geom_bar(stat="identity", position="stack" )+
+  facet_wrap(~type, ncol=3, scales="free")+
+  su_theme()+
+    theme(legend.position =c(0.82,0.2),
+          legend.text=element_text(size=14),
+          legend.title=element_blank(),
+          axis.text.x=element_text(size=10, colour="black",angle = 45, vjust=0.7, hjust=0.5),
+          axis.text.y=element_text(size=12, colour="black" ),
+          axis.title=element_text(size=16, colour="black"),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16), 
+          plot.margin = unit(c(0,0,0,0), "cm"))+
+    labs(x="Cost (£)", y="Number of first follow-ups", title=NULL, subtitle=NULL)+ scale_fill_manual(values=c("#f9bf07","#686f73"))+
+  scale_y_continuous(expand=c(0,0.01), limits=c(0,NA))
 
 
-
-
-    left_join(provider_names, by=c("der_provider_code"="code"))|>
-    filter((der_provider_code %in% trusts_with_120_attendances) & !is.na(name))|>
 
 
 ```
-
+:::
+:::
+::: {.small}
+For all fracture types the median cost of the first face-to-face outpatient attendance is £175. Prices are not available for virtual follow-up appointments, although the costs will be reduced compared to face-to-face appointments.
+:::
 
 ## Comparing GIRFT/Model Hospital metric to our data- 2022/23 {background-image="slide.png" background-size="contain"}
 
 ::: columns
-::: {.column width="50%"}
-
+::: {.column width="55%"}
 ::: {.small}
-Firstly, there are some significant differences between the data included by GIRFT/Model Hospital and the data used in this study, GIRFT/Model Hospital:
+Firstly, there are some significant differences between the data included by GIRFT/Model Hospital and the data used in this study. GIRFT/Model Hospital:
 
-  -  include all forearm and wrist fractures, whereas we excluded certain fracture types, e.g open fractures which are assumed to all require treatment in theatre. 
-  
--  include re-manipulations in theatre, whilst we have excluded these.
+-   include all forearm and wrist fractures, whereas we excluded certain fracture types, e.g open fractures which are assumed to all require treatment in theatre.
 
--  use a 3-year average, whilst we used only the most recent year where follow-up data is available (2022/23).
+-   include re-manipulations in theatre, whilst we have excluded these.
 
-The GIRFT/Model Hospital metric uses the total A&E attendances for those aged 16 and under as the denominator. However, since we find incidence rates vary by region, it is likely the proportion of A&E attendances for fractures also vary by region. Therefore to determine variability by trust we using the number of each fracture type as the denominator.
+-   use a 3-year average, whilst we used only the most recent year where follow-up data is available (2022/23).
+
+The GIRFT/Model Hospital metric uses the total A&E attendances for those aged 16 and under as the denominator. Since, we find the fracture incidence rates vary by ICB region and the proportion of emergency department attendances for fractures vary by trust, we have used the number of each fracture type as the denominator, rather than the number of emergency department attendances.
 :::
-:::  
+:::
 
-
-::: {.column width="50%"}
-```{r}
+::: {.column width="45%"}
+```{r, fig.height=4, fig.width=7}
 
 forearm_manipulations<- manipulations_by_trust|>
     filter(mua=="Manipulation in theatre")|>
@@ -1595,11 +1578,12 @@ girft_metric|>
     ggplot(aes(x=reorder(der_provider_code, -per_10000), per_10000))+
     geom_col(fill="#686f73", colour="black")+
     su_theme()+
-    theme(title=element_text(size=16, colour="black"),
+    theme(title=element_text(size=12, colour="black"),
           axis.text=element_text(size=16, colour="black"),
           axis.title=element_text(size=18, colour="black"),
-          axis.text.x=element_blank())+
-    labs(x="Providers", title="Wrist and Forearm fractures manipulated in theatre (2022/2023)")+
+          axis.text.x=element_blank(),
+          margin(0,0,0,0, unit="inches"))+
+    labs(x="Providers", title="Our data on forearm fractures manipulated in theatre (2022/2023)\nusing total number of emergency department attendances as the \ndenominator, as per the GIRFT/Model Hospital metric")+
     scale_y_continuous(expand=c(0,0), limits=c(0,30))
 
 
@@ -1613,18 +1597,9 @@ test<-paed_fractures|>
 :::
 :::
 
-## Using fracture number vs total emergency department attendances as the denominator {background-image="slide.png" background-size="contain"}
-
-::: {.small}
-Using the GIRFT/Model Hospital denominator of A&E attendances The Royal Cornwall Hospitals Trust has a manipulation rate of ~16.6 forearm manipulations/10,000 A&E attendances, putting it the 4th quartile with the 10th highest rate. Using our metric with the number of forearm fractures as the denominator we find 5.9% of forearm fractures are manipulated in theatre, putting The Royal Cornwall Hospitals Trust within the 3rd quartile (39th highest). This is unsurprising given the Cornwall ICB area has a high forearm fracture rate compared to many other regions.
-
-Conversely, Lewisham and Greenwich NHS Trust is in one of the ICB areas with the lowest forearm fracture rates. Using the GIRFT metric this trust has 3.1 manipulations per 10,000 A&E attendances, putting it within the 2nd quartile (41st lowest). With our metric it has 5.1% of fractures manipulated in theatre and is within the 3rd quartile.
-
-At Royal Cornwall Hospitals NHS Trust forearm fractures make up 2.8% of all emergency department attendances, while at Lewisham and Greenwich NHS Trust forearm fractures make up just 0.6% of attendances.
-
-Generally, there are greater discrepancies between the 2 metrics at the higher end, with a greater proportion of manipulations in theatre.
+:::{.small}
+Using the GIRFT/Model Hospital denominator of A&E attendances The Royal Cornwall Hospitals Trust has a manipulation rate of \~16.6 forearm manipulations/10,000 A&E attendances, putting it the 4th quartile with the 11th highest rate. Using our metric with the number of forearm fractures as the denominator we find 5.9% of forearm fractures are manipulated in theatre, putting The Royal Cornwall Hospitals Trust within the 3rd quartile (39th highest). This is unsurprising given the Cornwall ICB area has a high forearm fracture rate compared to many other regions; The Royal Cornwall Hospital has a rate of 512 fractures (forearm,elbow,clavicle, toe and tibia/fibula combined) per 10,000 attendances.
 :::
-
 
 ## Forearm fractures manipulated in theatre by trust (2022/23) {background-image="slide.png" background-size="contain"}
 
@@ -1644,7 +1619,7 @@ summary_values_by_trust_mua("Forearm")
 :::
 
 ::: {.column width="40%"}
-```{r, fig.height=4, fig.width=7}
+```{r, fig.height=5, fig.width=7}
 
 plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Forearm", "Forearm fractures manipulated in theatre vs ED" )
 
@@ -1652,7 +1627,7 @@ plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Forearm", "Forearm fract
 
 ```
 
-```{r}
+```{r, eval=FALSE}
  summary_values_by_trust_prop_in_ed("Forearm") 
 ```
 :::
@@ -1673,7 +1648,7 @@ NOTE: Very low numbers at many providers
 ::: columns
 ::: {.column width="40%"}
 ```{r, fig.height=4, fig.width=7}
-plots_of_proportion_by_trust(manipulations_by_trust|>filter(mua=="Manipulation in theatre"), "Elbow", "% of elbow fractures manipulated in theatre", 9)
+plots_of_proportion_by_trust(manipulations_by_trust|>filter(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre"), "Elbow", "% of elbow fractures manipulated in theatre", 9)
 
 ```
 
@@ -1686,11 +1661,11 @@ summary_values_by_trust_mua( "Elbow")
 :::
 
 ::: {.column width="40%"}
-```{r, fig.height=4, fig.width=7}
+```{r, fig.height=5, fig.width=7}
 plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Elbow", "Elbow fractures manipulated in theatre vs ED" )
 ```
 
-```{r}
+```{r, eval=FALSE}
 
 summary_values_by_trust_prop_in_ed("Elbow")
 
@@ -1706,18 +1681,280 @@ There could be an **annual reduction in England of `r calculating_saving( "Elbow
 :::
 :::
 
-## Limitations
+## Cost of manipulations in the emergency department vs theatre {background-image="slide.png" background-size="contain"}
 
-Some of the variability in the number of fractures, x-rays, physiotherapy referrals, follow-up appointments and manipulations in both theatre and the emergency department could be due to issues with the coding/reporting. For example the number of elbow manipulations recorded in theatre is much lower than would be expected.
+::: columns
+::: {.column width="40%"}
+**Forearm fractures**
 
-## Notes
+```{r, fig.height=4, fig.width=7}
 
-Nottingham University Hospitals NHS Trust, has one of the low proportions of forearm fractures manipulated in theatre, 0.5% in 2022/2023 (while 11.81%	were manipulated in the emergency department) meaning only 4% of all forearm manipulations where done in theatre. In term of follow-up appointments 57% of forearm fractures receive a follow-up appointment, which is just above the lowest quartile.
+manipulation_cost_forearm<-paed_fractures|>
+  filter(type=="Forearm")|>
+  filter(der_financial_year=="2022/23")|>
+  group_by(mua, ed_cost)|>
+  summarise(count=n())|>
+  filter(!is.na(ed_cost) & mua!=0)|>
+  mutate(mua=ifelse(mua=="Manipulation in ED"|mua=="Manipulation in ED and theatre" , "Manipulated in ED", "Not manipulated in ED"))|>
+  group_by(mua)|>
+  reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)
+  
+manipulation_cost_forearm|>
+  ggplot()+
+  geom_col(aes(x=as.factor(ed_cost), y=count ), colour="#686f73" )+
+  facet_wrap(~mua, ncol=2)+
+  su_theme()+
+    theme(axis.text=element_text(size=14, colour="black"),
+          axis.title=element_text(size=16, colour="black"),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    labs(x="Cost (£)", y="Number of attendances", title=NULL, subtitle=NULL)
+
+median_with_manipulation<-manipulation_cost_forearm|>
+                 filter(mua=="Manipulated in ED")|>
+                  summarise(cost=mean(median_cost))
+
+median_without_manipulation<-manipulation_cost_forearm|>
+                filter(mua=="Not manipulated in ED")|>
+                  summarise(cost=mean(median_cost))
+
+difference<-median_with_manipulation$cost-median_without_manipulation$cost
+
+```
+:::
+
+::: {.column width="40%"}
+**Elbow fractures**
+
+```{r, fig.height=4, fig.width=7}
+
+manipulation_cost_elbow<-paed_fractures|>
+  filter(type=="Elbow")|>
+  filter(der_financial_year=="2022/23")|>
+  group_by(mua, ed_cost)|>
+  summarise(count=n())|>
+  filter(!is.na(ed_cost) & mua!="0")|>
+    mutate(mua=ifelse(mua=="Manipulation in ED"|mua=="Manipulation in ED and theatre" , "Manipulated in ED", "Not manipulated in ED"))|>
+  group_by(mua)|>
+  reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)
+
+manipulation_cost_elbow|>
+  ggplot()+
+  geom_col(aes(x=as.factor(ed_cost), y=count ), colour="#686f73" )+
+  facet_wrap(~mua, ncol=2)+
+  su_theme()+
+    theme(axis.text=element_text(size=14, colour="black"),
+          axis.title=element_text(size=16, colour="black"),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    labs(x="Cost (£)", y="Number of attendances", title=NULL, subtitle=NULL)
+
+median_with_manipulation<-manipulation_cost_elbow|>                
+                    filter(mua=="Manipulated in ED")|>
+                  summarise(cost=mean(median_cost))
+
+median_without_manipulation<-manipulation_cost_elbow|>                
+                    filter(mua=="Not manipulated in ED")|>
+                  summarise(cost=mean(median_cost))
+
+manipulation_difference<-median_with_manipulation$cost-median_without_manipulation$cost
 
 
 
+```
+:::
 
-## Appendix A- Forearm fracture SNOMED codes
+
+```{r, fig.height=4, fig.width=7}
+
+theatre_cost_forearm<-paed_fractures|>
+  filter(type=="Forearm")|>
+  filter(der_financial_year=="2022/23")|>
+ filter(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre")|>
+  group_by(inpatient_spell_hrg,  hrg_name.y,non_elec_cost )|>
+  summarise(count=n())|>
+  mutate(non_elec_cost=as.numeric(non_elec_cost))|>
+  ungroup()|>
+  mutate(median_cost=median(rep(non_elec_cost, count)), total=sum(count))
+
+
+theatre_cost_elbow<-paed_fractures|>
+  filter(type=="Elbow")|>
+  filter(der_financial_year=="2022/23")|>
+  filter(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre")|>
+  group_by(inpatient_spell_hrg,  hrg_name.y, non_elec_cost )|>
+  summarise(count=n())|>
+  mutate(non_elec_cost=as.numeric(non_elec_cost))|>
+  ungroup()|>
+  mutate(median_cost=median(rep(non_elec_cost, count)))
+
+#Calculate how many of the forearm manipulations may be elbows
+
+should_be_elbows<-paed_fractures|>
+ # filter(type=="Forearm")|>
+  filter(der_financial_year=="2022/23")|>
+ filter(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre")|>
+  group_by(inpatient_spell_hrg,  hrg_name.y,non_elec_cost, description )|>
+  summarise(count=n())|>
+  mutate(non_elec_cost=as.numeric(non_elec_cost))|>
+  ungroup()|>
+  mutate(median_cost=median(rep(non_elec_cost, count)), total=sum(count))|>
+  filter(grepl("*Elbow*", hrg_name.y))|>
+  ungroup()|>
+  mutate(elbow=sum(count))|>
+  mutate(Percentage=round((elbow/total)*100,0))
+
+```
+
+::: {.column width="20%"}
+::: {.small}
+<br>
+
+Those not manipulated in the emergency department are those that are manipulated but in theatre.
+:::
+:::
+
+:::
+
+::: {.small}
+
+For both forearm and elbow fractures the median cost of an emergency care attendance when a fracture is manipulated in the emergency department £`r median_with_manipulation$cost` compared to a median cost of £`r median_without_manipulation$cost` when the fracture is not manipulated in emergency care, suggesting an increased cost of £`r manipulation_difference` for manipulating a fracture in the emergency department.
+
+The median cost of manipulating a forearm fracture in theatre is £`r format(mean(theatre_cost_forearm$median_cost), big.mark=",")` and the median cost for an elbow fracture is £`r format(mean(theatre_cost_elbow$median_cost), big.mark=",")`.
+
+This suggests a cost saving of £`r format((mean(theatre_cost_forearm$median_cost)-manipulation_difference), big.mark=",")` for each forearm fracture and £`r format((mean(theatre_cost_elbow$median_cost)-manipulation_difference), big.mark=",")` for each elbow fracture manipulated in the emergency department, alongside the benefit of freeing up theatre time.
+:::
+
+
+## Sites from CRAFFT study (2023/24){background-image="slide.png" background-size="contain"}
+**Manipulations of forearm fractures in theatre**
+
+::: columns
+::: {.column width="60%}
+```{r, fig.height=6, fig.width=10}
+
+crafft_sites<-read.csv("Data/CRAFFT sites.csv")
+provider_names<-read.csv("Data/provider_names.csv")
+  
+crafft_site_mua<- paed_fractures|>
+    filter(der_financial_year=="2023/24")|>
+    #filter(ec_department_type=="1")|>
+    mutate(mua=ifelse(mua=="Manipulation in ED & theatre", "Manipulation in theatre", mua))|>
+    summarise(count=n(), .by=c(type, der_provider_code, mua))|>
+    spread(key = mua, value = count)|>
+    mutate(`Manipulation in ED`=ifelse(is.na(`Manipulation in ED`) & !is.na(`Manipulation in theatre`), 0, `Manipulation in ED`))|>
+    mutate(`Manipulation in theatre`=ifelse(is.na(`Manipulation in theatre`) & !is.na(`Manipulation in ED`), 0, `Manipulation in theatre`))|>
+    gather(key = "mua", value = "count", -type, -der_provider_code)|>
+    left_join(provider_names, by=c("der_provider_code"="code"))|>
+    filter((der_provider_code %in% trusts_with_120_attendances$der_provider_code) & !is.na(name))|>
+    group_by(der_provider_code, type)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    group_by(type, der_provider_code, name)|>
+    summarise(total_mua=sum(count), count, Percentage, mua)|>
+  filter(mua=="Manipulation in theatre")|>
+    filter(type=="Forearm" )|>
+  filter(!is.na(count))|>
+  mutate(crafft=ifelse(der_provider_code %in% crafft_sites$crafft_code, "CRAFFT study site", "Non-study site"))
+
+crafft_site_mua|>
+    ggplot(aes(x=reorder(der_provider_code, -Percentage), y=Percentage, group=crafft, fill=crafft))+
+    geom_bar(position = "stack", stat="identity")+
+    su_theme()+
+    theme(legend.title=element_blank(),
+          legend.position = "top",
+          legend.text=element_text(size=18, colour="black"),
+          plot.title.position = "plot",
+          axis.text=element_text(size=16, colour="black"),
+          axis.title=element_text(size=18, colour="black"),
+          axis.text.x=element_blank())+
+    labs(x="Providers", title=NULL, subtitle=NULL)+
+    scale_y_continuous(expand=c(0,0), limits=c(0,15))+
+    scale_fill_manual(values=c("black","#BCBAB8"  ))
+
+
+  
+  #data_to_summarise<-crafft_site_mua|>
+  #  filter(mua=="Manipulation in theatre" & type=="Forearm")
+  
+  #summary_values_by_trust(data_to_summarise)
+
+
+
+```
+
+:::
+
+::: {.column width="40%}
+
+<br>
+
+Studies participating in the CRAFFT study are shown in black; it can be seen that they are fairly evenly spread relative to other hospital sites, and aren't clustered towards the lower end. 
+
+It show be noted that this chart is showing data from the most recent year, 2023-24, rather than 2022/23 which was used for the previous analysis as it ensured we have the full 3-month follow-up period. 
+:::
+
+:::
+
+
+## Summary of the potential activity reductions {background-image="slide.png" background-size="contain"}
+ 
+
+-  A reduction in x-rays in emergency care for clavicle and toe fractures in trusts down to the level of the lowest decile of trusts would reduce the number of x-rays in emergency care in England by around 4,400 per year.
+
+-  A reduction in follow-up appointments for the fracture types studied here down to the level of the lowest decile of trusts would reduce the number of follow-up appointments in England by at least 28,800 per year. This is based on reducing the number of first follow-ups, it is likely that a number of children have more than one unnecessary follow-up so this is likely an underestimate of the potential savings.
+
+- A reduction in the number of forearm and elbow fractures manipulated in theatre down to the level of the lowest quartile would reduce the number of manipulations in theatre in England by 1,900 a year. 
+
+- The number of manipulations in theatre and total number of manipulations, especially for forearm fractures, have significantly decreased over the last 6 years, suggesting previous studies and changes in guidance are having an impact on manipulations. Obviously, some trusts have already implemented more conservative management approaches to paediatric fractures, but there are likely some trusts that could still significantly benefit from adopting this approach.  
+
+- While there has been significant progress in reducing the total number of manipulations and proportion of manipulations in theatre, especially for forearm fractures, there is perhaps also scope to work on reducing the number of fractured clavicles and toes which are x-rayed and in reducing unnecessary follow up appointments.  
+
+
+## Limitations {background-image="slide.png" background-size="contain"}
+:::{.small2}
+We are relying on the coding/reporting of fractures and subsequent activity within the the SUS datasets. Some of the variability in the number of fractures, x-rays, physiotherapy referrals, follow-up appointments and manipulations in both theatre and the emergency department could be due to issues with the coding. It is possible some of our numbers may be underestimates due to some activity potentially not being accurately coded, or reported. 
+
+It should be noted that our incidence rates for fractures are only for closed fractures, open fractures were excluded and thus to total incidence rates if including all types of fractures would be higher.
+
+The coding of fractures is not specific enough to determine at an individual level which fractures could be managed more conservatively, so we are relying on comparing proportion between trusts. Some fractures will be more complex and require manipulation and follow-up, but we can't be sure whether all trusts have a similar proportion of more complex fractures. 
+
+Only closed manipulations without internal fixation are included in our data, so if some trusts are treating a higher proportion of fractures with internal fixation then their rate of closed manipulations could appear lower. We have also not included re-manipulations in our data.
+
+There will be a small number of cases where a child has more than one fracture or other injuries, so although have may have classified the fracture as a certain type any follow-up appointments or manipulations could potentially be for a different injury/fracture sustained at the same time.
+
+It should be noted is that data is allocated to the trust where the child attended the emergency department; if a child first attended the emergency department at trust A while on holiday but subsequently received follow-up appointments at trust B once they returned home the fracture and subsequent follow-up would be included in the data for trust A. 
+
+The number of elbow manipulations recorded in theatre appears lower than would be expected, which may be due to coding issues. The lack of specific coding of fractures makes it difficult to determine what is an elbow fracture and may mean that some are classified as forearm fractures, e.g. the SNOMED code for 'Closed fracture of radius (disorder)' is the most commonly used, and while we have classified these as forearm fractures, fractures of the proximal radius would be considered an elbow fracture. This may in part explain why we see a smaller number of elbow manipulations in theatre than would be expected, as they are included within forearm fractures. Also, HRG groupings for manipulations in theatre do not distinguish between forearm and elbow procedures, so it is not possible to determine from these which are forearm and which are elbow. 
+
+:::
+## Discussion {background-image="slide.png" background-size="contain"}
+:::{.small2}
+As highlighted within the Paediatric Trauma and Orthopaedic Surgery GIRFT report there are a number of factors that may be reduce the proportion of manipulations in the emergency department, including concerns about breach times, a lack of space/facilities to perform sedation, and a lack of familiarity with techniques^1^. Concerns around litigation may also lead to less conservative management, especially with elbow fractures which can lead to rare, but severe, complications. It is possible factors related to culture, lack of experience and litigation may also influence conservative management when it comes to reducing x-rays for clavicle and toe fractures and reducing follow-up appointments. 
+
+Nottingham University Hospitals NHS Trust, who are known to utilise more conservative management of paediatric fractures including routinely manipulating forearm fractures in the emergency department^1,2^, have as expected one of the lowest proportions of forearm fractures manipulated in theatre. In 2022/2023 only 0.5% of forearm fractures were manipulated in theatre (while 11.81% were manipulated in the emergency department) meaning only 4% of all forearm fractures requiring manipulation were performed in theatre. In terms of follow-up appointments 57% of forearm fractures receive a follow-up appointment, which is just above the lowest quartile.
+
+In the Paediatric Trauma and Orthopaedic Surgery GIRFT report it was suggested that there was scope to reduce the number of paediatric forearm manipulations in theatre by 80%^1^. That study used data from 2016-2019, in our study we have found since 2018/2019 the proportion of forearm fractures manipulated in theatre has fallen by almost 60%, from 9% in 2018/19 to under 4% in 2023/24.  
+
+It appears that there is the possibility to further reduce manipulations in theatre, particularly at some trusts, but overall at a national level the decrease is likely to start slowing as smaller numbers of fractures are manipulated in theatre. There is perhaps more scope in the future to reduce activity in terms of reducing unnecessary x-rays in the emergency department for clavicle and toe fractures and in reducing the number of follow-up appointments. The total number of forearm fractures that are manipulated has been decreasing, and there is perhaps scope for this to decrease further. Indeed, the CRAFFT study being conducted at over 45 sites in England is investigating whether there are any differences in outcomes between surgical reduction versus non-surgical casting for displaced distal radius fractures in children^3^.
+
+The GIRFT report found some trusts have moved towards splinting fractures in the emergency department with a virtual follow-up, rather than a temporary cast and then referral to a fracture clinic^1^. From our data the use of virtual follow-ups appears widespread, but there may be scope to reduce virtual appointments, especially as some trusts with high overall follow-up rates have a particularly high number of virtual appointments.
+
+
+:::
+
+::: smaller
+1)  Paediatric Trauma and Orthopaedic Surgery. GIRFT Programme National Specialty Report. April 2022. https://gettingitrightfirsttime.co.uk/girft-reports/
+2) Bryson D et al. (2016) The lost art of conservative management of paediatric fractures. Bone Joint 360. 5(1):2-8. 
+3) https://crafft-study.digitrial.com/ 
+:::
+
+## Future work  {background-image="slide.png" background-size="contain"}
+
+It may be helpful to do some more detailed mapping and analysis of patient pathways to better understand how fractures are being managed, and where further activities savings could be made with more conservative management. 
+
+There are currently trends towards more conservative management, particularly regarding increasing manipulations in the emergency department, and also towards greater use of urgent treatment centres, so there is further scope to investigate how this may play out in the future, including the extent to which these trends can continue and further activity can be reduced.   
+
+## Appendix A- Forearm fracture SNOMED codes{background-image="slide.png" background-size="contain"}
 
 
 ::: columns
@@ -1731,7 +1968,6 @@ snomed_code_tables(a, "Wrist/Forearm", 9, 0.75)
 ```
 :::
 
-
 ::: {.column width="33%"}
 ```{r}
 
@@ -1744,13 +1980,13 @@ snomed_code_tables(c, "Wrist/Forearm", 9, 0.75)
 :::
 :::
 
-## Appendix B- Elbow and Clavicle fracture SNOMED codes
-
+## Appendix B- Elbow and Clavicle fracture SNOMED codes 
 ::: columns
 ::: {.column width="50%"}
-::: {.smaller} 
+::: smaller
 **Elbow**
 :::
+
 ```{r}
 
 snomed_code_tables(fracture_codes, "Elbow", 9, 0.75)
@@ -1758,9 +1994,10 @@ snomed_code_tables(fracture_codes, "Elbow", 9, 0.75)
 :::
 
 ::: {.column width="50%"}
-::: {.smaller} 
+::: smaller
 **Clavicle**
 :::
+
 ```{r}
 
 snomed_code_tables(fracture_codes, "Clavicle", 9, 0.8)
@@ -1768,18 +2005,20 @@ snomed_code_tables(fracture_codes, "Clavicle", 9, 0.8)
 :::
 :::
 
-## Appendix C- Tibia/Fibula and Toe fracture SNOMED codes
+## Appendix C- Tibia/Fibula and Toe fracture SNOMED codes{background-image="slide.png" background-size="contain"}
+
 
 ::: columns
 ::: {.column width="33%"}
-::: {.smaller} 
+::: {.smaller}
 **Tibia/Fibula**
 :::
+
 ```{r}
 
 d<-fracture_codes|>
   filter(type=="Tibia/Fibula")|>
-  head(55)
+  head(44)
 
 snomed_code_tables(d, "Tibia/Fibula", 9, 0.8)
 ```
@@ -1788,91 +2027,85 @@ snomed_code_tables(d, "Tibia/Fibula", 9, 0.8)
 ::: {.column width="33%"}
 <br>
 
-
 ```{r}
 e<-fracture_codes|>
   filter(type=="Tibia/Fibula")|>
-  tail(33)
+  tail(44)
 
 snomed_code_tables(e, "Tibia/Fibula", 9, 0.8)
 ```
 :::
 
-
 ::: {.column width="33%"}
-::: {.smaller} 
+::: {.smaller}
 **Toe**
 :::
+
 ```{r}
 
 snomed_code_tables(fracture_codes, "Toe", 9, 0.8)
 ```
+
+<br>
+<br>
+
+
+
+:::
 :::
 
-::: {.smaller} 
-Fracture of great toe was excluded as this should be followed up- however <10 codes related to the fracture of the great toe were recorded over the whole 6 yr period in England, suggesting that many of these fractures may be coded as 'Closed fracture of phalanx of foot (disorder)' and thus included within out dataset.
-:::
+## Appendix D {background-image="slide.png" background-size="contain"}
 
-
-:::
-
-## Appendix D 
 
 ::: smaller
 **Manipulation in emergency department identified using A&E Treatment Code:**
-:::
 
-::: smaller
+
 10- Reduction
-:::
 
-::: smaller
+
+
 **Manipulation in theatre was identified by one of the following OPCS codes recorded during an inpatient episode in the 3 months post-emergency care attendance.**
-:::
 
-::: smaller
+
+
 -   W262 Manipulation of fracture of bone NEC
 -   W268 Other specified
 -   W269 Unspecified
 -   W663 Primary manipulative closed reduction of fracture dislocation of joint NEC
 -   W252 Closed reduction of fracture of bone and fixation using functional bracing system
-:::
 
-::: smaller
+
+
 **X-ray in the emergency department was identified using A&E Investigation Code:**
-:::
 
-::: smaller
+
+
 01- X-ray
-:::
 
-::: smaller
+
+
 **Physiotherapy appointments were identified by one of the following:**
-:::
 
-::: smaller
+
+
 -   SNOMED referral code for physiotherapy in ECDS- 306170007 Referral to physiotherapy service (procedure)
 -   Treatment Function Code for physiotherapy in the outpatient dataset in the 3 months post-emergency care attendance- 650 Physiotherapy Service
-:::
 
-::: smaller
+
 **Outpatient follow up appointments were identified using the following codes in the outpatient dataset in the 3 months post-emergency care attendance**
-:::
 
-::: smaller
+
+
 Treatment function code was one of:
 
--  110 Trauma and orthopaedic service
--  111 Orthopaedic Service
--  115 Trauma Surgery Service
--  214 Paediatric Trauma and Orthopaedic Service
+-   110 Trauma and Orthopaedic service
+-   111 Orthopaedic Service
+-   115 Trauma Surgery Service
+-   214 Paediatric Trauma and Orthopaedic Service
 
-Or 420 Paediatrics provided that the outpatient referral source was either: 10- initiated following an Emergency Care Attendance (including Minor Injuries, Walk In Centres and Urgent Treatment Centres) OR 04- not initiated following a referral from an Emergency Care Department (including Minor Injuries Units, Walk In Centres and Urgent Treatment Centres)
+Or 420 Paediatrics provided that the outpatient referral source was either: 10- initiated following an emergency care attendance (including minor injuries, walk in centres and urgent treatment centres) OR 04- not initiated following a referral from an emergency care department (including minor injuries, walk in centres and urgent treatment centres)
 
-It was also required that the Emergency care attendance discharge information did NOT have the SNOMED code- 3780001 Routine patient disposition, no follow-up planned (procedure)
+It was also required that the emergency care attendance discharge information did NOT have the SNOMED code- 3780001 Routine patient disposition, no follow-up planned (procedure)
 :::
-
-## Appendix E
-
-HRG codes and costings
 
