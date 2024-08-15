@@ -105,6 +105,7 @@ manipulation_regression<-function(data, frac_type){
     bold(i = 37, bold = TRUE)%>%
     bg( bg = "gold", part = "header")  %>%
     padding(padding.top = 0, padding.bottom=0, part = "all") |>
+    line_spacing(space = 0.9, part = "body")|>
     autofit()|>
     htmltools_value(ft.align = "left")  
   
@@ -195,8 +196,9 @@ f_up_regression<-function(data){
     bold( i = 37, bold = TRUE)%>%
     bold( i = 44, bold = TRUE)%>%
     bg( bg = "gold", part = "header")  %>%
-    fontsize( size = 9, part = "body")|>
+    fontsize( size = 9.5, part = "body")|>
     padding(padding.top = 0, padding.bottom=0, part = "all") |>
+    line_spacing(space = 0.8, part = "body")|>
     autofit()|>
     htmltools_value(ft.align = "left")    
   

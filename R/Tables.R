@@ -65,7 +65,7 @@ as.data.frame()|>
   align(j=1, part="header", align="left")|>
   bg(bg = "#f9bf07", part = "header") |>
   bold(i = 1, bold = TRUE, part="header")|>
-  fontsize(size = 11.5, part = "all")|>
+  fontsize(size = 11, part = "all")|>
   padding(padding = 0, part = "all", padding.top=NULL) |>
   autofit()|>
   htmltools_value(ft.align = "left")   
@@ -180,7 +180,8 @@ summary_values_by_trust_fup<-function(data, frac_type){
   
   data_to_summarise<-data|>
     filter(type==frac_type)|>
-    reframe(Percentage=sum(Percentage), by=c(der_provider_code), name,outpat_attendance, outpat_procedure_done)
+    ungroup()|>
+    summarise(Percentage=sum(Percentage), .by=c(der_provider_code))
   
   summary_values_by_trust(data_to_summarise)
   

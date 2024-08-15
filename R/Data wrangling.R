@@ -53,6 +53,7 @@ formatting_sus_data<- function(filename) {
   ed_hrg<-read.csv("Data/ed_hrg.csv")
   op_hrg<-read.csv("Data/op_hrg.csv")|>
     mutate(treatment_function_code=as.character(treatment_function_code))
+  op_proc_hrg<-read.csv("Data/outpat_procedures_hrg.csv")
   ip_hrg<-read.csv("Data/non_elec_inpat_costs_23_24.csv")
   ethnicity_lookup<-read.csv("Data/ethnicity_lookup.csv")
   imd_lookup<-read.csv("Data/imd2019lsoa.csv")|>
@@ -129,6 +130,8 @@ formatting_sus_data<- function(filename) {
       left_join(ed_hrg, by=c("sus_hrg_code"="hrg_code", "dept_grouping_for_HRG"="dept_type"))|>
       mutate(outpat_attendance=ifelse(treatment_function_code %in% c("110", "214", "111", "115" ), "1", "0"))|>
       left_join(op_hrg, by=c("treatment_function_code", "outpatient_core_hrg"="op_attendance_code"))|>
+      left_join(op_proc_hrg, by=c("outpatient_core_hrg"="outpat_procedure_code"))|>
+      mutate(op_cost=ifelse(is.na(op_cost), outpat_procedure_cost, op_cost))|>
       mutate(outpat_procedure_done=ifelse(outpatient_procedure!="NULL", "1", "0"))|>
       mutate(outpat_procedure_done=ifelse(outpatient_procedure %in% c("X621", "X622","X623", "X628", "X629"), "0", outpat_procedure_done)) |>#Set assessment codes to no procedure
       left_join(ip_hrg, by=c("inpatient_spell_hrg"="hrg_code"))
@@ -227,7 +230,8 @@ calculating_f_up_by_trust<-function(data, trusts_included){
     filter((der_provider_code %in% trusts_included$der_provider_code) & !is.na(name))|>
     group_by(der_provider_code, type)|>
     mutate(Percentage = round(count / sum(count)*100, 2), )|>
-    filter(outpat_attendance=="1" & outpat_procedure_done=="0")|>
+    filter(outpat_attendance=="1")|>
+   # filter(outpat_procedure_done=="0")|>
     mutate(der_contact_type=case_when(der_contact_type=="F2F" ~ "Face-to-Face",
                                       der_contact_type=="NF2F" ~ "Virtual",
                                         der_contact_type=="N/A" ~ "N/A"))
@@ -242,7 +246,7 @@ calculating_manipulations_by_trust<-function(data, trusts_included){
   manipulations_by_trust<-data|>
     filter(der_financial_year=="2022/23")|>
     #filter(ec_department_type=="1")|>
-    mutate(mua=ifelse(mua=="Manipulation in ED & theatre", "Manipulation in ED", mua))|>
+    mutate(mua=ifelse(mua=="Manipulation in ED & theatre", "Manipulation in theatre", mua))|>
     summarise(count=n(), .by=c(type, der_provider_code, mua))|>
     spread(key = mua, value = count)|>
     mutate(`Manipulation in ED`=ifelse(is.na(`Manipulation in ED`) & !is.na(`Manipulation in theatre`), 0, `Manipulation in ED`))|>
@@ -253,8 +257,7 @@ calculating_manipulations_by_trust<-function(data, trusts_included){
     group_by(der_provider_code, type)|>
     mutate(Percentage = round(count / sum(count)*100, 2))|>
     group_by(type, der_provider_code, name)|>
-    summarise(total_mua=sum(mua=="Manipulation in ED"| mua=="Manipulation in theatre"), count, Percentage, mua)
-
+    summarise(total_mua=sum(count), count, Percentage, mua)
 
 }
 

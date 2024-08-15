@@ -125,7 +125,7 @@ data|>
     geom_bar(position = "stack", stat="identity")+
     su_theme()+
     theme(legend.title=element_blank(),
-          legend.position =c(0.75,0.8),
+          legend.position =c(0.83,0.89),
           legend.text=element_text(size=16),
           title=element_text(size=18, colour="black"),
           plot.title.position = "plot",
@@ -154,7 +154,7 @@ plots_of_proportion_by_trust<-function(data, fracture_site, title, scale){
           axis.text=element_text(size=16, colour="black"),
           axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank())+
-    labs(x="Providers", title=title, subtitle="")+
+    labs(x="Providers", title=title, subtitle=NULL)+
     scale_y_continuous(expand=c(0,0), limits=c(0,scale))+
     scale_fill_manual(values=c("#686f73" ))
   
