@@ -1,0 +1,279 @@
+﻿outpat_procedure_code,outpat_procedure_name,outpat_procedure_cost
+AA32Z,Neuropsychology Tests,261
+AA33C,"Conventional EEG, EMG or Nerve Conduction Studies, 19 years and over",230
+AA33D,"Conventional EEG, EMG or Nerve Conduction Studies, 18 years and under",322
+AA57A,"Minimal Intracranial Procedures, 19 years and over",185
+AA81Z,Standard Long-Term EEG Monitoring,453
+AB11Z,Cognitive Behavioural Therapy as part of a Pain Management Programme,128
+AB14Z,Insertion of Neurostimulator Electrodes for Pain Management,1813
+AB15Z,"Radiofrequency Ablation or Cryoablation, for Pain Management",955
+AB16Z,"Denervation or Injection around Spinal Facet, for Pain Management",682
+AB18Z,Continuous Infusion of Therapeutic Substance for Pain Management,433
+AB20Z,Epidural Under Image Control for Pain Management,654
+AB21Z,"Epidural or Therapeutic Spinal Puncture, for Pain Management",460
+AB22Z,Trigger Point Injection for Pain Management,337
+AB23Z,Acupuncture for Pain Management,107
+AB25Z,"Nerve Block or Destruction of Nerve, Under Image Control, for Pain Management",704
+AB26Z,"Nerve Block or Destruction of Nerve, for Pain Management",542
+AB27Z,Injection of Therapeutic Substance into Joint Under Image Control for Pain Management,704
+AB28Z,Injection of Therapeutic Substance into Joint for Pain Management,590
+BZ33Z,"Minor, Cataract or Lens Procedures",112
+BZ44B,"Major Oculoplastics Procedures, 19 years and over, with CC Score 0-1",132
+BZ45B,"Intermediate Oculoplastics Procedures, 19 years and over, with CC Score 0-1",125
+BZ46A,"Minor Oculoplastics Procedures, 19 years and over",128
+BZ56B,"Intermediate, Orbit or Lacrimal Procedures, 19 years and over, with CC Score 0",118
+BZ57A,"Minor, Orbit or Lacrimal Procedures, 19 years and over",116
+BZ65Z,"Minor, Cornea or Sclera Procedures",152
+BZ74Z,Minor Ocular Motility Procedures,95
+BZ84B,"Major Vitreous Retinal Procedures, 19 years and over, with CC Score 0-1",153
+BZ85Z,"Very Major or Major, Vitreous Retinal Procedures, 18 years and under",197
+BZ86B,"Intermediate Vitreous Retinal Procedures, 19 years and over, with CC Score 0-1",130
+BZ86C,"Intermediate Vitreous Retinal Procedures, 18 years and under",141
+BZ87A,"Minor Vitreous Retinal Procedures, 19 years and over",104
+BZ87B,"Minor Vitreous Retinal Procedures, between 4 and 18 years",104
+BZ87C,"Minor Vitreous Retinal Procedures, 3 years and under",114
+BZ88A,"Retinal Tomography, 19 years and over",106
+BZ88B,"Retinal Tomography, 18 years and under",112
+BZ89A,"Digital Retinal Photography, 19 years and over",103
+BZ89B,"Digital Retinal Photography, 18 years and under",112
+BZ93B,"Major, Glaucoma or Iris Procedures, with CC Score 0-1",142
+BZ94B,"Intermediate, Glaucoma or Iris Procedures, with CC Score 0",119
+BZ95Z,"Minor, Glaucoma or Iris Procedures",111
+CA05A,"Minor, Head or Neck Procedures, 19 years and over",192
+CA12Z,Major Treatment of Epistaxis,150
+CA13A,"Minor Treatment of Epistaxis, 19 years and over",145
+CA13B,"Minor Treatment of Epistaxis, 18 years and under",145
+CA14Z,Nasal Polypectomy,162
+CA15Z,"Excision or Biopsy, of Lesion of Internal Nose",162
+CA16Z,"Excision or Biopsy, of Lesion of External Nose",182
+CA24A,"Minor Nose Procedures, 19 years and over",150
+CA24B,"Minor Nose Procedures, 18 years and under",154
+CA25A,"Minimal Nose Procedures, 19 years and over",139
+CA25B,"Minimal Nose Procedures, 18 years and under",139
+CA29Z,Minor Sinus Procedures,153
+CA34A,"Excision or Biopsy, of Lesion of External Ear, 19 years and over",159
+CA34B,"Excision or Biopsy, of Lesion of External Ear, 18 years and under",182
+CA35A,"Insertion of Grommets, 19 years and over",752
+CA36A,"Clearance of External Auditory Canal, 19 years and over",104
+CA36B,"Clearance of External Auditory Canal, 18 years and under",136
+CA37A,"Audiometry or Hearing Assessment, 19 years and over",115
+CA37B,"Audiometry or Hearing Assessment, between 5 and 18 years",122
+CA37C,"Audiometry or Hearing Assessment, 4 years and under",143
+CA38A,"Evoked Potential Recording, 19 years and over",178
+CA38B,"Evoked Potential Recording, 18 years and under",458
+CA40Z,Fitting of Bone Anchored Hearing Aids,361
+CA43Z,Balance Assessment,131
+CA53A,"Intermediate Ear Procedures, 19 years and over",179
+CA53B,"Intermediate Ear Procedures, 18 years and under",324
+CA54A,"Minor Ear Procedures, 19 years and over",156
+CA54B,"Minor Ear Procedures, 18 years and under",295
+CA55A,"Minimal Ear Procedures, 19 years and over",141
+CA55B,"Minimal Ear Procedures, 18 years and under",268
+CA65Z,Frenotomy or Frenectomy,207
+CA66A,"Excision or Biopsy, of Lesion of Mouth, 19 years and over",205
+CA66B,"Excision or Biopsy, of Lesion of Mouth, 18 years and under",245
+CA68A,"Therapeutic Endoscopic, Larynx or Pharynx Procedures, 19 years and over",243
+CA68B,"Therapeutic Endoscopic, Larynx or Pharynx Procedures, 18 years and under",280
+CA69A,"Diagnostic, Laryngoscopy or Pharyngoscopy, 19 years and over",152
+CA69B,"Diagnostic, Laryngoscopy or Pharyngoscopy, between 2 and 18 years",199
+CA69C,"Diagnostic, Laryngoscopy or Pharyngoscopy, 1 year and under",230
+CA71A,"Diagnostic Nasopharyngoscopy, 19 years and over",139
+CA71B,"Diagnostic Nasopharyngoscopy, 18 years and under",154
+CA84B,"Intermediate, Mouth or Throat Procedures, 19 years and over, with CC Score 0-1",207
+CA84C,"Intermediate, Mouth or Throat Procedures, 18 years and under",228
+CA85A,"Minor, Mouth or Throat Procedures, 19 years and over",372
+CA85B,"Minor, Mouth or Throat Procedures, between 2 and 18 years",409
+CA86A,"Minimal, Mouth or Throat Procedures, 19 years and over",179
+CA86B,"Minimal, Mouth or Throat Procedures, between 2 and 18 years",197
+CA95Z,Minor Maxillofacial Procedures,141
+CA98Z,Reduction of Fracture of Nasal Bone,126
+CD01A,"Major Dental Procedures, 19 years and over",211
+CD01B,"Major Dental Procedures, 18 years and under",211
+CD02A,"Intermediate Dental Procedures, 19 years and over",177
+CD02B,"Intermediate Dental Procedures, 18 years and under",169
+CD03A,"Minor Dental Procedures, 19 years and over",179
+CD03B,"Minor Dental Procedures, 18 years and under",155
+CD04A,"Major Surgical Removal of Tooth, 19 years and over",150
+CD04B,"Major Surgical Removal of Tooth, 18 years and under",143
+CD05A,"Surgical Removal of Tooth, 19 years and over",140
+CD05B,"Surgical Removal of Tooth, 18 years and under",163
+CD06A,"Extraction of Multiple Teeth, 19 years and over",165
+CD06B,"Extraction of Multiple Teeth, 18 years and under",170
+CD07A,"Minor Extraction of Tooth, 19 years and over",163
+CD07B,"Minor Extraction of Tooth, 18 years and under",198
+CD08Z,Minor Dental Biopsy,193
+CD09A,"Minor Dental Restoration Procedures, 19 years and over",239
+CD09B,"Minor Dental Restoration Procedures, 18 years and under",228
+CD10A,"Creation of Dental Impression, 19 years and over",168
+CD10B,"Creation of Dental Impression, 18 years and under",154
+CD11A,"Dental Fitting or Insertion Procedures, 19 years and over",153
+CD11B,"Dental Fitting or Insertion Procedures, 18 years and under",153
+CD12A,"Adjustment of Dental Device, 19 years and over",125
+CD12B,"Adjustment of Dental Device, 18 years and under",118
+DZ30Z,Chest Physiotherapy,180
+DZ31Z,Cardiopulmonary Exercise Testing,294
+DZ32Z,Field Exercise Test or Measurement of Fractional Exhaled Nitric Oxide,123
+DZ37A,"Non-Invasive Ventilation Support Assessment, 19 years and over",157
+DZ37B,"Non-Invasive Ventilation Support Assessment, 18 years and under",229
+DZ42Z,TB Nurse Support,182
+DZ50Z,Respiratory Sleep Study,391
+DZ52Z,Full Pulmonary Function Testing,249
+DZ56Z,Carbon Monoxide Transfer Factor Test,166
+EC21Z,Complex Echocardiogram for Congenital Heart Disease,371
+EC22Z,"Electrocardiogram Monitoring or Stress Testing, for Congenital Heart Disease",189
+EY11Z,Testing of Cardiac Pacemaker or Cardioverter Defibrillator,108
+EY12B,Implantation of Electrocardiography Loop Recorder with CC Score 0-2,2320
+EY13Z,Removal of Electrocardiography Loop Recorder,660
+EY50Z,Complex Echocardiogram,263
+EY51Z,Electrocardiogram Monitoring or Stress Testing,130
+FE21Z,"Diagnostic Endoscopic Upper Gastrointestinal Tract Procedures with Biopsy, 19 years and over",454
+FE22Z,"Diagnostic Endoscopic Upper Gastrointestinal Tract Procedures, 19 years and over",385
+FE30Z,"Therapeutic Colonoscopy, 19 years and over",621
+FE31Z,"Diagnostic Colonoscopy with Biopsy, 19 years and over",579
+FE32Z,"Diagnostic Colonoscopy, 19 years and over",507
+FE33Z,"Therapeutic Flexible Sigmoidoscopy, 19 years and over",489
+FE34Z,"Diagnostic Flexible Sigmoidoscopy with Biopsy, 19 years and over",416
+FE35Z,"Diagnostic Flexible Sigmoidoscopy, 19 years and over",354
+FE36Z,"Diagnostic or Therapeutic, Rigid Sigmoidoscopy, 19 years and over",172
+FE40Z,"Therapeutic, Upper Gastrointestinal Tract Endoscopic Procedure with Colonoscopy, 19 years and over",989
+FE41Z,"Diagnostic, Upper Gastrointestinal Tract Endoscopic Procedure with Colonoscopy, with Biopsy, 19 years and over",678
+FE42Z,"Diagnostic, Upper Gastrointestinal Tract Endoscopic Procedure with Colonoscopy, 19 years and over",567
+FE43Z,"Therapeutic, Upper Gastrointestinal Tract Endoscopic Procedure with Sigmoidoscopy, 19 years and over",840
+FE44Z,"Diagnostic, Upper Gastrointestinal Tract Endoscopic Procedure with Sigmoidoscopy, with Biopsy, 19 years and over",623
+FE45Z,"Diagnostic, Upper Gastrointestinal Tract Endoscopic Procedure with Sigmoidoscopy, 19 years and over",546
+FE50A,"Wireless Capsule Endoscopy, 19 years and over",894
+FE50B,"Wireless Capsule Endoscopy, 18 years and under",1587
+FF05Z,"Intermediate Upper Gastrointestinal Tract Procedures, 19 years and over",238
+FF14Z,Adjustment of Gastric Band for Obesity,248
+FF36Z,"Intermediate Large Intestine Procedures, 19 years and over",175
+FF42Z,Minor Anal Procedures,209
+FF43Z,Minimal Anal Procedures,388
+FF53A,"Minor Therapeutic or Diagnostic, General Abdominal Procedures, 19 years and over",288
+HC65Z,Minor Extradural Spinal Procedures,72
+HC72A,"Diagnostic Spinal Puncture, 19 years and over",290
+HN15A,"Minor Hip Procedures for Non-Trauma, 19 years and over",128
+HN16A,"Minimal Hip Procedures, 19 years and over",134
+HN16C,"Minimal Hip Procedures, 5 years and under",121
+HN25A,"Minor Knee Procedures for Non-Trauma, 19 years and over",136
+HN25B,"Minor Knee Procedures for Non-Trauma, 18 years and under",136
+HN26A,"Minimal Knee Procedures, 19 years and over",141
+HN26B,"Minimal Knee Procedures, between 6 and 18 years",126
+HN26C,"Minimal Knee Procedures, 5 years and under",121
+HN35A,"Minor Foot Procedures for Non-Trauma, 19 years and over",175
+HN35B,"Minor Foot Procedures for Non-Trauma, 18 years and under",129
+HN36Z,Minimal Foot Procedures,129
+HN45A,"Minor Hand Procedures for Non-Trauma, 19 years and over",88
+HN46Z,Minimal Hand Procedures,116
+HN55Z,Minor Shoulder Procedures for Non-Trauma,125
+HN56Z,Minimal Shoulder Procedures,133
+HN65Z,Minor Elbow Procedures for Non-Trauma,140
+HN66Z,Minimal Elbow Procedures,112
+HN93Z,"Other Muscle, Tendon, Fascia or Ligament Procedures",141
+JA20F,Unilateral Major Breast Procedures with CC Score 0-2,93
+JA43B,Unilateral Intermediate Breast Procedures with CC Score 0-2,176
+JA44Z,Bilateral Minor Breast Procedures,392
+JA45Z,Unilateral Minor Breast Procedures,321
+JC41Z,Major Skin Procedures,168
+JC42C,"Intermediate Skin Procedures, 19 years and over",273
+JC42D,"Intermediate Skin Procedures, 18 years and under",292
+JC43C,"Minor Skin Procedures, 19 years and over",138
+JC43D,"Minor Skin Procedures, 18 years and under",151
+JC44Z,Complex Patch Tests,200
+JC45A,"Standard Patch Tests, 13 years and over",149
+JC45B,"Standard Patch Tests, 12 years and under",149
+JC46Z,Photodynamic Therapy,445
+JC47Z,Phototherapy or Photochemotherapy,88
+KA09E,Thyroid Procedures with CC Score 0-1,230
+KB04Z,Continuous Subcutaneous Insulin Infusion,258
+LA97A,"Same Day Dialysis Admission or Attendance, 19 years and over",0
+LB09D,"Intermediate Endoscopic Ureter Procedures, 19 years and over",284
+LB14Z,Intermediate Endoscopic Bladder Procedures,856
+LB15E,"Minor Bladder Procedures, 19 years and over",276
+LB17Z,Introduction of Therapeutic Substance into Bladder,170
+LB18Z,Attention to Suprapubic Bladder Catheter,319
+LB33Z,Vasectomy Procedures,701
+LB36Z,Extracorporeal Lithotripsy,463
+LB42A,"Dynamic Studies of Urinary Tract, 19 years and over",223
+LB42D,"Dynamic Studies of Urinary Tract, 18 years and under",315
+LB43Z,Treatment of Erectile Dysfunction,223
+LB54A,"Minor, Scrotum, Testis or Vas Deferens Procedures, 19 years and over",168
+LB55A,"Minor or Intermediate, Urethra Procedures, 19 years and over",168
+LB56A,"Minor Penis Procedures, 19 years and over",206
+LB72A,"Diagnostic Flexible Cystoscopy, 19 years and over",261
+LB76Z,Transrectal Ultrasound Guided Biopsy of Prostate,444
+LB78Z,Minor Prostate or Bladder Neck Procedures (Male),381
+MA10Z,"Minor, Laparoscopic or Endoscopic, Upper Genital Tract Procedures",1527
+MA12Z,Resection or Ablation Procedures for Intrauterine Lesions,879
+MA22Z,Minor Lower Genital Tract Procedures,208
+MA23Z,Minimal Lower Genital Tract Procedures,164
+MA24Z,Minor Upper Genital Tract Procedures,182
+MA25Z,Minimal Upper Genital Tract Procedures,163
+MA31Z,Diagnostic Hysteroscopy,335
+MA32Z,Diagnostic Hysteroscopy with Biopsy,437
+MA33Z,Diagnostic Hysteroscopy with Biopsy and Implantation of Intrauterine Device,596
+MA34Z,Diagnostic Hysteroscopy with Implantation of Intrauterine Device,498
+MA35Z,Implantation of Intrauterine Device,275
+MA36Z,Transvaginal Ultrasound,186
+MA37Z,Transvaginal Ultrasound with Biopsy,246
+MA38Z,Diagnostic Colposcopy,178
+MA39Z,Diagnostic Colposcopy with Biopsy,261
+MA40Z,Therapeutic Colposcopy,271
+MA41Z,Transvaginal Ultrasound with Biopsy and Implantation of Intrauterine Device,326
+MA42Z,Transvaginal Ultrasound with Implantation of Intrauterine Device,266
+MA43Z,Transvaginal Ultrasound with Salpingography,472
+MA44Z,Salpingography,393
+MA45Z,Diagnostic Hysteroscopy with Transvaginal Ultrasound,353
+MA46Z,"Diagnostic Hysteroscopy with Transvaginal Ultrasound, with Biopsy",461
+MA47Z,Diagnostic Hysteroscopy with Transvaginal Ultrasound and Implantation of Intrauterine Device,631
+MA52A,"Surgical, Abortion or Miscarriage Care, under 14 weeks Gestation, with Insertion of Long-Acting Contraceptive",1028
+MA52B,"Surgical, Abortion or Miscarriage Care, under 14 weeks Gestation, without Insertion of Long-Acting Contraceptive",941
+MA55A,"Medical, Abortion or Miscarriage Care, from 9 to under 14 weeks Gestation, with Insertion of Long-Acting Contraceptive",703
+MA55B,"Medical, Abortion or Miscarriage Care, from 9 to under 14 weeks Gestation, without Insertion of Long-Acting Contraceptive",421
+MA56A,"Medical, Abortion or Miscarriage Care, under 9 weeks Gestation, with Insertion of Long-Acting Contraceptive",544
+MA56B,"Medical, Abortion or Miscarriage Care, under 9 weeks Gestation, without Insertion of Long-Acting Contraceptive",262
+PB03Z,Healthy Baby,0
+RD97Z,Same Day Diagnostic Imaging Admission or Attendance,0
+RD98Z,Admission or Attendance for Diagnostic Imaging under General Anaesthetic,0
+RN97Z,Same Day Nuclear Medicine Admission or Attendance,0
+SA33Z,Diagnostic Bone Marrow Extraction,256
+SA41Z,Automated Red Cell Exchange,1235
+SA42Z,Manual Red Cell Exchange,996
+SA43Z,Leucopheresis,369
+SA44A,"Single Plasma Exchange or Other Intravenous Blood Transfusion, 19 years and over",249
+SA44B,"Single Plasma Exchange or Other Intravenous Blood Transfusion, 18 years and under",418
+SA45A,"Injection of Rh Immune Globulin or Other Blood Transfusion, 19 years and over",223
+SA45B,"Injection of Rh Immune Globulin or Other Blood Transfusion, 18 years and under",409
+SB97Z,Same Day Chemotherapy Admission or Attendance,0
+SC97Z,Same Day Radiotherapy Admission or Attendance (excluding Brachytherapy),0
+UZ01Z,Data Invalid for Grouping,0
+YC01Z,"Percutaneous Core Needle Biopsy of Lesion of, Head or Neck",310
+YC02Z,"Percutaneous Fine Needle Aspiration Biopsy of Lesion of, Head or Neck",211
+YD02Z,Percutaneous Biopsy of Lesion of Pleura,612
+YD03Z,"Percutaneous Biopsy of Lesion of, Lung or Mediastinum",626
+YD04Z,Percutaneous Drainage of Pleural Cavity,1009
+YD05Z,Percutaneous Aspiration of Pleural Cavity,1009
+YF01A,"Radiological Insertion of Gastrostomy Tube, 19 years and over",137
+YF01B,"Radiological Insertion of Gastrostomy Tube, 18 years and under",266
+YH30A,"Percutaneous Aspiration of Joint, 19 years and over",419
+YH30B,"Percutaneous Aspiration of Joint, 18 years and under",805
+YH31A,"Percutaneous Biopsy of Lesion of Bone, 19 years and over",1304
+YH31B,"Percutaneous Biopsy of Lesion of Bone, 18 years and under",2608
+YH32A,"Percutaneous Biopsy of, Lesion of Muscle or Connective Tissue, 19 years and over",1270
+YH32B,"Percutaneous Biopsy of, Lesion of Muscle or Connective Tissue, 18 years and under",2460
+YJ03Z,Biopsy of Lesion of Breast and Associated Lymph Nodes,517
+YJ04Z,Core Needle Biopsy of Axillary Lymph Nodes,385
+YJ08Z,Fine Needle Aspiration of Axillary Lymph Nodes,300
+YJ09Z,Vacuum Assisted Biopsy or Excision of Lesion of Breast,556
+YJ11Z,Drainage of Lesion of Breast or Associated Lymph Nodes,341
+YJ12Z,"Insertion of, Wire or Marker, for Localisation of Breast Lesion",300
+YJ13Z,Ultrasound Guided Core Needle Biopsy of Lesion of Breast,300
+YJ14Z,Stereotactic Core Needle Biopsy of Lesion of Breast,344
+YJ15Z,Fine Needle Aspiration of Lesion of Breast,264
+YL12Z,"Percutaneous, Attention to or Removal of, Ureteric Stent or Nephrostomy",452
+YL30Z,Percutaneous Ablation of Lesion of Prostate,84
+YQ43Z,Biopsy of Temporal Artery,337
+YR31Z,"Percutaneous Transluminal, Laser or Radiofrequency Ablation, of Unilateral Varicose Veins",1077
+YR33Z,Sclerotherapy of Unilateral Varicose Veins,457
+YR42A,"Peripheral Insertion of Central Venous Catheter, 19 years and over",380
+YR43A,"Attention to Central Venous Catheter, 19 years and over",215
+YR44A,"Removal of Central Venous Catheter, 19 years and over",318
