@@ -174,7 +174,7 @@ on a.Der_Pseudo_NHS_Number=b.Der_Pseudo_NHS_Number AND
 	       LEFT JOIN (SELECT 
 		                Der_Pseudo_NHS_Number
 						,ArrivalDate
-						,count(case when Appointment_Date IS NOT NULL then 1 end)as outpat_attendance_number
+						,count(case when ((Appointment_Date IS NOT NULL) AND (Der_Attendance_Type='Attend')) then 1 end)as outpat_attendance_number
 						,count(case when physio_appt=1 then 1 end) as physio_appt_number
                      FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp5]
                     GROUP BY Der_Pseudo_NHS_Number, ArrivalDate) b
@@ -182,7 +182,60 @@ on a.Der_Pseudo_NHS_Number=b.Der_Pseudo_NHS_Number AND
 					     b.ArrivalDate = a.ArrivalDate)
 
 --- Select the first follow up attendance 
-SELECT *
+SELECT [Sex]
+      ,[Ethnic_Category]
+      ,[EC_Department_Type]
+      ,[EC_Seen_For_Treatment_Time_Since_Arrival]
+      ,[Discharge_Follow_Up_SNOMED_CT]
+      ,[SUS_HRG_Code]
+      ,[Der_Provider_Code]
+      ,[Der_Provider_Site_Code]
+      ,[Der_Commissioner_Code]
+      ,[Der_Age_At_CDS_Activity_Date]
+      ,[Der_Financial_Year]
+      ,[Der_Activity_Month]
+      ,[Der_Number_EC_Diagnosis]
+      ,[Der_EC_Diagnosis_All]
+      ,[Der_AEA_Investigation_All]
+      ,[Der_AEA_Treatment_All]
+      ,[ArrivalDate]
+      ,[ArrivalTime]
+      ,[day_of_week]
+      ,[Der_Postcode_LSOA_2011_Code]
+      ,[manipulation_in_ED]
+      ,[xray]
+      ,[physio_f_up]
+      ,[no_f_up]
+      ,[type]
+      ,[description]
+      ,[APCE_Ident]
+      ,[Admission_Date]
+      ,[inpatient_HRG]
+      ,[inpatient_FCE_HRG]
+      ,[inpatient_spell_HRG]
+      ,[Der_Primary_Diagnosis_Code]
+      ,[Der_Primary_Procedure_Code]
+      ,[inpatient_manipulation]
+      ,[admission_number]
+      ,[Main_Specialty_Code]
+      ,[Treatment_Function_Code]
+      ,[Outcome_of_Attendance]
+      ,[Appointment_Date]
+      ,[OPA_Referral_Source]
+      ,[Outpatient_HRG]
+      ,[Outpatient_Core_HRG]
+      ,[Outpatient_SUS_HRG]
+      ,[Outpatient_Procedure]
+      ,[Der_Staff_Type]
+      ,[Der_Appointment_Type]
+      ,[Der_Contact_Type]
+      ,[Der_Professional_Type]
+      ,[Der_Attendance_Type]
+      ,[physio_appt]
+      ,[outpat_attendance]
+      ,[outpat_attendance_number]
+      ,[physio_appt_number]
+      ,[rownum2]
 INTO [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfrac_final] 	 
 FROM [NHSE_Sandbox_StrategyUnit].[GEM\SLucas].[NHSE_Sandbox_StrategyUnit.dbo.paedfractemp6] 		
 

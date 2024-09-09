@@ -23,7 +23,7 @@ list(
   ),
   tar_target(
     paed_fractures,
-    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/paed_fractures.csv")
+    formatting_sus_data("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/paed_fractures2.csv")
   ),
   tar_target(
     epidemiology_agegroups,
