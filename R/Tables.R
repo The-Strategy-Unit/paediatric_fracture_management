@@ -15,7 +15,9 @@ table_of_total_incidence_rate<-function(data){
         summarise(frac_no=sum(frac_no), pop_count=sum(pop_count))|>
         mutate(Total=round((frac_no/pop_count)*100000,0)))[,c("type", "Total")], 
     by=c("type")
-  )|>
+   )|>
+    select(type, `Female 0-4 yrs`,  `Female 5-10 yrs`,`Female 11-16 yrs`, `Male 0-4 yrs`,`Male 5-10 yrs`, 
+           `Male 11-16 yrs`,  Total)|> 
   flextable() |>
   set_header_labels(type="Type", 
                     `Male 0-4 yrs`= "Male\n 0-4 yrs",
@@ -102,6 +104,32 @@ table_of_most_common_fractures<-function(data){
 
 }
 
+# Table of characteristics/table one
+table_of_characteristics<-function(data){
+  
+  label(data$sex)<- "Sex"
+  label(data$age)<-"Age"
+  label(data$ethnicity_broad)<-"Ethnicity"
+  label(data$imd_quintiles)<-"IMD Quintiles"
+  label(data$dept_type)<- "Emergency Dept type"
+  label(data$day)<- "Day of ED attendance"
+  label(data$time)<- "Time of ED attendance"
+  label(data$der_financial_year)<-"Year of ED attendance"
+  
+  
+  table1(~ sex + age + ethnicity_broad + imd_quintiles+ dept_type + day + time + der_financial_year| type, data=data,big.mark="," )|>
+    t1flex()|>
+    bg(bg = "#f9bf07", part = "header") |>
+    align(part = "body", align = "right")|>
+    align(j=1, part = "body", align = "left")|>
+    fontsize(size = 11, part = "all")|>
+    padding(padding = 0.2, part = "all", padding.top=NULL) |>
+    bold(bold = TRUE, part="header")|>
+    line_spacing(space = 0.85, part = "body")|>
+    htmltools_value(ft.align = "left")  
+
+  
+}
 
 # Summary of min, median, max
 summary_values_by_trust<-function(data){

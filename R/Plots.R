@@ -60,6 +60,161 @@ ggplot()+
   guides(fill=guide_coloursteps(title="Incidence\n /100,000"))
 }
 
+# Incidence graph
+plotting_incidence<-function(data){
+  
+  data|> 
+    summarise(frac_no=sum(frac_no), pop_count=sum(pop_count), .by=c(type,  der_financial_year))|>
+    mutate(incidence=(frac_no/pop_count)*100000)|>
+    ggplot()+
+    geom_line(aes(x=der_financial_year, y=incidence,group=type,colour=type), size=1.2)+
+    su_theme()+
+    labs(x ="", y = "Annual incidence per 100,000")+
+    theme(legend.title=element_blank(),
+          legend.position="top",
+          legend.text=element_text(size=16),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=14))+
+    scale_colour_manual(values=c("#ec6555", "#f9bf07","#5881c1","#BCBAB8","black"))+
+    scale_y_continuous(limits=c(0,NA)) 
+ 
+}
+
+
+# Incidence by age graph
+plotting_incidence_by_age<-function(data){
+  
+  data|>
+    mutate(group_labels=factor(group_labels, levels = c("Female 0-4 yrs", "Male 0-4 yrs", "Female 5-10 yrs", "Male 5-10 yrs", "Female 11-16 yrs", "Male 11-16 yrs")))|>
+    ggplot()+
+    geom_line(aes(x=der_financial_year, y=incidence,group=group_labels,colour=group_labels, linetype=group_labels), size=1.2 )+
+    #   geom_point(aes(x=der_financial_year, y=incidence,group=group_labels,colour=group_labels), size=2.5 )+
+    facet_wrap(~type, ncol=3, scales='free')+
+    su_theme()+
+    labs(x ="", y = "Annual incidence per 100,000")+
+    theme(legend.title=element_blank(),
+          legend.position=c(0.8,0.2),
+          legend.text=element_text(size=14),
+          axis.text=element_text(size=13),
+          axis.title=element_text(size=16),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16),
+          axis.text.x = element_text(angle = 30, vjust = 0.6, hjust=0.5))+
+    scale_y_continuous(limits=c(0,NA))+
+    scale_linetype_manual(values=c("twodash","solid","twodash", "solid","twodash","solid"))+
+    scale_colour_manual(values=c("#f9bf07", "#f9bf07" ,"#ec6555","#ec6555", "black", "black" )) 
+  
+}
+
+
+# Seasonal trends graph
+plotting_seasonal_trends<-function(ref_data, data){
+  
+  pop<-ref_data|>
+    group_by(year)|>
+    summarise(pop_count=sum(pop_count))
+  
+  data|>
+    mutate(year=as.numeric(stringr::str_extract(der_financial_year, "^.{4}")))|>
+    summarise(frac_no=n(), .by=c(type,  der_activity_month, year))|>
+    left_join(pop, by=c("year"))|>
+    mutate(incidence=(frac_no/pop_count)*100000)|>
+    ggplot()+
+    annotate("rect", xmin=as.Date('2018-06-01'), xmax=as.Date('2018-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2019-06-01'), xmax=as.Date('2019-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2020-06-01'), xmax=as.Date('2020-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2021-06-01'), xmax=as.Date('2021-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2022-06-01'), xmax=as.Date('2022-08-31'), ymin=0, ymax=Inf, alpha=0.5,fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2023-06-01'), xmax=as.Date('2023-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07") +
+    geom_line(aes(x=der_activity_month, y=incidence), linewidth=1.2)+
+    facet_wrap(~type, ncol=3, scale="free")+
+    su_theme()+
+    labs(x ="", y = "Monthly incidence rate/ 100,000")+
+    theme(legend.title=element_blank(),
+          legend.position=c(0.8,0.2),
+          legend.text=element_text(size=16),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    scale_y_continuous(limits=c(0,NA), expand=c(0.01,0))
+  
+}
+
+
+# Seasonality cornwall vs England
+plotting_seasonality_cornwall_england<-function(data, provider_data, population_data){
+  
+  data|>
+    left_join(provider_data, by=c("der_provider_code"))|>
+    group_by(der_activity_month, icb_name)|>
+    summarise(frac_no=n())|>
+    full_join(population_data|>group_by(icb_2023_name)|>summarise(pop_count=sum(pop_count)), 
+              by=c("icb_name"="icb_2023_name"))|>
+    group_by(der_activity_month)|>
+    summarise(frac_no=sum(frac_no), pop_count=sum(pop_count, na.rm=TRUE))|>
+    mutate(england=(frac_no/pop_count)*100000)  |>
+    select(der_activity_month, england)|>
+    left_join(
+      data|>
+        left_join(provider_data, by=c("der_provider_code"))|>
+        group_by(der_activity_month, icb_name)|>
+        summarise(frac_no=n())|>
+        full_join(population_data|>group_by(icb_2023_name)|>summarise(pop_count=sum(pop_count)), 
+                  by=c("icb_name"="icb_2023_name"))|>
+        filter(icb_name=="NHS Cornwall and the Isles of Scilly Integrated Care Board")|>
+        mutate(cornwall=(frac_no/pop_count)*100000)|>
+        select(der_activity_month, cornwall),
+      by=c("der_activity_month")
+    )|>
+    filter(der_activity_month>'2021-04-01')|>
+    ggplot()+
+    annotate("rect", xmin=as.Date('2021-06-01'), xmax=as.Date('2021-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2022-06-01'), xmax=as.Date('2022-08-31'), ymin=0, ymax=Inf, alpha=0.5,fill="#f9bf07")+
+    annotate("rect", xmin=as.Date('2023-06-01'), xmax=as.Date('2023-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07") +
+    geom_line(aes(x=der_activity_month, y=england, colour="England" ), linewidth=1.2)+
+    geom_line(aes(x=der_activity_month, y=cornwall, colour="Cornwall"), linewidth=1.2)+
+    su_theme()+
+    labs(x ="", y = "Monthly incidence rate/ 100,000")+
+    theme(legend.title=element_blank(),
+          legend.position="top",
+          legend.text=element_text(size=16),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16))+
+    scale_y_continuous(limits=c(0,NA), expand=c(0,0))+
+    scale_color_manual(values=c("#ec6555","#686f73" ))
+  
+  
+}
+
+# Proportion of A&E attendances for fractures
+
+plotting_proportion_of_ED_attendances_for_fracture<-function(ed_numbers, data){
+
+  proportion_per_provider<-ed_numbers|>
+  left_join((data|>
+               filter(der_financial_year=="2022/23")|>
+               group_by(der_provider_code)|>
+               summarise(frac_number=n())), by=c("der_provider_code"))|>
+  filter(str_starts(der_provider_code, "R"))|>
+  mutate(Proportion=(frac_number/count)*10000)|>
+  filter(!is.na(Proportion))
+
+proportion_per_provider|>
+  ggplot(aes(x=reorder(der_provider_code, -Proportion), Proportion))+
+  geom_col(fill="#686f73", colour="black")+
+  su_theme()+
+  theme(title=element_text(size=18, colour="black"),
+        plot.title.position = "plot",
+        axis.text=element_text(size=16, colour="black"),
+        axis.title=element_text(size=18, colour="black"),
+        axis.text.x=element_blank())+
+  labs(x="Providers", y="Fractures per 10,000 ED attendances"  , title=NULL, subtitle=NULL)+
+  scale_y_continuous(expand=c(0,0), limits=c(0,NA))
+}
+
 # Fracture type layout formating
 
 fracture_type_layout<-function(data){
@@ -80,6 +235,170 @@ fracture_type_layout<-function(data){
   
 }
 
+# Trends in xrays
+plotting_trends_in_xrays<-function(data){
+  
+  data|>
+    group_by(type, xray, der_activity_month,der_financial_year)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month,der_financial_year)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    filter(xray==1)|>
+    fracture_type_layout()+
+    scale_y_continuous(limits=c(0,100))
+}
+
+# Trends in follow up
+plotting_trends_in_fracture_fup<-function(data){
+
+  data|>
+    group_by(type, outpat_attendance, der_activity_month, der_financial_year)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    filter(outpat_attendance==1)|>
+    fracture_type_layout()+
+    scale_y_continuous(limits=c(0,100))
+}
+# Trends in f2f follow-up
+plotting_trends_in_f2f_fup<-function(data){
+
+  data|>
+    filter(der_contact_type=="F2F" | der_contact_type=="NF2F")|>
+    mutate(der_contact_type=case_when(der_contact_type=="F2F" ~ "Face-to-Face",
+                                      der_contact_type=="NF2F" ~ "Virtual"))|>
+    group_by(type, outpat_attendance, der_contact_type, der_activity_month)|>
+    summarise(count=n())|>
+    group_by(type, outpat_attendance, der_activity_month)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    filter(outpat_attendance==1)|>
+    ggplot(aes(x=der_activity_month, y=Percentage, group=rev(der_contact_type), fill=der_contact_type))+
+    geom_area(position = 'fill')+
+    facet_wrap(~type, ncol=3, scales="free")+
+    su_theme()+
+    labs(x ="", y = "Proportion")+
+    theme(legend.title=element_blank(),
+          legend.position=c(0.86,0.2),
+          legend.text=element_text(size=16),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    scale_fill_manual(values=c("#f9bf07" , "#686f73"))
+  
+}
+
+# Number of follow up appointment
+plotting_number_of_fups<-function(data){
+  
+  data|>
+    filter(der_financial_year=="2022/23")|>
+    group_by(type, outpat_attendance_number )|>
+    summarise(count=n())|>
+    group_by(type)|>
+    reframe(total=sum(count), outpat_attendance_number, count)|>
+    mutate(Percentage=(count/total)*100)|>
+    filter(outpat_attendance_number<=10)|>
+    mutate(outpat_attendance_number=as.factor(outpat_attendance_number))|>
+    ggplot(aes(x=outpat_attendance_number, y=count ))+
+    geom_bar(stat="identity", position="stack" )+
+    facet_wrap(~type, ncol=3, scale="free")+
+    su_theme()+
+    theme(axis.text=element_text(size=12, colour="black"),
+          axis.title=element_text(size=16, colour="black"),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    labs(x="Number of follow-up appts", y="Number of fractures", title=NULL, subtitle=NULL)+ scale_fill_manual(values=c("#686f73","#f9bf07" ))+
+    scale_y_continuous(expand=c(0,0.01), limits=c(0,NA))
+
+
+}
+
+# Trends in manipulation in ED
+plotting_trends_manipulation_in_ED<-function(data){
+  data|>
+    group_by(type, manipulation_in_ed, der_activity_month, der_financial_year)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month, der_financial_year)|>
+    mutate(Percentage = round(count / sum(count)*100, 3))|>
+    filter(manipulation_in_ed==1)|>
+    fracture_type_layout()+
+    scale_y_continuous(limits=c(0,6.2))
+}
+
+
+
+# Trends in manipulation in theatre
+plotting_trends_manipulation_in_theatre<-function(data){
+  
+  data|>
+    group_by(type, mua_in_theatre, der_activity_month, der_financial_year)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month, der_financial_year)|>
+    mutate(Percentage = round(count / sum(count)*100, 3))|>
+    filter(mua_in_theatre==1)|>
+    fracture_type_layout()+
+    scale_y_continuous(limits=c(0,13))
+  
+}
+
+# Manipulation in ED vs theatre
+plotting_manipulation_in_ED_vs_theatre<-function(data){
+  
+  data|>
+    filter(type!="Clavicle" & type!="Toe")|>
+    filter(manipulation_in_ed=="1"|mua_in_theatre=="1")|>
+    group_by(type, mua, der_activity_month)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month)|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    ggplot(aes(x=der_activity_month, y=Percentage, group=mua, fill=mua))+
+    geom_area(position = 'fill')+
+    facet_wrap(~type, ncol=2, scales="free")+
+    su_theme()+
+    labs(x =NULL, title=NULL, subtitle=NULL, y = "Proportion")+
+    theme(legend.title=element_blank(),
+          legend.position=c(0.72,0.2),
+          legend.text=element_text(size=16),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    scale_fill_manual(values=c("#f9bf07", "black" , "#686f73"))
+  
+}
+
+
+# Trend in total manipulations 
+plotting_trend_in_total_manipulations<-function(data){
+  
+  data|>
+    filter(type!="Clavicle" & type!="Toe")|>
+    mutate(manipulation_total=ifelse(manipulation_in_ed=="1"|mua_in_theatre=="1", "1", "0"))|>
+    group_by(type, manipulation_total, der_activity_month,der_financial_year)|>
+    summarise(count=n())|>
+    group_by(type, der_activity_month,der_financial_year )|>
+    mutate(Percentage = round(count / sum(count)*100, 2))|>
+    filter(manipulation_total=="1")|>
+    ggplot(aes(x=der_activity_month, y=Percentage))+
+    geom_line( linewidth=1.2)+
+    geom_smooth(aes(group=der_financial_year),formula=y~1,method="lm",col="#f9bf07",se=FALSE, size=1)+
+    facet_wrap(~type, ncol=2, scale="free")+
+    su_theme()+
+    labs(x ="", y = "Percentage", title="Percentage of fractures manipulated (theatre & ED)")+
+    theme(legend.title=element_blank(),
+          legend.position=c(0.8,0.2),
+          legend.text=element_text(size=16),
+          title=element_text(size=16, colour="black"),
+          axis.text=element_text(size=14),
+          axis.title=element_text(size=16),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    scale_y_continuous(limits=c(0,15))
+  
+  
+  
+}
 
 # Plotting differences between ed vs utc
 
@@ -195,6 +514,31 @@ plots_of_theatre_vs_ed<-function(data, fracture_site, title){
   
   
 }
+
+#Cost of xrays
+
+plotting_cost_of_xray<-function(data){
+  
+  data|>
+    mutate(xray=ifelse(xray=="1", "X-ray", "No X-ray"))|>
+    ggplot(aes(x=as.factor(ed_cost), y=count, group=rev(dept_type), fill=dept_type ))+
+    geom_bar(stat="identity", position="stack" )+
+    facet_wrap(~xray, ncol=2)+
+    su_theme()+
+    theme(legend.position = "top",
+          legend.text=element_text(size=12),
+          legend.title=element_blank(),
+          axis.text=element_text(size=14, colour="black"),
+          axis.title=element_text(size=16, colour="black"),
+          strip.background = element_rect(fill = "NA", colour = "NA"),
+          strip.text = element_text(face = "bold", size=16))+
+    labs(x="Cost (£)", y="Number of attendances", title=NULL, subtitle=NULL)+ scale_fill_manual(values=c("#686f73","#f9bf07" ))+
+    scale_y_continuous(expand=c(0,0.01), limits=c(0,4100)) 
+  
+  
+}
+
+
 
 
 

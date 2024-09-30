@@ -4,8 +4,21 @@ library(targets)
 
 # Set target options:
 tar_option_set(
-  packages = c("dplyr", "janitor", "sf", "flextable", "lubridate") 
+  packages = c("dplyr", "sf", "flextable", "lubridate", "tidyr", "stringr", "table1", "StrategyUnitTheme") 
 )
+
+
+#library(basemapR)
+#library(egg)
+#library(forcats)
+#library(scales)
+#library(patchwork)
+#library(tibble)
+#library(ggpubr)
+#library(plotly)
+
+
+
 
 # Run the R scripts in the R/ folder with your custom functions:
 tar_source()
@@ -16,6 +29,10 @@ list(
   tar_target(
     icb_pop,
     ICB_population_data_2022("Data/ICB Population estimates 2022.csv")
+  ),
+  tar_target(
+    provider_to_icb,
+    read_csv("Data/providers_to_icb_lookup.csv")
   ),
   tar_target(
     england_pop,
@@ -47,6 +64,10 @@ list(
     removing_low_no_trusts(paed_fractures)
   ),
   tar_target(
+    total_ed_attendances,
+    formating_total_ed_attendances("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/total_ed_attendances.csv")
+  ),
+  tar_target(
     xrays_by_trust,
     calculating_xrays_by_trust(paed_fractures, trusts_with_120_attendances)
   ),
@@ -66,7 +87,14 @@ list(
     fracture_codes,
     formatting_code_list("Data/Snomed fracture codes for NCDR.csv")
   ),
-  
+  tar_target(
+    xray_cost_data_toe,
+    formatting_xray_cost(paed_fractures, "Toe")
+  ),
+  tar_target(
+    xray_cost_data_clavicle,
+    formatting_xray_cost(paed_fractures, "Clavicle")
+  ),
   
   # Maps
   tar_target(
@@ -105,7 +133,72 @@ list(
                                      "Toe", 
                                     "Toe fracture incidence rate")
   ),
+  #Graphs
+  tar_target(
+    incidence_graph,
+    plotting_incidence(epidemiology_agegroups)
+  ),
+  tar_target(
+    incidence_by_age_graph,
+    plotting_incidence_by_age(epidemiology_agegroups)
+  ),
+  tar_target(
+    seasonal_trends,
+    plotting_seasonal_trends(england_pop, 
+                             paed_fractures)
+  ),
+  tar_target(
+    seasonality_cornwall_england,
+    plotting_seasonality_cornwall_england(paed_fractures,
+                                           provider_to_icb,
+                                          icb_pop)
+  ),
+  tar_target(
+    proportion_of_ED_attendances_for_fracture, 
+  plotting_proportion_of_ED_attendances_for_fracture(total_ed_attendances, paed_fractures)
+  ),
+  tar_target(
+    trends_in_xrays, 
+    plotting_trends_in_xrays(paed_fractures)
+  ),
+  tar_target(
+    trends_in_fracture_fup, 
+    plotting_trends_in_fracture_fup(paed_fractures)
+  ),
+  tar_target(
+    trends_in_f2f_fup, 
+    plotting_trends_in_f2f_fup(paed_fractures)
+  ),
+  tar_target(
+    number_of_fups, 
+    plotting_number_of_fups(paed_fractures)
+  ),
+  tar_target(
+    trends_manipulation_in_ED, 
+    plotting_trends_manipulation_in_ED(paed_fractures)
+  ),
+  tar_target(
+    trends_manipulation_in_theatre, 
+    plotting_trends_manipulation_in_theatre(paed_fractures)
+  ),
+  tar_target(
+    manipulation_in_ED_vs_theatre, 
+    plotting_manipulation_in_ED_vs_theatre(paed_fractures)
+  ),
+  tar_target(
+    trend_in_total_manipulations, 
+    plotting_trend_in_total_manipulations(paed_fractures)
+  ),
+  tar_target(
+    cost_of_xray_clavicle, 
+    plotting_cost_of_xray(xray_cost_data_clavicle)
+  ),
+  tar_target(
+    cost_of_xray_toe, 
+    plotting_cost_of_xray(xray_cost_data_toe)
+  ),
   
+
   
   #Tables
   
@@ -120,6 +213,10 @@ list(
   tar_target(
     table_most_common_fractures,
     table_of_most_common_fractures(paed_fractures)
+  ),
+  tar_target(
+    table_one,
+    table_of_characteristics(paed_fractures)
   ),
   
   # Regression analysis

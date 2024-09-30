@@ -195,6 +195,16 @@ removing_low_no_trusts<-function(data){
   
 }
 
+# Total A&E/UTC attendances
+
+formating_total_ed_attendances<-function(data){
+
+ total_ed_attendances<-read.csv(data)|>
+  clean_names()|>
+  filter(der_financial_year=="2022/23")|>
+  group_by(der_provider_code, der_financial_year)|>
+  summarise(count=sum(count))
+}
 
 # Calculating the number of x-rays by trust
 calculating_xrays_by_trust<-function(data, trusts_included){
@@ -300,3 +310,20 @@ fracture_codes<-read.csv(data)|>
 return(fracture_codes)
 
 }
+
+# Cost of xrays
+formatting_xray_cost<-function(data, frac_type){
+
+  xray_cost<-data|>
+  filter(type==frac_type)|>
+  filter(der_financial_year=="2022/23")|>
+  # filter(dept_type=="Major Emergency Dept")|>
+  group_by(xray, ed_cost, dept_type)|>
+  summarise(count=n())|>
+  filter(!is.na(ed_cost))|>
+  group_by(xray, dept_type)|>
+  reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)|>
+  filter(dept_type!="Same Day Emergency Care")
+
+}
+
