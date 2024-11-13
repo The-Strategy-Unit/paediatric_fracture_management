@@ -13,14 +13,14 @@ proportions_manipulated<-function(frac_type){
 
 
 #Lowest quartile
-calculating_lowest_quartile<-function(frac_type){
+calculating_lowest_quartile<-function(frac_type, number){
   
   a<-proportions_manipulated(frac_type)
   
   b<-a|>
     filter(mua=="Manipulation in theatre" & !is.na(count))|>
     ungroup()|>
-    summarise(value=round(quantile(Percentage, probs = c(0.25)),1))
+    summarise(value=round(quantile(Percentage, probs = c(number)),1))
   
   return(b$value)
 }
@@ -28,11 +28,11 @@ calculating_lowest_quartile<-function(frac_type){
 
 # calculating reduction in mua in theatre if all trust were able to reduce levels in line with the best performing quartile
 
-calculating_saving<-function(frac_type){
+calculating_saving<-function(frac_type, number){
   
   a<-proportions_manipulated(frac_type)
 
-  b<-calculating_lowest_quartile(frac_type)
+  b<-calculating_lowest_quartile(frac_type, number)
 
 c<-a|>
   filter(Percentage>b & mua=="Manipulation in theatre" )|>
@@ -47,9 +47,9 @@ return(c$number_reduced)
 
 
 # Percentage change 
-calculating_percentage_change<-function(frac_type){
+calculating_percentage_change<-function(frac_type, number){
   
-  number<-calculating_saving(frac_type)
+  number<-calculating_saving(frac_type, number)
   
   d<-manipulations_by_trust|>
     filter(type==frac_type & mua=="Manipulation in theatre")|>
@@ -126,6 +126,7 @@ calculating_percentage_change_f_up<-function(data, frac_type, number){
   return(e)
   
 }
+
 
 
 

@@ -122,7 +122,6 @@ plotting_seasonal_trends<-function(ref_data, data){
     left_join(pop, by=c("year"))|>
     mutate(incidence=(frac_no/pop_count)*100000)|>
     ggplot()+
-    annotate("rect", xmin=as.Date('2018-06-01'), xmax=as.Date('2018-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
     annotate("rect", xmin=as.Date('2019-06-01'), xmax=as.Date('2019-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
     annotate("rect", xmin=as.Date('2020-06-01'), xmax=as.Date('2020-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
     annotate("rect", xmin=as.Date('2021-06-01'), xmax=as.Date('2021-08-31'), ymin=0, ymax=Inf, alpha=0.5, fill="#f9bf07")+
@@ -180,9 +179,9 @@ plotting_seasonality_cornwall_england<-function(data, provider_data, population_
     labs(x ="", y = "Monthly incidence rate/ 100,000")+
     theme(legend.title=element_blank(),
           legend.position="top",
-          legend.text=element_text(size=16),
-          axis.text=element_text(size=14),
-          axis.title=element_text(size=16))+
+          legend.text=element_text(size=14),
+          axis.text=element_text(size=12),
+          axis.title=element_text(size=14))+
     scale_y_continuous(limits=c(0,NA), expand=c(0,0))+
     scale_color_manual(values=c("#ec6555","#686f73" ))
   
@@ -199,7 +198,7 @@ plotting_proportion_of_ED_attendances_for_fracture<-function(ed_numbers, data){
                group_by(der_provider_code)|>
                summarise(frac_number=n())), by=c("der_provider_code"))|>
   filter(str_starts(der_provider_code, "R"))|>
-  mutate(Proportion=(frac_number/count)*10000)|>
+  mutate(Proportion=(frac_number/count)*100)|>
   filter(!is.na(Proportion))
 
 proportion_per_provider|>
@@ -211,7 +210,7 @@ proportion_per_provider|>
         axis.text=element_text(size=16, colour="black"),
         axis.title=element_text(size=18, colour="black"),
         axis.text.x=element_blank())+
-  labs(x="Providers", y="Fractures per 10,000 ED attendances"  , title=NULL, subtitle=NULL)+
+  labs(x="Providers", y="Percentage"  , title=NULL, subtitle=NULL)+
   scale_y_continuous(expand=c(0,0), limits=c(0,NA))
 }
 
@@ -220,18 +219,18 @@ proportion_per_provider|>
 fracture_type_layout<-function(data){
   
   data|>ggplot(aes(x=der_activity_month, y=Percentage))+
-    geom_smooth(aes(group=der_financial_year),formula=y~1,method="lm",col="#f9bf07",se=FALSE, size=1)+
+    geom_smooth(aes(group=der_financial_year, colour="#f9bf07"),formula=y~1,method="lm",se=FALSE, size=1)+
     geom_line(linewidth=1.2)+
     facet_wrap(~type, ncol=3, scale="free")+
     su_theme()+
     labs(x ="", y = "Percentage")+
-    theme(legend.title=element_blank(),
-          legend.position=c(0.8,0.2),
+    theme(legend.position=c(0.8,0.2),
           legend.text=element_text(size=16),
           axis.text=element_text(size=14),
           axis.title=element_text(size=16),
           strip.background = element_rect(fill = "NA", colour = "NA"),
-          strip.text = element_text(face = "bold", size=16))
+          strip.text = element_text(face = "bold", size=16))+
+    scale_colour_manual(name="", values=c("#f9bf07"), labels=c("Annual average %"))
   
 }
 
@@ -323,7 +322,8 @@ plotting_trends_manipulation_in_ED<-function(data){
     mutate(Percentage = round(count / sum(count)*100, 3))|>
     filter(manipulation_in_ed==1)|>
     fracture_type_layout()+
-    scale_y_continuous(limits=c(0,6.2))
+    scale_y_continuous(limits=c(0,6.2))+
+    scale_x_date(limits=c(min(data$der_activity_month),max(data$der_activity_month)))
 }
 
 
@@ -372,6 +372,7 @@ plotting_manipulation_in_ED_vs_theatre<-function(data){
 # Trend in total manipulations 
 plotting_trend_in_total_manipulations<-function(data){
   
+  
   data|>
     filter(type!="Clavicle" & type!="Toe")|>
     mutate(manipulation_total=ifelse(manipulation_in_ed=="1"|mua_in_theatre=="1", "1", "0"))|>
@@ -381,8 +382,8 @@ plotting_trend_in_total_manipulations<-function(data){
     mutate(Percentage = round(count / sum(count)*100, 2))|>
     filter(manipulation_total=="1")|>
     ggplot(aes(x=der_activity_month, y=Percentage))+
+    geom_smooth(aes(group=der_financial_year,colour="#f9bf07" ),formula=y~1,method="lm", se=FALSE, size=1)+
     geom_line( linewidth=1.2)+
-    geom_smooth(aes(group=der_financial_year),formula=y~1,method="lm",col="#f9bf07",se=FALSE, size=1)+
     facet_wrap(~type, ncol=2, scale="free")+
     su_theme()+
     labs(x ="", y = "Percentage", title="Percentage of fractures manipulated (theatre & ED)")+
@@ -394,7 +395,8 @@ plotting_trend_in_total_manipulations<-function(data){
           axis.title=element_text(size=16),
           strip.background = element_rect(fill = "NA", colour = "NA"),
           strip.text = element_text(face = "bold", size=16))+
-    scale_y_continuous(limits=c(0,15))
+    scale_y_continuous(limits=c(0,15))+
+    scale_colour_manual(name="", values=c("#f9bf07"), labels=c("Annual average %"))
   
   
   
@@ -433,25 +435,35 @@ plotting_ed_vs_utc<- function(data, variable, title, scale){
 
 
 # Proportion plots by trust and type FOLLOW UP
-plots_of_proportion_by_trust_fup<-function(data, fracture_site, title, scale){
+plots_of_proportion_by_trust_fup<-function(data, fracture_site, title, scale, number, decile_quartile){
   
-data|>
+  data1<-data|>
     filter(type==fracture_site & !is.na(count))|>
     filter(der_contact_type!="N/A")|>
-    reframe(total_percent=sum(Percentage), by=c(der_provider_code), der_contact_type, name, Percentage, outpat_attendance, outpat_procedure_done)|>
-    mutate(der_contact_type=factor(der_contact_type, levels=c("Virtual", "Face-to-Face")))|>
+    reframe(total_percent=sum(Percentage), der_contact_type, name, Percentage, outpat_attendance, outpat_procedure_done, count)|>
+    mutate(der_contact_type=factor(der_contact_type, levels=c("Virtual", "Face-to-Face")))
+  
+  data2<-data1|>
+    group_by(name)|>
+    summarise(count=sum(count))
+   
+   no_of_providers<-nrow(data2) 
+  
+data1|>
     ggplot(aes(x=reorder(der_provider_code, -total_percent), Percentage, group=der_contact_type, fill=der_contact_type))+
     geom_bar(position = "stack", stat="identity")+
     su_theme()+
     theme(legend.title=element_blank(),
           legend.position =c(0.83,0.89),
           legend.text=element_text(size=16),
-          title=element_text(size=18, colour="black"),
+          title=element_text(size=18, colour="black", face="bold"),
           plot.title.position = "plot",
           axis.text=element_text(size=16, colour="black"),
           axis.title=element_text(size=18, colour="black"),
           axis.text.x=element_blank())+
-    labs(x="Providers", title=title, subtitle="")+
+    labs(x="Providers", title=title, subtitle="")+ 
+    geom_vline(xintercept=no_of_providers*number, color="#88b083", linewidth=0.8, linetype="dashed")+
+    annotate("text", x=(no_of_providers*number)+7, y=max(data1$Percentage)*0.78, label= decile_quartile, color="#88b083", size=4.5) + 
     scale_y_continuous(expand=c(0,0), limits=c(0,scale))+
     scale_fill_manual(values=c("#BCBAB8","#686f73" ))
 
@@ -459,21 +471,29 @@ data|>
 
 
 # Proportion plots by trust and type MANIPULATIONS
-plots_of_proportion_by_trust<-function(data, fracture_site, title, scale){
+plots_of_proportion_by_trust<-function(data, fracture_site, title, scale, number, decile_quartile){
   
-  data|>
-    filter(type==fracture_site & !is.na(count))|>
-    ggplot(aes(x=reorder(der_provider_code, -Percentage), Percentage))+
-    geom_bar(position = "stack", stat="identity")+
+  data1<-data|>
+    filter(type==fracture_site & !is.na(count))
+  
+  no_of_providers<-nrow(data1)
+  
+  data1|>
+    ggplot()+
+    geom_bar(aes(x=reorder(der_provider_code, -Percentage), Percentage), position = "stack", stat="identity")+
     su_theme()+
     theme(legend.title=element_blank(),
-          legend.position = "top",
-          title=element_text(size=18, colour="black"),
+          legend.position = "none",
+          title=element_text(size=18, colour="black", face="bold"),
           plot.title.position = "plot",
           axis.text=element_text(size=16, colour="black"),
           axis.title=element_text(size=18, colour="black"),
-          axis.text.x=element_blank())+
+          axis.text.x=element_blank(),
+          plot.margin = unit(c(1,3,1,1), "lines") )+
     labs(x="Providers", title=title, subtitle=NULL)+
+    geom_vline(xintercept=no_of_providers*number, color="#88b083", linewidth=0.8, linetype="dashed")+
+    annotate("text", x=(no_of_providers*number)+7, y=max(data1$Percentage)*0.94, label= "Lowest", color="#88b083", size=4.5) + 
+    annotate("text", x=(no_of_providers*number)+7, y=max(data1$Percentage)*0.86, label= decile_quartile, color="#88b083", size=4.5) + 
     scale_y_continuous(expand=c(0,0), limits=c(0,scale))+
     scale_fill_manual(values=c("#686f73" ))
   

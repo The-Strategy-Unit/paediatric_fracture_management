@@ -61,6 +61,7 @@ formatting_sus_data<- function(filename) {
   
     data <- read.csv(filename) |>
     clean_names()|>
+      filter(der_financial_year!="2018/19")|>
       subset(!grepl('*carpal*', description))|> # Remove wrist bone fractures
       subset(!grepl('*scaphoid*', description))|>
       subset(!grepl('*perilunate*', description))|>
@@ -119,11 +120,11 @@ formatting_sus_data<- function(filename) {
       mutate(ethnicity_broad=factor(ethnicity_broad, levels=c("Asian or Asian British", "Black or Black British","Mixed",
                                                               "Other Ethnic Groups", "White","Missing/Unknown")))|>
       left_join(imd_lookup[,c("lsoa_code_2011", "imd")], by=c("der_postcode_lsoa_2011_code"="lsoa_code_2011"))|>
-      mutate(imd_quintiles=case_when(imd=="1"|imd=="2"~ "1",
+      mutate(imd_quintiles=case_when(imd=="1"|imd=="2"~ "1- Most deprived",
                                      imd=="3"|imd=="4"~ "2",
                                      imd=="5"|imd=="6"~ "3",
                                      imd=="7"|imd=="8"~ "4",
-                                     imd=="9"|imd=="10"~ "5"))|>
+                                     imd=="9"|imd=="10"~ "5- Least deprived"))|>
       mutate(imd_quintiles=ifelse(is.na(imd_quintiles), "Missing/Outside England", imd_quintiles))|>
       mutate(dept_grouping_for_HRG= case_when(ec_department_type=="1"|ec_department_type=="2" ~ 1,
                                               ec_department_type=="3"|ec_department_type=="4"|ec_department_type=="5" ~ 3))|>
@@ -205,6 +206,22 @@ formating_total_ed_attendances<-function(data){
   group_by(der_provider_code, der_financial_year)|>
   summarise(count=sum(count))
 }
+
+formating_ed_attendances_wo_dx<-function(data, data1){
+  
+  ed_attendances<-read.csv(data)|>
+    clean_names()|>
+    summarise(count=sum(count), .by=c(der_provider_code, der_financial_year))
+
+ed_attendances_wo_diagnosis<-read.csv(data1)|>
+  clean_names()|>
+  summarise(count=sum(count), .by=c(der_provider_code, der_financial_year))|>
+  left_join(ed_attendances[,c("der_provider_code", "count","der_financial_year" )], by=c("der_provider_code", "der_financial_year"))|>
+  mutate(percentage_missing_diagnoses=(count.x/count.y)*100)|>
+  filter(der_financial_year!="2018/19")
+
+}
+
 
 # Calculating the number of x-rays by trust
 calculating_xrays_by_trust<-function(data, trusts_included){
@@ -325,5 +342,35 @@ formatting_xray_cost<-function(data, frac_type){
   reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)|>
   filter(dept_type!="Same Day Emergency Care")
 
+}
+
+# Cost of ED manipulations
+formatting_manipulation_in_ed_cost<-function(data, frac_type){
+  
+  manipulation_cost<-data|>
+    filter(type==frac_type)|>
+    filter(der_financial_year=="2022/23")|>
+    group_by(mua, ed_cost)|>
+    summarise(count=n())|>
+    filter(!is.na(ed_cost) & mua!=0)|>
+    mutate(mua=ifelse(mua=="Manipulation in ED"|mua=="Manipulation in ED and theatre" , "Manipulated in ED", "Not manipulated in ED"))|>
+    group_by(mua)|>
+    reframe(mean_cost=mean(rep(ed_cost,count), na.rm=TRUE), median_cost=median(rep(ed_cost, count), na.rm=TRUE), count, ed_cost)
+  
+}
+
+# Cost of theatre manipulations
+formatting_manipulation_in_theatre_cost<-function(data, frac_type){
+  
+  theatre_cost<-data|>
+    filter(type==frac_type)|>
+    filter(der_financial_year=="2022/23")|>
+    filter(mua=="Manipulation in theatre"|mua=="Manipulation in ED & theatre")|>
+    group_by(inpatient_spell_hrg,  hrg_name.y,non_elec_cost )|>
+    summarise(count=n())|>
+    mutate(non_elec_cost=as.numeric(non_elec_cost))|>
+    ungroup()|>
+    mutate(median_cost=median(rep(non_elec_cost, count)), total=sum(count))
+  
 }
 

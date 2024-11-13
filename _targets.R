@@ -68,6 +68,12 @@ list(
     formating_total_ed_attendances("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/total_ed_attendances.csv")
   ),
   tar_target(
+    ed_attendances_wo_diagnosis,
+    formating_ed_attendances_wo_dx("Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/total_ed_attendances.csv",
+                                   "Z:/Strategic Analytics/Projects 2024/Paediatric fracture management/ed_attendances_wo_diagnosis.csv")
+  ),
+  
+  tar_target(
     xrays_by_trust,
     calculating_xrays_by_trust(paed_fractures, trusts_with_120_attendances)
   ),
@@ -95,6 +101,23 @@ list(
     xray_cost_data_clavicle,
     formatting_xray_cost(paed_fractures, "Clavicle")
   ),
+  tar_target(
+    manipulation_cost_forearm,
+    formatting_manipulation_in_ed_cost(paed_fractures, "Forearm")
+  ),
+  tar_target(
+    manipulation_cost_elbow,
+    formatting_manipulation_in_ed_cost(paed_fractures, "Elbow")
+  ),
+  tar_target(
+    theatre_cost_forearm,
+    formatting_manipulation_in_theatre_cost(paed_fractures, "Forearm")
+  ),
+  tar_target(
+    theatre_cost_elbow,
+    formatting_manipulation_in_theatre_cost(paed_fractures, "Elbow")
+  ),
+  
   
   # Maps
   tar_target(
@@ -208,7 +231,7 @@ list(
   ),
   tar_target(
     table_icb_incidence_rate,
-    table_of_icb_incidence_rate(epidemiology_icb)
+    table_of_icb_incidence_rate(epidemiology_icb, ed_attendances_wo_diagnosis, provider_to_icb)
   ),
   tar_target(
     table_most_common_fractures,
@@ -218,6 +241,7 @@ list(
     table_one,
     table_of_characteristics(paed_fractures)
   ),
+
   
   # Regression analysis
   

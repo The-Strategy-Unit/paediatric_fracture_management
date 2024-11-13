@@ -16,6 +16,7 @@ table_of_total_incidence_rate<-function(data){
         mutate(Total=round((frac_no/pop_count)*100000,0)))[,c("type", "Total")], 
     by=c("type")
    )|>
+    adorn_totals("row")|>
     select(type, `Female 0-4 yrs`,  `Female 5-10 yrs`,`Female 11-16 yrs`, `Male 0-4 yrs`,`Male 5-10 yrs`, 
            `Male 11-16 yrs`,  Total)|> 
   flextable() |>
@@ -32,7 +33,9 @@ table_of_total_incidence_rate<-function(data){
   align(j=1, part="body", align="left")|>
   align(j=1, part="header", align="left")|>
   bg(bg = "#f9bf07", part = "header") |>
-  bold(i = 1, bold = TRUE, part="header")|>
+    bg(bg = "white", part = "body") |>  
+    bold(j = 8, bold = TRUE, part="all")|>
+    bold(i = 6, bold = TRUE, part="body")|>
   fontsize(size = 14, part = "all")|>
   padding(padding = 3, part = "all", padding.top=NULL) |>
   autofit()|>
@@ -41,7 +44,15 @@ table_of_total_incidence_rate<-function(data){
 
 # Table of incidence rate by ICB
 
-table_of_icb_incidence_rate<-function(data){
+table_of_icb_incidence_rate<-function(data, data2, data3){
+  
+  wo_diagnosis<-data2|>
+    left_join(data3, by=("der_provider_code"))|>
+    group_by(icb_name)|>
+    summarise(count.x=sum(count.x), count.y=sum(count.y))|>
+    mutate(percentage_missing_diagnoses=(count.x/count.y)*100)|>
+    mutate(percentage_missing_diagnoses=round(percentage_missing_diagnoses,0))
+  
   
  data|>
 as.data.frame()|>
@@ -56,18 +67,25 @@ as.data.frame()|>
         mutate(Total=round((frac_no/pop_count)*100000,0)))[,c("icb_name", "Total")], 
     by=c("icb_name")
   )|>
+  left_join(wo_diagnosis, by=("icb_name") )|>
+   select(-count.x, -count.y)|>
   filter(!is.na(icb_name))|>
+   mutate(across('icb_name', str_replace, 'Integrated Care Board', 'ICB')) |>
   arrange(desc(Total))|>
   flextable() |>
-  set_header_labels(icb_name="ICB")|>
+  set_header_labels(icb_name=" ICB",
+                    percentage_missing_diagnoses= "% of ED attendances\n w/o diagnosis")|>
   align(part = "header", align = "center")|>
   align(j=1, align = "left")|>
   align(part = "body", align = "center")|>
   align(j=1, part="body", align="left")|>
   align(j=1, part="header", align="left")|>
   bg(bg = "#f9bf07", part = "header") |>
+  bg(bg = "white", part = "body") |>  
   bold(i = 1, bold = TRUE, part="header")|>
-  fontsize(size = 11, part = "all")|>
+    fontsize(size = 12, part = "header")|>  
+  fontsize(size = 10.5, part = "body")|>
+    line_spacing(space = 0.89, part = "body")|>  
   padding(padding = 0, part = "all", padding.top=NULL) |>
   autofit()|>
   htmltools_value(ft.align = "left")   
@@ -224,6 +242,35 @@ summary_values_by_trust_xray<-function(data, frac_type){
   summary_values_by_trust(data_to_summarise)
   
 }
+
+
+# Cost of manipulation table
+
+summary_manipulation_costs<-function(data){
+  
+  data|>
+    flextable() |>
+    set_header_labels(type="",
+                      cost_with_mani= "Median cost of ED attendance with manipulation (£)",
+                      cost_without_mani= "Median cost of ED attendance without manipulation (£)",
+                      mani_in_ed_cost= "Calculated cost of manipulation in ED (£)",
+                      theatre_cost="Median cost of manipulation in theatre (£)",
+                      potential_saving= "Potential saving per manipulation in ED (£)"
+    )|>
+    align(part = "header", align = "center")|>
+    align(j=1, align = "left")|>
+    align(part = "body", align = "center")|>
+    align(j=1, part="body", align="left")|>
+    align(j=1, part="header", align="left")|>
+    bg(bg = "#f9bf07", part = "header") |>
+    bold(i = 1, bold = TRUE, part="header")|>
+    fontsize(size = 15, part = "all")|>
+    padding(padding = 6, part = "all", padding.top=NULL) |>
+    autofit()|>
+    htmltools_value(ft.align = "left")    
+  
+}
+
 
 
 ## SNOMED code tables

@@ -6,12 +6,12 @@ formatting_data_for_regression<-function(data){
   filter(imd_quintiles!="Missing/Outside England")|>
   filter(dept_type=="Major Emergency Dept" | dept_type=="Urgent Treatment Centre/Walk in centre")|>
   filter(sex!="Missing/Unknown")|>
-  mutate(imd_quintiles= relevel(factor(imd_quintiles, ordered = FALSE ), ref = "1"))|>
+  mutate(imd_quintiles= relevel(factor(imd_quintiles, ordered = FALSE ), ref = "1- Most deprived"))|>
   mutate(ethnicity_broad= relevel(ethnicity_broad, ref = "White"))|>
   mutate(type= relevel(factor( type, ordered = FALSE ), ref = "Forearm"))|>  
   mutate(day_of_week= relevel(factor( day_of_week, ordered = FALSE ), ref = "Tuesday"))|>
   mutate(age= relevel(age, ref = "5-10 yrs"))|>
-  mutate(der_financial_year= relevel(factor(der_financial_year, ordered = FALSE ), ref = "2018/19"))|> 
+  mutate(der_financial_year= relevel(factor(der_financial_year, ordered = FALSE ), ref = "2019/20"))|> 
   mutate(month=month(der_activity_month))|>
   mutate(season=case_when(month==12| month==1| month==2~ "Winter",
                           month>=3 & month<=5 ~ "Spring",
@@ -61,12 +61,12 @@ manipulation_regression<-function(data, frac_type){
     dplyr::add_row(Group = "Female", Estimate=1, CI="", `P values`="Reference", Category="Sex", .before = 2)|>
     dplyr::add_row(Group = "5-10 yrs", Estimate=1, CI="", `P values`="Reference", Category="Age", .before = 4)|>
     dplyr::add_row(Group = "White", Estimate=1, CI="", `P values`="Reference", Category="Ethnicity", .before = 7)|>
-    dplyr::add_row(Group = "1", Estimate=1, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
+    dplyr::add_row(Group = "1- Most deprived", Estimate=1, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
     dplyr::add_row(Group = "Major Emergency Department", Estimate=1, CI="", `P values`="Reference", Category="Department type", .before =18)|>
     dplyr::add_row(Group = "Weekday", Estimate=1, CI="", `P values`="Reference", Category="Day of the week", .before =20)|>
     dplyr::add_row(Group = "Daytime 7am-7pm", Estimate=1, CI="", `P values`="Reference", Category="Time of day", .before = 22)|>
     dplyr::add_row(Group = "Autumn", Estimate=1, CI="", `P values`="Reference", Category="Time of year", .before = 24)|>
-    dplyr::add_row(Group = "2018/19", Estimate=1, CI="", `P values`="Reference", Category="Year", .before =28)|>
+    dplyr::add_row(Group = "2019/20", Estimate=1, CI="", `P values`="Reference", Category="Year", .before =28)|>
     mutate(Group = str_remove_all(Group, "sex"))|>
     mutate(Group = str_remove_all(Group, "age"))|>
     mutate(Group = str_remove_all(Group, "ethnicity_broad"))|>
@@ -150,12 +150,12 @@ f_up_regression<-function(data){
     dplyr::add_row(Group = "Female", Estimate=1, CI="", `P values`="Reference", Category="Sex", .before = 2)|>
     dplyr::add_row(Group = "5-10 yrs", Estimate=1, CI="", `P values`="Reference", Category="Age", .before = 4)|>
     dplyr::add_row(Group = "White", Estimate=1, CI="", `P values`="Reference", Category="Ethnicity", .before = 7)|>
-    dplyr::add_row(Group = "1", Estimate=1, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
+    dplyr::add_row(Group = "1- Most deprived", Estimate=1, CI="", `P values`="Reference", Category="IMD Quintiles", .before = 13)|>
     dplyr::add_row(Group = "Major Emergency Department", Estimate=1, CI="", `P values`="Reference", Category="Department type", .before =18)|>
     dplyr::add_row(Group = "Weekday", Estimate=1, CI="", `P values`="Reference", Category="Day of the week", .before =20)|>
     dplyr::add_row(Group = "Daytime 7am-7pm", Estimate=1, CI="", `P values`="Reference", Category="Time of day", .before = 22)|>
     dplyr::add_row(Group = "Autumn", Estimate=1, CI="", `P values`="Reference", Category="Time of year", .before = 24)|>
-    dplyr::add_row(Group = "2018/19", Estimate=1, CI="", `P values`="Reference", Category="Year", .before =28)|>
+    dplyr::add_row(Group = "2019/20", Estimate=1, CI="", `P values`="Reference", Category="Year", .before =28)|>
     dplyr::add_row(Group = "Forearm", Estimate=1, CI="", `P values`="Reference", Category="Fracture type", .before =34)|>
     mutate(Group = str_remove_all(Group, "sex"))|>
     mutate(Group = str_remove_all(Group, "age"))|>
@@ -187,7 +187,7 @@ f_up_regression<-function(data){
     align( i = 29,  align = "left")%>%
     align( i = 32,  align = "left")%>%
     align( i = 37,  align = "left")%>%
-    align( i = 44,  align = "left")%>%
+    align( i = 43,  align = "left")%>%
     bold( i = 3, bold = TRUE)%>%
     bold( i = 6, bold = TRUE)%>%
     bold( i = 10, bold = TRUE)%>%
@@ -197,7 +197,7 @@ f_up_regression<-function(data){
     bold( i = 29, bold = TRUE)%>%
     bold( i = 32, bold = TRUE)%>%
     bold( i = 37, bold = TRUE)%>%
-    bold( i = 44, bold = TRUE)%>%
+    bold( i = 43, bold = TRUE)%>%
     bg( bg = "gold", part = "header")  %>%
     bg( bg = "white", part = "body")  %>%
     fontsize( size = 9.5, part = "body")|>

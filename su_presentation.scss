@@ -70,7 +70,7 @@ $footer-fg: $su-yellow;
 
 .reveal h4{
       margin-bottom: 0rem !important;
-     text-align:center !important;
+     text-align:left !important;
   color: $su-blue !important;
    font-size: 1.5rem;
   margin-top: 10px !important;
@@ -134,8 +134,18 @@ $footer-fg: $su-yellow;
   color: $su-charcoal;
 }
 
+.reveal .slide-number {
+  font-size: 24pt;
+  color: $su-charcoal; }
 
 
+.extrapad li:not(:last-child) {
+    margin-bottom:30px  !important;
+}
+
+.summarytext{
+   font-size: 1.8rem;
+}
 
 .no-bullets ul {
   list-style-type: none;
