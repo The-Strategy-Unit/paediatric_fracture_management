@@ -128,8 +128,13 @@ ed_attendances_wo_diagnosis_over_time<-ed_attendances_wo_diagnosis|>
 
 
 ed_attendances_wo_diagnosis_over_time|>
-plot_ly( x = ~der_financial_year, y = ~percentage_missing_diagnoses, type = 'scatter', mode = 'lines')|>
-    layout(yaxis = list(range = c(0,100)))
+  ggplot(aes(x=der_financial_year, y=percentage_missing_diagnoses, group=1))+
+geom_line(linewidth=1.2)+
+  su_theme()+
+  labs(x=NULL, y="% of ED attendances w/o diagnosis code")+
+ theme(   axis.text=element_text(size=13),
+          axis.title=element_text(size=16))+
+   scale_y_continuous(limits=c(0,50))
 
 
 test<-ed_attendances_wo_diagnosis|>
