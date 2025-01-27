@@ -9,6 +9,7 @@
 # Data files
 *.png
 peads_frac.csv
+all_outpat.csv
 
 # User-specific files
 .Ruserdata

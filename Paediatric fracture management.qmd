@@ -119,6 +119,7 @@ check_of_fup_nos<-paed_fractures|>
  #Toe 	3555 47%
 ```
 
+
 ```{r, eval=FALSE}
 ed_attendances_wo_diagnosis_over_time<-ed_attendances_wo_diagnosis|>
   filter(der_provider_code %in% trusts_with_120_attendances$der_provider_code)|>
