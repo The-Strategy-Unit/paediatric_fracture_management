@@ -1,7 +1,7 @@
 ---
 title: "Understanding trends and variation in paediatric fracture management in England"
 subtitle: ""
-author: "Sarah Lucas"
+author: "Sarah Lucas & Andrew Hood"
 date: last-modified
 date-format: "DD MMMM YYYY"
 format:
@@ -172,38 +172,38 @@ demonstrates:
 
 -   If the number of follow up appointments was reduced to the lowest
     quartile of English Trusts circa. 30,000 appointments could be saved
-    annually. (Slide 40 & 49)
+    annually. (Slide 42 & 52)
 
 -   Many clavicle fractures, commonly accepted to heal without
     intervention, have two or more follow up appointments when evidence
-    suggests none are required. (Slide 23 & 41)
+    suggests none are required. (Slide 25 & 42)
 
 -   Marked variance exists across Trusts in the proportion of fractures
     with follow up and how that occurs (virtual vs face to face). (Slide
-    39-40)
+    42-43)
 
 Our analysis demonstrates between 2019-23 the proportion of forearm
 fractures manipulated:
 
--   Has reduced in theatre by 50% (Slide 27) and increased in ED (Slide
-    26).
+-   Has reduced in theatre by 50% (Slide 29) and increased in ED (Slide
+    28).
 
--   Total manipulations (theatre or ED) have reduced by 22% (Slide 28).
+-   Total manipulations (theatre or ED) have reduced by 22% (Slide 30).
 
 Our data shows that forearm fractures are the most common fracture in
-children and in 2022-23 alone over 25,000 had no follow up (Slide 23).
+children and in 2022-23 alone over 25,000 had no follow up (Slide 25).
 Along with the forearm manipulation data this collectively suggests a
 fundamental change in forearm fracture management has occurred across
 England, likely driven by Get It Right First Time (GIRFT) targets and
 recent/ongoing research (FORCE & CRAFFT).
 
 Lastly, our analysis suggests marked regional variation in fracture
-incidence exists (Slide 13) and is unaccounted in the current
+incidence exists (Slide 14) and is unaccounted in the current
 GIRFT/Model hospital 'Wrist manipulations in theatre' dataset. We have
 formulated an alternative and potentially more nuanced version
 accounting for regional variation. Interestingly, Trusts currently
 considered either in the top or bottom quartiles markedly change
-position within our proposed model (Slide 43-44).
+position within our proposed model (Slide 47).
 
 In conclusion we believe our analysis can help set future GIRFT targets
 driving change and savings across the NHS.
@@ -430,7 +430,7 @@ is included in Appendix D.
 1)  https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland
 :::
 
-## Incidence rate {.section_header background-image="divider_slide.png"}
+## Incidence rates {.section_header background-image="divider_slide.png"}
 
 
 ## Incidence rates {  background-size="contain"}

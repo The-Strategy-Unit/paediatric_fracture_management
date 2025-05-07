@@ -94,8 +94,7 @@ displacement^3^.
 
 So, there is interest in understanding what the potential reductions in
 activity could be if trusts were to implement more conservative
-management of paediatric fractures and potential for an new mitigator in
-the NHP model.
+management of paediatric fractures.
 
 <br> <br> <br> <br>
 
@@ -178,10 +177,8 @@ fractures may be coded as 'Closed fracture of phalanx of foot
 :::
 
 
+## Trends in and factors influencing paediatric fracture management {.section_header background-image="divider_slide.png"}
 
-
-
-## Trends in and factors influencing paediatric fracture management {.section_header background-color="#0087bd"}
 
 ## Trends in X-ray's of fractures in the ED {background-image="slide.png" background-size="contain" }
 
@@ -343,7 +340,9 @@ paediatric fractures.
 :::
 :::
 
-## Opportunities to reduce hospital activity {.section_header background-color="#0087bd"}
+ 
+## Opportunities to reduce hospital activity {.section_header background-image="divider_slide.png"}
+
 
 ## X-rays for Clavicle and Toes fractures by trust (2022/23) {background-image="slide.png" background-size="contain"}
 

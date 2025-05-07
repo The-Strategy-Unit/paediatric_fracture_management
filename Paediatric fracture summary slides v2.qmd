@@ -94,8 +94,7 @@ displacement^3^.
 
 So, there is interest in understanding what the potential reductions in
 activity could be if trusts were to implement more conservative
-management of paediatric fractures and potential for an new mitigator in
-the NHP model.
+management of paediatric fractures.
 
 <br> <br> <br> <br>
 
@@ -168,7 +167,7 @@ calculate the proportion of children with each fracture type that:
     manipulations and not re-manipulations)
 -   had a fracture manipulated in the emergency department
 
-## Incidence rate and fracture recording {.section_header background-color="#0087bd"}
+## Incidence rate and fracture recording {.section_header background-image="divider_slide.png"}
 
 ## Fracture incidence rates for England (2023/2024) {background-image="slide.png" background-size="contain"}
 
@@ -398,7 +397,7 @@ diagnoses codes for emergency care attendances.
 :::
 :::
 
-## Trends in and factors influencing paediatric fracture management {.section_header background-color="#0087bd"}
+## Trends in and factors influencing paediatric fracture management {.section_header background-image="divider_slide.png"}
 
 ## Trends in X-ray's of fractures in the ED {background-image="slide.png" background-size="contain" visibility="hidden"}
 
@@ -708,7 +707,7 @@ paediatric fractures.
 :::
 :::
 
-## Opportunities to reduce hospital activity {.section_header background-color="#0087bd"}
+## Opportunities to reduce hospital activity {.section_header background-image="divider_slide.png"}
 
 ## X-rays for Clavicle and Toes fractures by trust (2022/23) {background-image="slide.png" background-size="contain"}
 
