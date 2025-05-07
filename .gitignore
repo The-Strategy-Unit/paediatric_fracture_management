@@ -25,6 +25,7 @@ all_outpat.csv
 
 # RStudio files
 .Rproj.user/
+*.Pproj
 
 # produced vignettes
 vignettes/*.html
