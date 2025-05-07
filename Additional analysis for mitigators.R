@@ -29,8 +29,8 @@ trusts_with_120_attendances<-tar_read(trusts_with_120_attendances)
 
 provider_names<-read.csv("Data/provider_names.csv")
 
-
 #INPATIENT MITIGATOR
+
 inpat_from_ED<-paed_fractures|>
   filter(apce_ident!="NULL")|>
   filter(type=="Forearm"| type=="Elbow")|>
@@ -38,11 +38,8 @@ inpat_from_ED<-paed_fractures|>
   group_by(der_primary_diagnosis_code)|>
   summarise(count=n())
 
-
-
-
-
 #OUTPATIENT MITIGATOR
+
 paed_fractures|>
   group_by(treatment_function_code)|>
   summarise(total=n())

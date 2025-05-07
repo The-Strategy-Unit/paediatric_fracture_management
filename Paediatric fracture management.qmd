@@ -155,7 +155,7 @@ plot_ly( x = ~der_financial_year, y = ~percentage_missing_diagnoses, type = 'sca
 
 ```
 
-## Foreword {background-image="slide.png" background-size="contain"}
+## Foreword { background-size="contain"}
 
 ::: small2
 In this report we have taken paediatric Emergency department (ED)
@@ -212,7 +212,7 @@ driving change and savings across the NHS.
 Foundation Trust**
 :::
 
-## Report summary {background-image="slide.png" background-size="contain"}
+## Report summary { background-size="contain"}
 
 <br>
 
@@ -220,11 +220,7 @@ This report sets out to understanding the opportunities to reduce
 hospital activity through wider adoption of more conservative management
 of selected paediatric fractures.
 
-The work was funded by NHS England as part of the New Hospitals
-Programme.
-
-This work may provide an opportunity to create a new activity mitigator
-in the NHP model to allow trusts to estimate the impact of adopting
+This work may help inform future demand and capacity planning for hospitals and allow trusts to estimate the impact of adopting
 conservative management of certain paediatric fractures on their future
 activity levels.
 
@@ -247,7 +243,7 @@ Key findings:
     elbow, forearm, clavicle, tibia/fibula and toes fractures in England
     by a third.
 
-## Background {background-image="slide.png" background-size="contain"}
+## Background {  background-size="contain"}
 
 #### Epidemiology of paediatric fractures
 
@@ -315,7 +311,7 @@ clinicians' assessment^7^.
     10;2(1):e000304
 :::
 
-## Background (continued) {background-image="slide.png" background-size="contain"}
+## Background (continued) {  background-size="contain"}
 
 <br>
 
@@ -368,7 +364,7 @@ perform sedation and a lack of familiarity with techniques^1^.
     Guidelines. Cureus. 15(7):e41325.
 :::
 
-## Aims {background-image="slide.png" background-size="contain"}
+## Aims {  background-size="contain"}
 
 <br>
 
@@ -388,7 +384,7 @@ perform sedation and a lack of familiarity with techniques^1^.
     rather than in theatre.
 :::
 
-## Data sources and Study population {background-image="slide.png" background-size="contain"}
+## Data sources and Study population {  background-size="contain"}
 
 ::: small2
 The study population included all those aged 16 and under who attended
@@ -434,7 +430,10 @@ is included in Appendix D.
 1)  https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland
 :::
 
-## Incidence rates {background-image="slide.png" background-size="contain"}
+## Incidence rate {.section_header background-image="divider_slide.png"}
+
+
+## Incidence rates {  background-size="contain"}
 
 <br>
 
@@ -455,13 +454,13 @@ the specified closed fracture types.
 The crude annual incidence rates per 100,000 children were calculated
 using ONS mid-year population estimates, broken down by age and sex.
 
-## Characteristics of the cohort {background-image="slide.png" background-size="contain"}
+## Characteristics of the cohort {  background-size="contain"}
 
 ```{r}
 tar_read(table_one)
 ```
 
-## Incidence rates for England (2023/2024) {background-image="slide.png" background-size="contain"}
+## Incidence rates for England (2023/2024) {  background-size="contain"}
 
 <br>
 
@@ -491,7 +490,7 @@ pandemic (2020/2021) and highest the following year (2021/2022).
 :::
 :::
 
-## Incidence rate by age/sex group {background-image="slide.png" background-size="contain"}
+## Incidence rate by age/sex group {  background-size="contain"}
 
 <br>
 
@@ -522,7 +521,7 @@ highest incidence of clavicle, forearm and toe fractures.
 :::
 :::
 
-## Most common fracture types (2023/2024) {background-image="slide.png" background-size="contain"}
+## Most common fracture types (2023/2024) {  background-size="contain"}
 
 ::: columns
 ::: {.column width="50%"}
@@ -562,7 +561,7 @@ foot (disorder)' and thus included within our dataset.
 :::
 :::
 
-## Incidence of upper limb fractures by ICB (2023/2024) {background-image="slide.png" background-size="contain" visibility="hidden"}
+## Incidence of upper limb fractures by ICB (2023/2024) {  background-size="contain" visibility="hidden"}
 
 <br>
 
@@ -595,7 +594,7 @@ tar_read(clavicle_incidence_rate_icb)
 :::
 :::
 
-## Incidence of lower limb fractures by ICB (2023/2024) {background-image="slide.png" background-size="contain" visibility="hidden"}
+## Incidence of lower limb fractures by ICB (2023/2024) {  background-size="contain" visibility="hidden"}
 
 <br>
 
@@ -640,7 +639,7 @@ particularly in the London area.
 :::
 :::
 
-## Incidence rates per 100,000 by ICB (2023/2024) {background-image="slide.png" background-size="contain"}
+## Incidence rates per 100,000 by ICB (2023/2024) {  background-size="contain"}
 
 ::: columns
 ::: {.column width="63%"}
@@ -669,7 +668,7 @@ the Leicestershire ICB area compared to Cornwall.
 :::
 :::
 
-## Proportion of ED attendances with a fracture code (2022/2023) {background-image="slide.png" background-size="contain"}
+## Proportion of ED attendances with a fracture code (2022/2023) {  background-size="contain"}
 
 ::: columns
 ::: {.column width="50%"}
@@ -814,7 +813,7 @@ plot_ly( x = ~der_financial_year, y = ~Proportion, type = 'scatter', mode = 'lin
 
 ```
 
-## Seasonal trends incidence rate {background-image="slide.png" background-size="contain"}
+## Seasonal trends incidence rate {  background-size="contain"}
 
 ::: columns
 ::: {.column width="55%"}
@@ -874,7 +873,7 @@ recorded in 2022/23.
 :::
 :::
 
-## Summary of analysis of incidence rates {background-image="slide.png" background-size="contain"}
+## Summary of analysis of incidence rates {  background-size="contain"}
 
 <br>
 
@@ -907,7 +906,12 @@ recorded in 2022/23.
     forearm fractures, and great toe fractures are not specifically
     recorded.
 
-## Exploring fracture management {background-image="slide.png" background-size="contain"}
+## Trends in paediatric fracture management {.section_header background-image="divider_slide.png"}
+
+
+
+
+## Exploring fracture management {  background-size="contain"}
 
 <br>
 
@@ -933,7 +937,7 @@ We have investigated:
 -   The proportion of fractures being manipulated and the trends in
     manipulations in both the emergency department and in theatre.
 
-## Percentage of fractures with a X-ray recorded in the ED {background-image="slide.png" background-size="contain"}
+## Percentage of fractures with a X-ray recorded in the ED {  background-size="contain"}
 
 <br>
 
@@ -953,7 +957,7 @@ lower.
 :::
 :::
 
-## Percentage of fractures with a follow-up appointment {background-image="slide.png" background-size="contain"}
+## Percentage of fractures with a follow-up appointment {  background-size="contain"}
 
 <br>
 
@@ -986,7 +990,7 @@ where a follow-up appointment is given.
 :::
 :::
 
-## Proportion of face-to-face vs virtual follow-up appointments {background-image="slide.png" background-size="contain"}
+## Proportion of face-to-face vs virtual follow-up appointments {  background-size="contain"}
 
 <br>
 
@@ -1010,7 +1014,7 @@ face-to-face follow-ups has been maintained.
 Only showing data for the first outpatient attendance
 :::
 
-## Follow-up outpatient appts with and without procedures {background-image="slide.png" background-size="contain"}
+## Follow-up outpatient appts with and without procedures {  background-size="contain"}
 
 <br>
 
@@ -1068,7 +1072,7 @@ remained in the post-pandemic.
 Only showing data for the first outpatient attendance
 :::
 
-## Outpatient procedures recorded following ED attendance {background-image="slide.png" background-size="contain"}
+## Outpatient procedures recorded following ED attendance {  background-size="contain"}
 
 <br>
 
@@ -1140,7 +1144,7 @@ It is fairly common for more than one procedure to be recorded.
 :::
 :::
 
-## Number of follow-up appointments (2022/23) {background-image="slide.png" background-size="contain"}
+## Number of follow-up appointments (2022/23) {  background-size="contain"}
 
 <br>
 
@@ -1193,7 +1197,7 @@ paed_fractures|>
 :::
 :::
 
-## Percentage of fractures referred for physiotherapy {background-image="slide.png" background-size="contain"}
+## Percentage of fractures referred for physiotherapy {  background-size="contain"}
 
 <br>
 
@@ -1229,7 +1233,7 @@ proportion of tibia/fibula fractures referred.
 :::
 :::
 
-## Factors influencing whether a follow-up appointment is given {background-image="slide.png" background-size="contain"}
+## Factors influencing whether a follow-up appointment is given {  background-size="contain"}
 
 ::: columns
 ::: {.column width="45%"}
@@ -1272,7 +1276,7 @@ appointments.
 :::
 :::
 
-## Percentage of fractures manipulated in the ED {background-image="slide.png" background-size="contain"}
+## Percentage of fractures manipulated in the ED {  background-size="contain"}
 
 <br>
 
@@ -1298,7 +1302,7 @@ fracture types over time.
 :::
 :::
 
-## Percentage of fractures manipulated in theatre {background-image="slide.png" background-size="contain"}
+## Percentage of fractures manipulated in theatre {  background-size="contain"}
 
 <br>
 
@@ -1339,7 +1343,7 @@ decreased.
 :::
 :::
 
-## Proportion of fractures manipulated {background-image="slide.png" background-size="contain"}
+## Proportion of fractures manipulated {  background-size="contain"}
 
 ::: columns
 ::: {.column width="60%"}
@@ -1377,7 +1381,7 @@ years.
 :::
 :::
 
-## Proportion of fractures manipulated in ED vs theatre {background-image="slide.png" background-size="contain"}
+## Proportion of fractures manipulated in ED vs theatre {  background-size="contain"}
 
 ::: columns
 ::: {.column width="60%"}
@@ -1397,7 +1401,7 @@ department.
 :::
 :::
 
-## Use of emergency depts vs urgent treatment/walk-in centres {background-image="slide.png" background-size="contain"}
+## Use of emergency depts vs urgent treatment/walk-in centres {  background-size="contain"}
 
 <br>
 
@@ -1446,7 +1450,7 @@ centres.
 :::
 :::
 
-## Manipulations, following ED or UTC attendance (2022/23) {background-image="slide.png" background-size="contain"}
+## Manipulations, following ED or UTC attendance (2022/23) {  background-size="contain"}
 
 ::: {.column width="33%"}
 ```{r, fig.width=6, fig.height=4}
@@ -1513,7 +1517,7 @@ centre.
 
 :::
 
-## Follow-up appts following ED or UTC attendance (2022/23) {background-image="slide.png" background-size="contain"}
+## Follow-up appts following ED or UTC attendance (2022/23) {  background-size="contain"}
 
 <br>
 
@@ -1532,7 +1536,7 @@ broadly similar at urgent treatment centres and emergency departments.
 :::
 :::
 
-## Factors influencing manipulation of forearm fractures in theatre {background-image="slide.png" background-size="contain"}
+## Factors influencing manipulation of forearm fractures in theatre {  background-size="contain"}
 
 ::: columns
 ::: {.column width="45%"}
@@ -1583,7 +1587,7 @@ more fractures in the emergency department.
 :::
 :::
 
-## Summary of management of fractures {background-image="slide.png" background-size="contain"}
+## Summary of management of fractures {  background-size="contain"}
 
 <br>
 
@@ -1623,7 +1627,9 @@ more fractures in the emergency department.
 1)  www.CRAFFTstudy.org
 :::
 
-## Opportunities to reduce hospital activity {background-image="slide.png" background-size="contain"}
+## Opportunities to reduce hospital activity {.section_header background-image="divider_slide.png"}
+
+## Opportunities to reduce hospital activity {  background-size="contain"}
 
 <br>
 
@@ -1658,7 +1664,7 @@ manipulations in theatre we have used the lowest quartile as there has
 already been a significant reduction in these over past 5 years and
 rates of manipulations in theatre are already low at many trusts.
 
-## Calculating proportions by trust {background-image="slide.png" background-size="contain"}
+## Calculating proportions by trust {  background-size="contain"}
 
 <br>
 
@@ -1717,7 +1723,7 @@ When considering potential savings in terms of follow-up appointments,
 we have considered all follow-up appointments (with and without
 procedures).
 
-## X-rays for Clavicle and Toes fractures by trust {background-image="slide.png" background-size="contain"}
+## X-rays for Clavicle and Toes fractures by trust {  background-size="contain"}
 
 Evidence suggests that x-raying clavicle and toe fractures in the
 emergency department is often unnecessary, as it doesn't add further
@@ -1801,7 +1807,7 @@ xray_by_dx_rate_toe<-xrays_by_trust|>
 
 ```
 
-## Cost of x-raying clavicle and toe fractures {background-image="slide.png" background-size="contain"}
+## Cost of x-raying clavicle and toe fractures {  background-size="contain"}
 
 ::: columns
 ::: {.column width="50%"}
@@ -1862,7 +1868,7 @@ fracture is x-rayed, suggesting a saving in the region of
 £`r difference` for each clavicle or toe fracture not x-rayed in the
 emergency department.
 
-## Upper limb fractures with follow-up by trust (2022/23) {background-image="slide.png" background-size="contain"}
+## Upper limb fractures with follow-up by trust (2022/23) {  background-size="contain"}
 
 <br>
 
@@ -1990,7 +1996,7 @@ summarise(count=sum(count), Percentage=sum(Percentage))|>
 
 ```
 
-## Lower limb fractures with follow-up by trust (2022/23) {background-image="slide.png" background-size="contain"}
+## Lower limb fractures with follow-up by trust (2022/23) {  background-size="contain"}
 
 <br>
 
@@ -2094,7 +2100,7 @@ follow-up appointment that could be deemed unnecessary.
 :::
 :::
 
-## Number of clavicle fracture follow-ups by trust (2022/2023) {background-image="slide.png" background-size="contain"}
+## Number of clavicle fracture follow-ups by trust (2022/2023) {  background-size="contain"}
 
 <br>
 
@@ -2141,7 +2147,7 @@ subsequent appointments are considered.
 :::
 :::
 
-## Cost of face-to-face follow-up appointments {background-image="slide.png" background-size="contain"}
+## Cost of face-to-face follow-up appointments {  background-size="contain"}
 
 ::: columns
 ::: {.column width="88%"}
@@ -2197,7 +2203,7 @@ follow-up appointments, although the costs will be reduced compared to
 face-to-face appointments.
 :::
 
-## Differences between our approach and the GIRFT metric {background-image="slide.png" background-size="contain"}
+## Differences between our approach and the GIRFT metric {  background-size="contain"}
 
 <br>
 
@@ -2228,7 +2234,7 @@ The way the GIRFT metric is calculated means that it does not account for any re
 :::
 :::
 
-## Comparing methods for calculating the rate of manipulations {background-image="slide.png" background-size="contain"}
+## Comparing methods for calculating the rate of manipulations {  background-size="contain"}
 
 ::: columns
 ::: {.column width="45%"}
@@ -2353,7 +2359,7 @@ similar rate to The Royal Cornwall Hospitals Trust.
 :::
 :::
 
-## Forearm fractures manipulated in theatre by trust (2022/23) {background-image="slide.png" background-size="contain"}
+## Forearm fractures manipulated in theatre by trust (2022/23) {  background-size="contain"}
 
 <br>
 
@@ -2403,7 +2409,7 @@ plots_of_theatre_vs_ed(proportion_mua_in_theatre_vs_ED,"Forearm", "Forearm fract
 :::
 :::
 
-## Elbow fractures manipulated in theatre by trust (2022/23) {background-image="slide.png" background-size="contain"}
+## Elbow fractures manipulated in theatre by trust (2022/23) {  background-size="contain"}
 
 NOTE: Very low numbers at many providers
 
@@ -2454,7 +2460,7 @@ summary_values_by_trust_prop_in_ed("Elbow")
 :::
 :::
 
-## Cost of manipulations in the emergency department vs theatre {background-image="slide.png" background-size="contain"}
+## Cost of manipulations in the emergency department vs theatre {  background-size="contain"}
 
 ::: columns
 ::: {.column width="40%"}
@@ -2583,7 +2589,7 @@ summary_manipulation_costs(manipulation_savings)
 In addition to the cost savings, manipulating more fractures in the
 emergency department would free up theatre time.
 
-## Sites from CRAFFT study (2023/24) {background-image="slide.png" background-size="contain"}
+## Sites from CRAFFT study (2023/24) {  background-size="contain"}
 
 **Manipulations of forearm fractures in theatre**
 
@@ -2662,7 +2668,7 @@ analysis.
 :::
 :::
 
-## Summary of the potential activity reductions {background-image="slide.png" background-size="contain"}
+## Summary of the potential activity reductions {  background-size="contain"}
 
 <br>
 
@@ -2774,7 +2780,9 @@ dcast(melt(setDT(summary_table), id.vars = "type"), variable ~ type)|>
     135(1560):60-66.
 :::
 
-## Discussion {background-image="slide.png" background-size="contain"}
+## Discussion, Limitations and Future work {.section_header background-image="divider_slide.png"}
+
+## Discussion {  background-size="contain"}
 
 ::: small2
 In agreement with previous studies we find forearm fractures are the
@@ -2844,7 +2852,7 @@ which is just above the lowest quartile.
     paediatric fractures. Bone Joint 360. 5(1):2-8.
 :::
 
-## Discussion (continued) {background-image="slide.png" background-size="contain"}
+## Discussion (continued) {  background-size="contain"}
 
 ::: small2
 While at a national level the scope for significant further reductions
@@ -2905,7 +2913,7 @@ recording of diagnoses in emergency care.
     10;2(1):e000304
 :::
 
-## Limitations {background-image="slide.png" background-size="contain"}
+## Limitations {  background-size="contain"}
 
 <br>
 
@@ -2965,7 +2973,7 @@ Cost savings are calculated from HRG prices and are only indicative
 estimates of potential cost savings.
 :::
 
-## Future work {background-image="slide.png" background-size="contain"}
+## Future work {  background-size="contain"}
 
 <br>
 
@@ -2988,7 +2996,9 @@ manipulated in theatre with the use of internal fixation, and whether
 there are fractures that could be manipulated without the need for
 internal fixation.
 
-## Appendix A- Forearm and Clavicle fracture SNOMED codes {background-image="slide.png" background-size="contain"}
+The current analysis focuses on paediatric fractures, but this work could be extended to include adult fractures too, where there is likely also to be the potential for even further savings.
+
+## Appendix A- Forearm and Clavicle fracture SNOMED codes {  background-size="contain"}
 
 ::: columns
 ::: {.column width="33%"}
@@ -3026,7 +3036,7 @@ snomed_code_tables(fracture_codes, "Clavicle", 9, 0.8)
 :::
 :::
 
-## Appendix B- Elbow fracture SNOMED codes {background-image="slide.png" background-size="contain"}
+## Appendix B- Elbow fracture SNOMED codes {  background-size="contain"}
 
 ::: columns
 ::: {.column width="33%"}
@@ -3058,7 +3068,7 @@ snomed_code_tables(g, "Elbow", 9, 0.75)
 :::
 :::
 
-## Appendix C- Tibia/Fibula and Toe fracture SNOMED codes {background-image="slide.png" background-size="contain"}
+## Appendix C- Tibia/Fibula and Toe fracture SNOMED codes {  background-size="contain"}
 
 ::: columns
 ::: {.column width="33%"}
@@ -3098,7 +3108,7 @@ snomed_code_tables(fracture_codes, "Toe", 9, 0.8)
 :::
 :::
 
-## Appendix D {background-image="slide.png" background-size="contain"}
+## Appendix D {  background-size="contain"}
 
 ::: smaller
 **Manipulations in emergency department were identified using A&E
