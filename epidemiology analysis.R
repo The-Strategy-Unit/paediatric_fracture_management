@@ -1,3 +1,0 @@
-# Epidemiology
-
-library(tidyverse)
